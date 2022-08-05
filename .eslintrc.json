@@ -1,0 +1,118 @@
+{
+  "env": {
+    "commonjs": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+    "indent": [
+      "warn",
+      2
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "camelcase": "error",
+    "class-methods-use-this": "warn",
+    "array-bracket-spacing": [
+      "error"
+    ],
+    "comma-spacing": "error",
+    "arrow-spacing": "error",
+    "no-var": "error",
+    "curly": "error",
+    "brace-style": "error",
+    "eol-last": "warn",
+    "eqeqeq": "warn",
+    "getter-return": "error",
+    "grouped-accessor-pairs": "warn",
+    "global-require": "error",
+    "handle-callback-err": "error",
+    "id-length": "error",
+    "key-spacing": "error",
+    "max-len": "error",
+    "max-params": [
+      "error",
+      {
+        "max": 5
+      }
+    ],
+    "max-statements": "error",
+    "no-console": "error",
+    "no-else-return": "error",
+    "no-eval": "warn",
+    "no-implicit-globals": "error",
+    "prefer-const": "error",
+    "no-magic-numbers": "off",
+    "no-process-exit": "off",
+    "no-process-env": "off",
+    "no-return-assign": "error",
+    "no-useless-return": "error",
+    "max-depth": "off",
+    "no-mixed-operators": "error",
+    "complexity": [
+      "error",
+      5
+    ],
+    "no-extra-parens": "error",
+    "no-template-curly-in-string": "off",
+    "array-callback-return": "error",
+    "default-param-last": "error",
+    "no-constructor-return": "error",
+    "no-invalid-this": "error",
+    "no-lone-blocks": "error",
+    "no-loop-func": "error",
+    "no-proto": "error",
+    "no-useless-call": "error",
+    "no-param-reassign": "error",
+    "space-infix-ops": "error",
+    "no-multi-spaces": "error",
+    "semi-spacing": "error",
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "test*.js"
+      ],
+      "rules": {
+        "max-len": "warn",
+        "no-magic-numbers": "off",
+        "max-statements": "off"
+      }
+    },
+    {
+      "files": [
+        "index.js"
+      ],
+      "rules": {
+        "no-console": "off",
+        "no-magic-numbers": "off",
+        "no-process-env": "off"
+      }
+    }
+  ]
+}
