@@ -14,6 +14,8 @@ You have to find out:
 * What was the weapon used?
 * Where did it happen?
 
+[Read More](https://github.com/step-8/cluedo-karamchand/wiki)
+
 ## Installation:
 
 ### Clone the project
