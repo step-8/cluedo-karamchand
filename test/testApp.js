@@ -8,6 +8,6 @@ describe('Sample test', () => {
 
     request(app)
       .get('/')
-      .expect(401, done);
+      .expect(404, done);
   });
 });
