@@ -8,6 +8,7 @@
   },
   "scripts": {
     "init": "./bin/setup.sh",
+    "start": "bash ./bin/envSetup.sh & node .",
     "test": "./bin/testSetup.sh & mocha"
   },
   "repository": {
