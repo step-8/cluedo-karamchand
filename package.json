@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "init": "./bin/setup.sh",
+    "setup": "./bin/setup.sh",
     "start": "bash ./bin/envSetup.sh & node .",
     "test": "./bin/testSetup.sh & mocha"
   },
