@@ -2,6 +2,7 @@
 
 **A classic detective game**
 
+![cluedo](https://user-images.githubusercontent.com/99489321/183239033-1eab9aa3-3708-471e-a070-82b936877580.jpeg)
 
 **Are you interested in being a detective, try out this super cool detective game!!**
 
