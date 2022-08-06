@@ -2,12 +2,11 @@
 
 **A classic detective game**
 
- ![alt homePage](https://i.ytimg.com/vi/k8XwvHDJGn8/maxresdefault.jpg) 
 
-Are you interested in being a detective, try out this super cool detective game!!
+**Are you interested in being a detective, try out this super cool detective game!!**
 
 Cluedo is a murder mystery game, and you are a detective attempting to solve a murder in a mansion.
-Mr. Boddy has been murdered,there are 6 suspects, 6 weapons and 9 rooms.
+Mr. Boddy has been murdered, there are 6 suspects, 6 weapons and 9 rooms.
 
 You have to find out:
 * Who did it?
@@ -16,12 +15,13 @@ You have to find out:
 
 ### How to play :
 
-* You will be given a character and set of cards, you have to find the character,weapon and room involved in the murder.
+
+* You will be given a character and set of cards, you have to find the character, weapon and room involved in the murder.
 
 * In your turn, you can have multiple options:
-  * Rolling dice
-  * Suspection
-  * Accusation
+  * Roll dice
+  * Suspect
+  * Accuse
   * Pass
 
 * When your turn is over, you can pass to the other player.
@@ -33,13 +33,13 @@ You have to find out:
 * Enter or leave room:
   * You can roll the die and move into the room through doors.
   * You can use the Secret Passages to go to another room.
-  * You can be called by other players during suspection.
+  * You can be called by other players during suspicion.
 
 * Suspect:
   * As soon as you enter a room, you can suspect by clicking on suspect button.
   * You have to select a weapon and a character to suspect.
 
-* Break suspection:
+* Rule out suspicion:
   * If you have any of the suspected cards, reveal it to the suspector.
   * Click on the card you want to reveal.
 
@@ -57,5 +57,13 @@ You have to find out:
 * You must be in the room to suspect.
 * If someone is blocking your path or door you can't cross them.
 * You can't suspect consecutively in the same room.
-* If you make incorrect accusation, you can not make any further moves. You will remain as player to rule out the suspections.
+* If you make incorrect accusation, you can not make any further moves. You will remain as player to rule out suspicion.
  
+
+### Installation:
+
+  * Clone project - `git clone git@github.com:step-8/cluedo-karamchand.git`
+  * Setup - `npm run setup`
+  * Start - `npm start`
+  * Test - `npm test`
+  * Visit homepage - `localhost:8000`
