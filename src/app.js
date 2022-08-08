@@ -5,7 +5,8 @@ const cookieSession = require('cookie-session');
 const { urlencoded } = require('express');
 const { serveLogin, handleLogin } = require('./handlers/loginHandler.js');
 const { homePage,
-  serveLobby } = require('./handlers/homePage.js');
+  serveLobby,
+  redirectToLobby } = require('./handlers/homePage.js');
 const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 
@@ -39,7 +40,8 @@ const createApp = () => {
 
   app.get('/', validateUser, homePage);
   app.post('/join', validateUser,
-    injectGame(games), addPlayerToGame, serveLobby);
+    injectGame(games), addPlayerToGame, redirectToLobby);
+  app.get('/lobby', validateUser, serveLobby);
 
   app.use(express.static('public'));
   return app;

@@ -1,8 +1,8 @@
 const request = require('supertest');
 const { createApp } = require('../src/app');
 
-describe('homepage', () => {
-  it('Should show home page for GET /', (done) => {
+describe('GET /', () => {
+  it('Should serve home page for valid user', (done) => {
     request(createApp())
       .post('/login')
       .send('username=ab')
@@ -15,7 +15,16 @@ describe('homepage', () => {
       });
   });
 
-  it('should serve lobby for POST /join', (done) => {
+  it('Should redirect to login page for invalid user', (done) => {
+    request(createApp())
+      .get('/')
+      .expect(/login/)
+      .expect(302, done);
+  });
+});
+
+describe('POST /join', () => {
+  it('should redirect to lobby for valid user', (done) => {
     request(createApp())
       .post('/login')
       .send('username=ab')
@@ -24,9 +33,15 @@ describe('homepage', () => {
           .post('/join')
           .send('room-id=123')
           .set('Cookie', res.headers['set-cookie'])
-          .expect(/lobby/)
-          .expect(200, done);
+          .expect('location', '/lobby')
+          .expect(302, done);
       });
   });
-});
 
+  it('Should redirect to login page for invalid user', (done) => {
+    request(createApp())
+      .post('/join')
+      .expect(/login/)
+      .expect(302, done);
+  });
+});
