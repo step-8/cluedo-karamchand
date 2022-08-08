@@ -1,5 +1,10 @@
 const homePage = (req, res) => {
-  res.sendFile('home.html', { root: 'html' });
+  const { session } = req;
+  if (session && session.username && session.userId) {
+    res.sendFile('home.html', { root: 'html' });
+    return;
+  }
+  res.redirect('/login');
 };
 
 const injectGame = games => (req, res, next) => {
