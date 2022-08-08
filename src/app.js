@@ -1,15 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
+const cookieSession = require('cookie-session');
+require('dotenv').config();
+
 const { homePage,
   injectGame,
   addPlayerToGame,
   serveLobby } = require('./handlers/homePage.js');
-
-require('dotenv').config();
-
-const cookieSession = require('cookie-session');
-const { urlencoded } = require('express');
-const { serveLogin, handleLogin } = require('./handlers/loginHandler.js');
+const { createLoginRouter } = require('./routers/loginRouter.js');
 
 const createApp = () => {
   const app = express();
@@ -25,19 +23,18 @@ const createApp = () => {
       maxPlayers: 3
     }
   };
+
   app.use(cookieSession({
     name: process.env.SESSION_NAME,
     keys: [process.env.SESSION_KEYS]
   }));
 
-  app.use(urlencoded({ extended: true }));
-
   if (MODE === 'PRODUCTION') {
     app.use(morgan('dev'));
   }
 
-  app.get('/login', serveLogin);
-  app.post('/login', handleLogin);
+  const loginRouter = createLoginRouter();
+  app.use('/login', loginRouter);
 
   app.get('/', homePage);
   app.post('/join', injectGame(games), addPlayerToGame, serveLobby);

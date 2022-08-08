@@ -22,10 +22,27 @@ describe('GET /login', () => {
       .expect(/login/)
       .expect(200, done);
   });
+
+  it('should redirect to home page if already logged in', (done) => {
+    const app = createApp();
+
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .expect('location', '/')
+      .expect(302)
+      .end((err, res) => {
+        request(app)
+          .get('/login')
+          .set('Cookie', res.headers['set-cookie'])
+          .expect('location', '/')
+          .expect(302, done);
+      });
+  });
 });
 
 describe('POST /login', () => {
-  it('should redirect to home on successfull login', (done) => {
+  it('should redirect to home on successful login', (done) => {
     const app = createApp();
 
     request(app)
