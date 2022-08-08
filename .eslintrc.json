@@ -119,7 +119,8 @@
     },
     {
       "files": [
-        "login.js"
+        "login.js",
+        "home.js"
       ],
       "rules": {
         "no-console": "off",

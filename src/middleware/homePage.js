@@ -1,6 +1,12 @@
 const injectGame = games => (req, res, next) => {
-  req.game = games[123];
-  next();
+  const game = games[req.body['room-id']];
+  if (game) {
+    req.game = games[123];
+    next();
+    return;
+  }
+  res.cookie('error', '40', { maxAge: 3000 });
+  res.redirect('/');
 };
 
 const addPlayerToGame = (req, res, next) => {

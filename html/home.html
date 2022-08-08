@@ -2,6 +2,7 @@
 
 <head>
   <title>Home</title>
+  <script src="/js/home.js"></script>
 </head>
 
 <body>
@@ -10,9 +11,10 @@
   </header>
   <main>
     <form action="/join" method="post">
-      <div><input type="text" name="room-id" id="" placeholder="Enter room id"></div>
+      <div><input type="text" name="room-id" id="" placeholder="Enter room id" required></div>
       <div><input type="submit" value="Join"></div>
     </form>
+    <div class="error-message"></div>
   </main>
 </body>
 
