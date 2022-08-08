@@ -25,7 +25,7 @@ describe('GET /login', () => {
 });
 
 describe('POST /login', () => {
-  it('Should redirect to home on successfull login', (done) => {
+  it('Should redirect to home on successful login', (done) => {
     const app = createApp();
 
     request(app)

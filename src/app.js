@@ -1,15 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
-const { homePage,
-  injectGame,
-  addPlayerToGame,
-  serveLobby } = require('./handlers/homePage.js');
-
 require('dotenv').config();
-
 const cookieSession = require('cookie-session');
 const { urlencoded } = require('express');
 const { serveLogin, handleLogin } = require('./handlers/loginHandler.js');
+const { homePage,
+  serveLobby } = require('./handlers/homePage.js');
+const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
+const { validateUser } = require('./middleware/validateUser.js');
 
 const createApp = () => {
   const app = express();
@@ -39,10 +37,11 @@ const createApp = () => {
   app.get('/login', serveLogin);
   app.post('/login', handleLogin);
 
-  app.get('/', homePage);
-  app.post('/join', injectGame(games), addPlayerToGame, serveLobby);
-  app.use(express.static('public'));
+  app.get('/', validateUser, homePage);
+  app.post('/join', validateUser,
+    injectGame(games), addPlayerToGame, serveLobby);
 
+  app.use(express.static('public'));
   return app;
 };
 
