@@ -49,8 +49,6 @@ const createApp = () => {
   app.get('/lobby', validateUser, serveLobby);
   app.get('/api/game', validateUser, injectGame(games), serveGameApi);
 
-  app.get('/game', boardHandler);
-
   app.use(express.static('public'));
   return app;
 };
