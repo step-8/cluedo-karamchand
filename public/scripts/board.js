@@ -48,18 +48,23 @@ const createPaths = (cells) => {
   return cells.map(generatePath);
 };
 
-const generateRoom = (points) => {
-  return ['polygon',
+const generateRoom = ({ points, room, textPosition }) => {
+  const [x, y] = textPosition;
+  const roomPosition = ['polygon',
     {
       height: '1', width: '1', fill: 'lightBlue',
       stroke: 'black', 'stroke-width': '0.2%',
       points: `${points.join(' ')}`
     }];
+  console.log(points);
+  const roomName = ['text',
+    { x, y, 'font-size': '1' }, room];
+  return [roomPosition, roomName];
 };
 
 const createRooms = (rooms) => {
-  return rooms.map(room => {
-    return generateRoom(room.points);
+  return rooms.flatMap(room => {
+    return generateRoom(room);
   });
 };
 

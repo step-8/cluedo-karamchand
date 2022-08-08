@@ -3,7 +3,6 @@ const morgan = require('morgan');
 const { boardHandler, boardApi } = require('./handlers/boardHandler');
 require('dotenv').config();
 const cookieSession = require('cookie-session');
-const fs = require('fs');
 
 const { homePage,
   serveLobby,
