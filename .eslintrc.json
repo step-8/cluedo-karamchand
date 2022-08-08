@@ -99,6 +99,7 @@
         "test*.js"
       ],
       "rules": {
+        "handle-callback-err": "off",
         "max-len": "warn",
         "no-magic-numbers": "off",
         "max-statements": "off"
@@ -119,12 +120,26 @@
     },
     {
       "files": [
-        "index.js"
+        "index.js",
+        "app.js"
       ],
       "rules": {
         "no-console": "off",
         "no-magic-numbers": "off",
-        "no-process-env": "off"
+        "no-process-env": "off",
+        "max-statements": "off"
+      }
+    },
+    {
+      "files": [
+        "login.js",
+        "home.js"
+      ],
+      "rules": {
+        "no-console": "off",
+        "no-magic-numbers": "off",
+        "no-process-env": "off",
+        "no-undef": "off"
       }
     }
   ]

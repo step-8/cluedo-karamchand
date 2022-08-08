@@ -2,12 +2,12 @@ const request = require('supertest');
 const { createApp } = require('../src/app.js');
 require('dotenv').config();
 
-describe('Sample test', () => {
-  it('Testing server', (done) => {
+describe('GET /bad-request', () => {
+  it('should serve 404 on bad request', (done) => {
     const app = createApp();
 
     request(app)
-      .get('/')
+      .get('/badUrl')
       .expect(404, done);
   });
 });

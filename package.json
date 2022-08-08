@@ -8,9 +8,10 @@
   },
   "scripts": {
     "setup": "./bin/setup.sh",
+    "dev-start": "bash ./bin/envSetup.sh & nodemon .",
     "start": "bash ./bin/envSetup.sh & node .",
-    "devStart": "bash ./bin/envSetup.sh & nodemon .",
-    "test": "./bin/testSetup.sh & mocha"
+    "test": "./bin/testSetup.sh & mocha",
+    "test-w": "./bin/testSetup.sh & mocha -w"
   },
   "repository": {
     "type": "git",
