@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const { boardHandler, boardApi } = require('./handlers/boardHandler');
 require('dotenv').config();
 const cookieSession = require('cookie-session');
+const fs = require('fs');
 
 const { homePage,
   serveLobby,
@@ -10,6 +11,8 @@ const { homePage,
 const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
+const { serveGameApi } = require('./handlers/api.js');
+const { injectGameId } = require('./middleware/injectGameId.js');
 const boardData = require('../data/board.json');
 
 const createApp = () => {
@@ -40,9 +43,10 @@ const createApp = () => {
   app.use('/login', loginRouter);
 
   app.get('/', validateUser, homePage);
-  app.post('/join', validateUser,
+  app.post('/join', validateUser, injectGameId,
     injectGame(games), addPlayerToGame, redirectToLobby);
   app.get('/lobby', validateUser, serveLobby);
+  app.get('/api/game', validateUser, injectGame(games), serveGameApi);
 
   app.get('/boardApi', boardApi(boardData));
   app.get('/game', boardHandler);

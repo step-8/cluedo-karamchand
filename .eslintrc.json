@@ -133,7 +133,9 @@
     {
       "files": [
         "login.js",
-        "home.js"
+        "home.js",
+        "domGenerator.js",
+        "lobby.js"
       ],
       "rules": {
         "no-console": "off",
