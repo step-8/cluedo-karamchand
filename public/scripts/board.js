@@ -17,17 +17,23 @@ const createDom = ([tag, attributes, ...content]) => {
   return element;
 };
 
-const generateStart = ({ position }) => {
+const generateStart = ({ position, color }) => {
   const [xCordinate, yCordinate] = position;
-  return ['rect',
+  const tile = ['rect',
     {
       fill: 'goldenRod', stroke: 'black', 'stroke-width': '0.2%',
       x: xCordinate, y: yCordinate, height: '1', width: '1'
     }];
+  const character = ['circle',
+    {
+      fill: color, stroke: 'black', 'stroke-width': '0.05%',
+      cx: xCordinate + 0.5, cy: yCordinate + 0.5, r: '0.3'
+    }];
+  return [tile, character];
 };
 
 const createStart = (cells) => {
-  return cells.map(generateStart);
+  return cells.flatMap(generateStart);
 };
 
 const generatePath = ([x, y]) => {
