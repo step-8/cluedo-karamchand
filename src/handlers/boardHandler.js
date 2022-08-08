@@ -4,6 +4,9 @@ const boardHandler = (req, res) => {
   if (!req.session.isPopulated) {
     return res.redirect('/login');
   }
+  if (!req.session.gameId) {
+    return res.redirect('/');
+  }
 
   const board = ['html', {},
     ['head', {},

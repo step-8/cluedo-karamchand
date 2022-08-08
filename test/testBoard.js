@@ -23,4 +23,39 @@ describe('GET /game', () => {
       .expect(302, done);
   });
 
+  it('Should redirect to homepage if not joined/hosted a game', (done) => {
+    const app = createApp();
+
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        request(app)
+          .get('/game')
+          .set('Cookie', res.headers['set-cookie'])
+          .expect('location', '/')
+          .expect(302, done);
+      });
+  });
+
+  it('Should show board if user joined/hosted a game', (done) => {
+    const app = createApp();
+
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        request(app)
+          .post('/join')
+          .send('room-id=123')
+          .set('Cookie', res.headers['set-cookie'])
+          .end((err, res) => {
+            request(app)
+              .get('/game')
+              .set('Cookie', res.headers['set-cookie'])
+              .expect(/html/)
+              .expect(200, done);
+          });
+      });
+  });
 });
