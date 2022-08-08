@@ -1,7 +1,7 @@
 const injectGame = games => (req, res, next) => {
-  const game = games[req.body['room-id']];
+  const game = games[req.session.gameId];
   if (game) {
-    req.game = games[123];
+    req.game = game;
     next();
     return;
   }
@@ -10,9 +10,12 @@ const injectGame = games => (req, res, next) => {
 };
 
 const addPlayerToGame = (req, res, next) => {
-  const { game } = req;
-  const player = { name: 'xyz', character: 'scarlatte', userId: 2 };
-  game.players.push(player);
+  const { game, session } = req;
+  const { players, characters } = game;
+  const character = characters[players.length];
+  req.game.players.push({
+    name: session.username, character, userId: session.userId
+  });
   next();
 };
 

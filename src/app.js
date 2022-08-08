@@ -9,6 +9,12 @@ const { homePage,
 const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
+const { serveGameApi } = require('./handlers/api.js');
+
+const injectGameId = (req, res, next) => {
+  req.session.gameId = req.body['room-id'];
+  next();
+};
 
 const createApp = () => {
   const app = express();
@@ -38,9 +44,10 @@ const createApp = () => {
   app.use('/login', loginRouter);
 
   app.get('/', validateUser, homePage);
-  app.post('/join', validateUser,
+  app.post('/join', validateUser, injectGameId,
     injectGame(games), addPlayerToGame, redirectToLobby);
   app.get('/lobby', validateUser, serveLobby);
+  app.get('/api/game', validateUser, injectGame(games), serveGameApi);
 
   app.use(express.static('public'));
   return app;
