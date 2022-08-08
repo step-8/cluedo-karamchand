@@ -9,4 +9,4 @@ const injectGame = games => (req, res, next) => {
   res.redirect('/');
 };
 
-module.exports = { injectGame }
+module.exports = { injectGame };

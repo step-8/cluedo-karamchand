@@ -44,7 +44,7 @@ const createApp = () => {
   app.use('/login', loginRouter);
 
   app.get('/', validateUser, serveHomePage);
-  app.post('/join', validateUser, injectGameId,
+  app.post('/join', validateUser, injectGameId(games),
     injectGame(games), addPlayerToGame, redirectToLobby);
   app.get('/lobby', validateUser, serveLobby);
   app.get('/api/game', validateUser, injectGame(games), serveGameApi);
