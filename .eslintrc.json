@@ -113,6 +113,17 @@
         "no-magic-numbers": "off",
         "no-process-env": "off"
       }
+    },
+    {
+      "files": [
+        "login.js"
+      ],
+      "rules": {
+        "no-console": "off",
+        "no-magic-numbers": "off",
+        "no-process-env": "off",
+        "no-undef": "off"
+      }
     }
   ]
 }

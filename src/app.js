@@ -24,6 +24,8 @@ const createApp = () => {
   app.get('/login', serveLogin);
   app.post('/login', handleLogin);
 
+  app.use(express.static('public'));
+
   return app;
 };
 

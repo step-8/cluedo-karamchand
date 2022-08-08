@@ -8,6 +8,7 @@
   },
   "scripts": {
     "setup": "./bin/setup.sh",
+    "dev-start": "bash ./bin/envSetup.sh & nodemon .",
     "start": "bash ./bin/envSetup.sh & node .",
     "test": "./bin/testSetup.sh & mocha",
     "test-w": "./bin/testSetup.sh & mocha -w"

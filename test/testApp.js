@@ -13,7 +13,7 @@ describe('Sample test', () => {
 });
 
 describe('GET /login', () => {
-  it('Should serve the login page', (done) => {
+  it('should serve the login page', (done) => {
     const app = createApp();
 
     request(app)
@@ -25,7 +25,7 @@ describe('GET /login', () => {
 });
 
 describe('POST /login', () => {
-  it('Should redirect to home on successfull login', (done) => {
+  it('should redirect to home on successfull login', (done) => {
     const app = createApp();
 
     request(app)
@@ -33,6 +33,17 @@ describe('POST /login', () => {
       .send('username=bob')
       .expect('set-cookie', /test_session=.*/)
       .expect('location', '/')
+      .expect(302, done);
+  });
+
+  it('should redirect to /login when no username provided', (done) => {
+    const app = createApp();
+
+    request(app)
+      .post('/login')
+      .send('username=')
+      .expect('set-cookie', /error=30/)
+      .expect('location', '/login')
       .expect(302, done);
   });
 });
