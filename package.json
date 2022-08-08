@@ -9,6 +9,7 @@
   "scripts": {
     "setup": "./bin/setup.sh",
     "start": "bash ./bin/envSetup.sh & node .",
+    "devStart": "bash ./bin/envSetup.sh & nodemon .",
     "test": "./bin/testSetup.sh & mocha"
   },
   "repository": {
