@@ -4,9 +4,6 @@ const boardHandler = (req, res) => {
   if (!req.session.isPopulated) {
     return res.redirect('/login');
   }
-  if (!req.session.gameId) {
-    return res.redirect('/');
-  }
 
   const board = ['html', {},
     ['head', {},
@@ -17,7 +14,7 @@ const boardHandler = (req, res) => {
 };
 
 const boardApi = (boardData) => (req, res) => {
-  res.json(JSON.parse(boardData));
+  res.json(boardData);
 };
 
 module.exports = { boardHandler, boardApi };

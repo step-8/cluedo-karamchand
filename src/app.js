@@ -10,10 +10,9 @@ const { homePage,
 const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
-const fs = require('fs');
+const boardData = require('../data/board.json');
 
 const createApp = () => {
-  const boardData = fs.readFileSync('data/board.json', 'utf-8');
   const app = express();
   const MODE = process.env.ENV;
 
@@ -37,8 +36,6 @@ const createApp = () => {
     app.use(morgan('dev'));
   }
 
-  app.get('/boardApi', boardApi(boardData));
-  app.use(express.static('public'));
   const loginRouter = createLoginRouter();
   app.use('/login', loginRouter);
 
@@ -47,6 +44,7 @@ const createApp = () => {
     injectGame(games), addPlayerToGame, redirectToLobby);
   app.get('/lobby', validateUser, serveLobby);
 
+  app.get('/boardApi', boardApi(boardData));
   app.get('/game', boardHandler);
   app.use(express.static('public'));
   return app;
