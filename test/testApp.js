@@ -7,7 +7,7 @@ describe('Sample test', () => {
     const app = createApp();
 
     request(app)
-      .get('/')
+      .get('/badUrl')
       .expect(404, done);
   });
 });
