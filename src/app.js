@@ -13,6 +13,7 @@ const { boardHandler, boardApi } = require('./handlers/boardHandler');
 const { injectGameId } = require('./middleware/injectGameId.js');
 const { injectGame } = require('./middleware/injectGame');
 const { addPlayerToGame } = require('./middleware/addPlayerToGame');
+const { hostGame } = require('./handlers/hostGameHandler.js');
 const boardData = require('../data/board.json');
 
 const createApp = () => {
@@ -46,8 +47,11 @@ const createApp = () => {
   app.get('/', validateUser, serveHomePage);
   app.post('/join', validateUser, injectGameId(games),
     injectGame(games), addPlayerToGame, redirectToLobby);
+
   app.get('/lobby', validateUser, serveLobby);
   app.get('/api/game', validateUser, injectGame(games), serveGameApi);
+
+  app.post('/host', validateUser, hostGame(games));
 
   app.get('/game', boardHandler);
 

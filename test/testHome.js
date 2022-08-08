@@ -45,3 +45,21 @@ describe('POST /join', () => {
       .expect(302, done);
   });
 });
+
+describe('POST /host', () => {
+  it('should host the game with number of players', (done) => {
+    const app = createApp();
+
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        request(app)
+          .post('/host')
+          .set('Cookie', res.headers['set-cookie'])
+          .send('maxPlayers=3')
+          .expect('location', '/lobby')
+          .expect(302, done);
+      });
+  });
+});
