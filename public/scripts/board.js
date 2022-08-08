@@ -17,6 +17,31 @@ const createDom = ([tag, attributes, ...content]) => {
   return element;
 };
 
+const generateStart = ({ position }) => {
+  const [xCordinate, yCordinate] = position;
+  return ['rect',
+    {
+      fill: 'purple', stroke: 'black', 'stroke-width': '0.2%',
+      x: xCordinate, y: yCordinate, height: '1', width: '1'
+    }];
+};
+
+const createStart = (cells) => {
+  return cells.map(generateStart);
+};
+
+const generatePath = ([x, y]) => {
+  return ['rect',
+    {
+      fill: 'pink', stroke: 'black', 'stroke-width': '0.2%',
+      x, y, height: '1', width: '1'
+    }];
+};
+
+const createPaths = (cells) => {
+  return cells.map(generatePath);
+};
+
 const generateRoom = (points) => {
   return ['polygon',
     {
@@ -35,10 +60,12 @@ const createRooms = (rooms) => {
 const generateBoard = ({ response }) => {
   const boardData = JSON.parse(response);
   const rooms = createRooms(boardData.rooms);
+  const paths = createPaths(boardData.tiles);
+  const start = createStart(boardData.startingPos);
   const body = document.querySelector('body');
   body.append(createDom(['svg', {
-    width: '200', height: '170', viewBox: '0 0 24 25'
-  }, ...rooms]));
+    width: '900', height: '800', viewBox: '0 0 24 25'
+  }, ...rooms, ...paths, ...start]));
 };
 
 const main = () => {
