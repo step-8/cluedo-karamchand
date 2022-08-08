@@ -1,4 +1,4 @@
-const { createDom } = require('../htmlGenerator.js');
+const { createDom } = require('../utils/htmlGenerator.js');
 
 const boardHandler = (req, res) => {
   if (!req.session.isPopulated) {
