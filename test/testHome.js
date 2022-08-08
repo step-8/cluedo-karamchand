@@ -17,9 +17,16 @@ describe('homepage', () => {
 
   it('should serve lobby for POST /join', (done) => {
     request(createApp())
-      .post('/join')
-      .send('roomId=123')
-      .expect(200, done);
+      .post('/login')
+      .send('username=ab')
+      .end((err, res) => {
+        request(createApp())
+          .post('/join')
+          .send('room-id=123')
+          .set('Cookie', res.headers['set-cookie'])
+          .expect(/lobby/)
+          .expect(200, done);
+      });
   });
 });
 

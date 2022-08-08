@@ -1,12 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
-const cookieSession = require('cookie-session');
 require('dotenv').config();
+const cookieSession = require('cookie-session');
 
 const { homePage,
-  injectGame,
-  addPlayerToGame,
   serveLobby } = require('./handlers/homePage.js');
+const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
+const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
 
 const createApp = () => {
@@ -36,10 +36,11 @@ const createApp = () => {
   const loginRouter = createLoginRouter();
   app.use('/login', loginRouter);
 
-  app.get('/', homePage);
-  app.post('/join', injectGame(games), addPlayerToGame, serveLobby);
-  app.use(express.static('public'));
+  app.get('/', validateUser, homePage);
+  app.post('/join', validateUser,
+    injectGame(games), addPlayerToGame, serveLobby);
 
+  app.use(express.static('public'));
   return app;
 };
 

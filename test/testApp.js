@@ -42,7 +42,7 @@ describe('GET /login', () => {
 });
 
 describe('POST /login', () => {
-  it('should redirect to home on successful login', (done) => {
+  it('Should redirect to home on successful login', (done) => {
     const app = createApp();
 
     request(app)
