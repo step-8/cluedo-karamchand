@@ -5,7 +5,17 @@
 }
 
 .header {
-  margin-top: 20px;
-  margin-bottom: 30;
+  margin: 20px 30px 30px 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header>h1 {
   text-align: center;
+  width: 90%;
+}
+
+.user {
+  font-size: 30px;
+  text-transform: capitalize;
 }

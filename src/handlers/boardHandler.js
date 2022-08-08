@@ -7,16 +7,15 @@ const boardHandler = (req, res) => {
   if (!req.session.gameId) {
     return res.redirect('/');
   }
-
+  const { username } = req.session;
   const board = ['html', {},
     ['head', {},
       ['title', {}, 'Cluedo'],
       ['link', { 'rel': 'stylesheet', 'href': 'css/game.css' }],
       ['script', { 'src': 'scripts/board.js' }],
       ['script', { 'src': 'scripts/xhrUtils.js' }]],
-    ['body', {}, ['h1', { class: 'header' }, 'Cluedo']
-
-    ]];
+    ['body', {}, ['div', { class: 'header' }, ['h1', {}, 'Cluedo'],
+      ['div', { class: 'user' }, username]]]];
   res.end(createDom(...board));
 };
 
