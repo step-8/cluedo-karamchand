@@ -106,6 +106,19 @@
     },
     {
       "files": [
+        "public/scripts/*.js"
+      ],
+      "rules": {
+        "max-len": "warn",
+        "no-magic-numbers": "off",
+        "max-statements": "off",
+        "no-console": "off",
+        "no-unused-vars": "off",
+        "no-undef": "off"
+      }
+    },
+    {
+      "files": [
         "index.js"
       ],
       "rules": {

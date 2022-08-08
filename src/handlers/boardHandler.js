@@ -1,0 +1,16 @@
+const { createDom } = require('../htmlGenerator.js');
+
+const boardHandler = (req, res) => {
+  const board = ['html', {},
+    ['head', {},
+      ['title', {}, 'Cluedo'],
+      ['script', { 'src': 'scripts/board.js' }],
+      ['script', { 'src': 'scripts/xhrUtils.js' }]]];
+  res.end(createDom(...board));
+};
+
+const boardApi = (boardData) => (req, res) => {
+  res.json(JSON.parse(boardData));
+};
+
+module.exports = { boardHandler, boardApi };
