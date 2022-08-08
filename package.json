@@ -9,7 +9,8 @@
   "scripts": {
     "setup": "./bin/setup.sh",
     "start": "bash ./bin/envSetup.sh & node .",
-    "test": "./bin/testSetup.sh & mocha"
+    "test": "./bin/testSetup.sh & mocha",
+    "test-w": "./bin/testSetup.sh & mocha -w"
   },
   "repository": {
     "type": "git",
