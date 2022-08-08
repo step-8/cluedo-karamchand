@@ -1,22 +1,27 @@
-const serveLogin = (request, response) => {
-  response.sendFile('login.html', { root: 'private' });
+const serveLogin = (req, res) => {
+  if (req.session.isPopulated) {
+    res.redirect('/');
+    return;
+  }
+
+  res.sendFile('login.html', { root: 'private' });
 };
 
 const createSession = (username) => {
   return { username, userId: new Date().getTime() };
 };
 
-const handleLogin = (request, response) => {
-  const { username } = request.body;
+const handleLogin = (req, res) => {
+  const { username } = req.body;
 
   if (username === '') {
-    response.cookie('error', '30', { maxAge: 3000 });
-    response.redirect('/login');
+    res.cookie('error', '30', { maxAge: 3000 });
+    res.redirect('/login');
     return;
   }
 
-  request.session = createSession(username);
-  response.redirect('/');
+  req.session = createSession(username);
+  res.redirect('/');
 };
 
 module.exports = { serveLogin, handleLogin };
