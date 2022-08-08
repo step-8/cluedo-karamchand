@@ -17,54 +17,56 @@ const createDom = ([tag, attributes, ...content]) => {
   return element;
 };
 
-const generateStart = ({ position }) => {
+const generateStart = ({ position, color }, attributes) => {
   const [xCordinate, yCordinate] = position;
+  const tile = ['rect',
+    { x: xCordinate, y: yCordinate, ...attributes.start }];
+  const character = ['circle',
+    {
+      fill: color,
+      cx: xCordinate + 0.5, cy: yCordinate + 0.5, ...attributes.character
+    }];
+  return [tile, character];
+};
+
+const createStart = ({ startingPos, attributes }) => {
+  return startingPos.flatMap(cell =>
+    generateStart(cell, attributes));
+};
+
+const generatePath = ([x, y], attributes) => {
   return ['rect',
-    {
-      fill: 'goldenRod', stroke: 'black', 'stroke-width': '0.2%',
-      x: xCordinate, y: yCordinate, height: '1', width: '1'
-    }];
+    { x, y, ...attributes.tiles }];
 };
 
-const createStart = (cells) => {
-  return cells.map(generateStart);
+const createPaths = ({ tiles, attributes }) => {
+  return tiles.map(tile => generatePath(tile, attributes));
 };
 
-const generatePath = ([x, y]) => {
-  return ['rect',
-    {
-      fill: '#daa52073', stroke: 'black', 'stroke-width': '0.2%',
-      x, y, height: '1', width: '1'
-    }];
+const generateRoom = ({ points, room, textPosition }, attributes) => {
+  const [x, y] = textPosition;
+  const roomPosition = ['polygon',
+    { points: `${points.join(' ')}`, ...attributes.room }];
+  const roomName = ['text',
+    { x, y, 'font-size': '1' }, room];
+  return [roomPosition, roomName];
 };
 
-const createPaths = (cells) => {
-  return cells.map(generatePath);
-};
-
-const generateRoom = (points) => {
-  return ['polygon',
-    {
-      height: '1', width: '1', fill: 'lightBlue',
-      stroke: 'black', 'stroke-width': '0.2%',
-      points: `${points.join(' ')}`
-    }];
-};
-
-const createRooms = (rooms) => {
-  return rooms.map(room => {
-    return generateRoom(room.points);
+const createRooms = ({ rooms, attributes }) => {
+  return rooms.flatMap(room => {
+    return generateRoom(room, attributes);
   });
 };
 
 const generateBoard = ({ response }) => {
   const boardData = JSON.parse(response);
-  const rooms = createRooms(boardData.rooms);
-  const paths = createPaths(boardData.tiles);
-  const start = createStart(boardData.startingPos);
+  const rooms = createRooms(boardData);
+  const paths = createPaths(boardData);
+  const start = createStart(boardData);
   const body = document.querySelector('body');
+  const boardAttr = boardData.attributes.board;
   body.append(createDom(['svg', {
-    width: '900', height: '800', viewBox: '0 0 24 25'
+    ...boardAttr,
   }, ...rooms, ...paths, ...start]));
 };
 

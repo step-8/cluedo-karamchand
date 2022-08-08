@@ -115,7 +115,8 @@
         "max-statements": "off",
         "no-console": "off",
         "no-unused-vars": "off",
-        "no-undef": "off"
+        "no-undef": "off",
+        "id-length": "off"
       }
     },
     {

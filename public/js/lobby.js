@@ -9,7 +9,7 @@ const sendRequest = (method, path, content, cb) => {
 
 const playerHtml = player => {
   const character = player.character;
-  return generateHTML(['div', { id: character },
+  return generateHTML(['div', { id: character, className: 'character' },
     ['div', { className: 'logo' }, ''],
     ['div', { className: 'character-name' }, character],
     ['div', { className: 'player-name' }, player.name]]);

@@ -7,7 +7,11 @@ const redirectToLobby = (req, res) => {
 };
 
 const serveLobby = (req, res) => {
-  res.sendFile('lobby.html', { root: 'private' });
+  if (req.session.gameId) {
+    res.sendFile('lobby.html', { root: 'private' });
+    return;
+  }
+  res.redirect('/');
 };
 
 module.exports = { serveHomePage, serveLobby, redirectToLobby };

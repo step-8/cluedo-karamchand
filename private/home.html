@@ -7,26 +7,27 @@
 </head>
 
 <body>
-  <header>
-    <h1>CLUEDO</h1>
-  </header>
   <main>
-    <form action="/host" method="post">
-      <select name="maxPlayers">
-        <option value="3">Number of players</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-      </select>
-      <input type="submit" value="Host">
-    </form>
 
-    <form action="/join" method="post">
-      <div><input type="text" name="room-id" id="" placeholder="Enter room id" required></div>
-      <div><input type="submit" value="Join"></div>
-    </form>
-    <div class="error-message"></div>
+    <div class="form-container">
+      <form action="/host" method="post">
+        <select name="maxPlayers">
+          <option value="3">Number of players</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+        <input type="submit" value="Host">
+      </form>
+
+      <form action="/join" method="post">
+        <div><input type="text" name="room-id" id="" placeholder="Enter room id" required></div>
+        <div><input type="submit" value="Join"></div>
+      </form>
+
+      <div class="error-message"></div>
+    </div>
   </main>
 </body>
 

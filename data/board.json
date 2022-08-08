@@ -781,7 +781,11 @@
   ],
   "rooms": [
     {
-      "room": "kitchen",
+      "room": "Kitchen",
+      "textPosition": [
+        2,
+        4
+      ],
       "points": [
         [
           0,
@@ -810,7 +814,11 @@
       ]
     },
     {
-      "room": "ballroom",
+      "room": "Ballroom",
+      "textPosition": [
+        10,
+        5
+      ],
       "points": [
         [
           10,
@@ -847,7 +855,11 @@
       ]
     },
     {
-      "room": "conservatory",
+      "room": "Conservatory",
+      "textPosition": [
+        18.4,
+        3
+      ],
       "points": [
         [
           18,
@@ -876,7 +888,11 @@
       ]
     },
     {
-      "room": "dining",
+      "room": "Dining",
+      "textPosition": [
+        2,
+        13
+      ],
       "points": [
         [
           0,
@@ -905,7 +921,11 @@
       ]
     },
     {
-      "room": "billiard",
+      "room": "Billiard",
+      "textPosition": [
+        19,
+        11
+      ],
       "points": [
         [
           18,
@@ -926,7 +946,11 @@
       ]
     },
     {
-      "room": "library",
+      "room": "Library",
+      "textPosition": [
+        19,
+        17
+      ],
       "points": [
         [
           17,
@@ -975,7 +999,11 @@
       ]
     },
     {
-      "room": "study",
+      "room": "Study",
+      "textPosition": [
+        19,
+        23
+      ],
       "points": [
         [
           17,
@@ -1004,7 +1032,11 @@
       ]
     },
     {
-      "room": "hall",
+      "room": "Hall",
+      "textPosition": [
+        11,
+        22
+      ],
       "points": [
         [
           9,
@@ -1025,7 +1057,11 @@
       ]
     },
     {
-      "room": "lounge",
+      "room": "Lounge",
+      "textPosition": [
+        2,
+        22
+      ],
       "points": [
         [
           0,
@@ -1054,7 +1090,11 @@
       ]
     },
     {
-      "room": "cluedo",
+      "room": "Cluedo",
+      "textPosition": [
+        11,
+        13
+      ],
       "points": [
         [
           10,
@@ -1074,5 +1114,36 @@
         ]
       ]
     }
-  ]
+  ],
+  "attributes": {
+    "room": {
+      "fill": "lightBlue",
+      "stroke": "black",
+      "stroke-width": "0.2%"
+    },
+    "tiles": {
+      "fill": "#daa52073",
+      "stroke": "black",
+      "stroke-width": "0.2%",
+      "height": "1",
+      "width": "1"
+    },
+    "start": {
+      "fill": "goldenRod",
+      "stroke": "black",
+      "stroke-width": "0.2%",
+      "height": "1",
+      "width": "1"
+    },
+    "character": {
+      "stroke": "black",
+      "stroke-width": "0.05%",
+      "r": "0.3"
+    },
+    "board": {
+      "width": "900",
+      "height": "800",
+      "viewBox": "0 0 24 25"
+    }
+  }
 }
