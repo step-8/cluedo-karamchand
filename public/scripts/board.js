@@ -21,7 +21,7 @@ const generateStart = ({ position }) => {
   const [xCordinate, yCordinate] = position;
   return ['rect',
     {
-      fill: 'purple', stroke: 'black', 'stroke-width': '0.2%',
+      fill: 'goldenRod', stroke: 'black', 'stroke-width': '0.2%',
       x: xCordinate, y: yCordinate, height: '1', width: '1'
     }];
 };
@@ -33,7 +33,7 @@ const createStart = (cells) => {
 const generatePath = ([x, y]) => {
   return ['rect',
     {
-      fill: 'pink', stroke: 'black', 'stroke-width': '0.2%',
+      fill: '#daa52073', stroke: 'black', 'stroke-width': '0.2%',
       x, y, height: '1', width: '1'
     }];
 };
