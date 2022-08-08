@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const { boardHandler, boardApi } = require('./handlers/boardHandler');
 require('dotenv').config();
 const cookieSession = require('cookie-session');
 
@@ -9,8 +10,10 @@ const { homePage,
 const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
+const fs = require('fs');
 
 const createApp = () => {
+  const boardData = fs.readFileSync('data/board.json', 'utf-8');
   const app = express();
   const MODE = process.env.ENV;
 
@@ -34,6 +37,9 @@ const createApp = () => {
     app.use(morgan('dev'));
   }
 
+  app.get('/game', boardHandler);
+  app.get('/boardApi', boardApi(boardData));
+  app.use(express.static('public'));
   const loginRouter = createLoginRouter();
   app.use('/login', loginRouter);
 

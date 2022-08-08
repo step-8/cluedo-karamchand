@@ -1,5 +1,5 @@
 const homePage = (req, res) => {
-  res.sendFile('home.html', { root: 'html' });
+  res.sendFile('home.html', { root: 'private' });
 };
 
 const redirectToLobby = (req, res) => {
@@ -7,7 +7,7 @@ const redirectToLobby = (req, res) => {
 };
 
 const serveLobby = (req, res) => {
-  res.sendFile('lobby.html', { root: 'html' });
+  res.sendFile('lobby.html', { root: 'private' });
 };
 
 module.exports = { homePage, serveLobby, redirectToLobby };
