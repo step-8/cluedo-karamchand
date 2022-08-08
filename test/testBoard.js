@@ -1,12 +1,12 @@
 const request = require('supertest');
 const { createApp } = require('../src/app.js');
 
-describe('GET /boardApi', () => {
+describe('GET /api/board', () => {
   it('should give the board data', (done) => {
     const app = createApp();
 
     request(app)
-      .get('/boardApi')
+      .get('/api/board')
       .expect('content-type', /json/)
       .expect(/{"startingPos":\[.*\],"tiles":\[.*\],"rooms":\[.*\]}/)
       .expect(200, done);

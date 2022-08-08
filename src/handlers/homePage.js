@@ -1,4 +1,4 @@
-const homePage = (req, res) => {
+const serveHomePage = (req, res) => {
   res.sendFile('home.html', { root: 'private' });
 };
 
@@ -10,4 +10,4 @@ const serveLobby = (req, res) => {
   res.sendFile('lobby.html', { root: 'private' });
 };
 
-module.exports = { homePage, serveLobby, redirectToLobby };
+module.exports = { serveHomePage, serveLobby, redirectToLobby };
