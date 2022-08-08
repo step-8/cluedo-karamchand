@@ -37,7 +37,6 @@ const createApp = () => {
     app.use(morgan('dev'));
   }
 
-  app.get('/game', boardHandler);
   app.get('/boardApi', boardApi(boardData));
   app.use(express.static('public'));
   const loginRouter = createLoginRouter();
@@ -48,6 +47,7 @@ const createApp = () => {
     injectGame(games), addPlayerToGame, redirectToLobby);
   app.get('/lobby', validateUser, serveLobby);
 
+  app.get('/game', boardHandler);
   app.use(express.static('public'));
   return app;
 };
