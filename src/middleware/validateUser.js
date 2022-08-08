@@ -4,7 +4,7 @@ const validateUser = (req, res, next) => {
     next();
     return;
   }
-  res.sendFile('login.html', { root: 'private' });
+  res.redirect('login');
 };
 
 module.exports = { validateUser };
