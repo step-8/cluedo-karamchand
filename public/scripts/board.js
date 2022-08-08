@@ -69,7 +69,7 @@ const generateBoard = ({ response }) => {
 };
 
 const main = () => {
-  get('/boardApi', generateBoard);
+  get('/api/board', generateBoard);
 };
 
 window.onload = main;

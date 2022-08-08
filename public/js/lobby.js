@@ -23,6 +23,10 @@ const generateLobby = xhr => {
   const playerList = game.players.map(playerHtml);
   const players = document.querySelector('.players');
   players.replaceChildren(...playerList);
+
+  if (game.maxPlayers === playerList.length) {
+    document.querySelector('form').submit();
+  }
 };
 
 const updateLobby = () => {

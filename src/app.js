@@ -5,14 +5,15 @@ require('dotenv').config();
 const cookieSession = require('cookie-session');
 const fs = require('fs');
 
-const { homePage,
+const { serveHomePage,
   serveLobby,
   redirectToLobby } = require('./handlers/homePage.js');
-const { injectGame, addPlayerToGame } = require('./middleware/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
 const { serveGameApi } = require('./handlers/api.js');
 const { injectGameId } = require('./middleware/injectGameId.js');
+const { injectGame } = require('./middleware/injectGame');
+const { addPlayerToGame } = require('./middleware/addPlayerToGame');
 
 const createApp = () => {
   const boardData = fs.readFileSync('data/board.json', 'utf-8');
@@ -40,12 +41,11 @@ const createApp = () => {
   }
 
   app.get('/game', boardHandler);
-  app.get('/boardApi', boardApi(boardData));
+  app.get('/api/board', boardApi(boardData));
   app.use(express.static('public'));
   const loginRouter = createLoginRouter();
   app.use('/login', loginRouter);
-
-  app.get('/', validateUser, homePage);
+  app.get('/', validateUser, serveHomePage);
   app.post('/join', validateUser, injectGameId,
     injectGame(games), addPlayerToGame, redirectToLobby);
   app.get('/lobby', validateUser, serveLobby);
