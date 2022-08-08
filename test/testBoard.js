@@ -23,18 +23,4 @@ describe('GET /game', () => {
       .expect(302, done);
   });
 
-  it('Should redirect to homepage if not joined/hosted a game', (done) => {
-    const app = createApp();
-
-    request(app)
-      .post('/login')
-      .send('username=bob')
-      .end((err, res) => {
-        request(app)
-          .get('/game')
-          .set('Cookie', res.headers['set-cookie'])
-          .expect('location', '/')
-          .expect(302, done);
-      });
-  });
 });
