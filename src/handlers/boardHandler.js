@@ -12,8 +12,8 @@ const boardHandler = (req, res) => {
     ['head', {},
       ['title', {}, 'Cluedo'],
       ['link', { 'rel': 'stylesheet', 'href': 'css/game.css' }],
-      ['script', { 'src': 'scripts/board.js' }],
-      ['script', { 'src': 'scripts/xhrUtils.js' }]],
+      ['script', { 'src': 'js/board.js' }],
+      ['script', { 'src': 'js/xhrUtils.js' }]],
     ['body', {}, ['div', { class: 'header' }, ['h1', {}, 'Cluedo'],
       ['div', { class: 'user' }, username]]]];
   res.end(createDom(...board));
