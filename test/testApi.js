@@ -48,3 +48,29 @@ describe('GET /api/game', () => {
       .expect(302, done);
   });
 });
+
+describe('GET /api/board', () => {
+  it('should give the board data', (done) => {
+    const app = createApp();
+
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        request(app)
+          .get('/api/board')
+          .set('Cookie', res.headers['set-cookie'])
+          .expect('content-type', /json/)
+          .expect(/{"startingPos":\[.*\],"tiles":\[.*\],"rooms":\[.*\]}/)
+          .expect(200, done);
+      });
+  });
+  it('should redirect to login page if user is not logged in', (done) => {
+    const app = createApp();
+
+    request(app)
+      .get('/api/board')
+      .expect('location', '/login')
+      .expect(302, done);
+  });
+});

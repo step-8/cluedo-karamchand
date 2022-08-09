@@ -31,8 +31,8 @@ const createApp = () => {
     keys: [process.env.SESSION_KEYS]
   }));
 
-  app.get('/game', boardHandler);
-  app.get('/api/board', boardApi(boardData));
+  app.get('/game', validateUser, boardHandler);
+  app.get('/api/board', validateUser, boardApi(boardData));
 
   const loginRouter = createLoginRouter();
   app.use('/login', loginRouter);

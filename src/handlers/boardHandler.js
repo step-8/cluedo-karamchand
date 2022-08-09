@@ -1,9 +1,6 @@
 const { createDom } = require('../utils/htmlGenerator.js');
 
 const boardHandler = (req, res) => {
-  if (!req.session.isPopulated) {
-    return res.redirect('/login');
-  }
   if (!req.session.gameId) {
     return res.redirect('/');
   }

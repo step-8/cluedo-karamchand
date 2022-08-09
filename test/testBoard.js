@@ -1,18 +1,6 @@
 const request = require('supertest');
 const { createApp } = require('../src/app.js');
 
-describe('GET /api/board', () => {
-  it('should give the board data', (done) => {
-    const app = createApp();
-
-    request(app)
-      .get('/api/board')
-      .expect('content-type', /json/)
-      .expect(/{"startingPos":\[.*\],"tiles":\[.*\],"rooms":\[.*\]}/)
-      .expect(200, done);
-  });
-});
-
 describe('GET /game', () => {
   it('Should redirect to login page if user is not logged in', (done) => {
     const app = createApp();
