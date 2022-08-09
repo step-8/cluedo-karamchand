@@ -104,7 +104,6 @@ const generateCharacterCard = (character) => {
 };
 
 const displayProfile = ({ character }) => {
-  console.log(character);
   const containerElement = document.querySelector('.container');
   const characterCardElement = generateCharacterCard(character);
 
