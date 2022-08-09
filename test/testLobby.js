@@ -30,7 +30,7 @@ describe('GET /lobby/:gameId', () => {
       });
   });
 
-  it('Should redirect to home if not host/join the game', (done) => {
+  it('Should redirect to home if not hosted/joined the game', (done) => {
     request(app)
       .post('/login')
       .send('username=james')
@@ -42,4 +42,27 @@ describe('GET /lobby/:gameId', () => {
           .expect(302, done);
       });
   });
+
+  it('Should redirect to respective lobby if requested with different id',
+    (done) => {
+      let myGameId;
+
+      request(app)
+        .post('/login')
+        .send('username=james')
+        .end((err, res) => {
+          request(app)
+            .post('/host')
+            .send('maxPlayers=3')
+            .set('Cookie', res.headers['set-cookie'])
+            .end((err, res) => {
+              myGameId = res.headers.location.split('/').pop();
+              request(app)
+                .get(`/lobby/${gameId}`)
+                .set('Cookie', res.headers['set-cookie'])
+                .expect('location', `/lobby/${myGameId}`)
+                .expect(302, done);
+            });
+        });
+    });
 });
