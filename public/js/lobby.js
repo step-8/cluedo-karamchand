@@ -16,7 +16,7 @@ const playerHtml = player => {
 
 const generateLobby = xhr => {
   const game = JSON.parse(xhr.response);
-  const roomId = 'Room id: ' + game.gameId;
+  const roomId = 'Room ID: ' + game.gameId;
   document.querySelector('.room-id').replaceChildren(roomId);
 
   const playerList = game.players.map(playerHtml);

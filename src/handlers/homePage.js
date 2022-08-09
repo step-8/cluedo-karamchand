@@ -12,6 +12,7 @@ const serveLobby = (req, res) => {
     res.sendFile('lobby.html', { root: 'private' });
     return;
   }
+
   res.redirect('/');
 };
 
