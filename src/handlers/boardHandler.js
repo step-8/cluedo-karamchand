@@ -9,10 +9,11 @@ const boardHandler = (req, res) => {
     ['head', {},
       ['title', {}, 'Cluedo'],
       ['link', { 'rel': 'stylesheet', 'href': 'css/game.css' }],
+      ['script', { 'src': 'js/domGenerator.js' }],
       ['script', { 'src': 'js/board.js' }],
       ['script', { 'src': 'js/xhrUtils.js' }]],
-    ['body', {}, ['div', { class: 'header' }, ['h1', {}, 'CLUEDO'],
-      ['div', { class: 'user' }, username]]]];
+    ['body', {}, ['header', { class: 'header' }, ['h1', {}, 'Cluedo'],
+      ['div', { class: 'user' }, username]], ['main', {}, '']]];
   res.end(createDom(...board));
 };
 

@@ -32,6 +32,7 @@ describe('Game', () => {
 
     const expected = {
       gameId: 1,
+      you: { playerId: 1, name: 'bob', character: 'scarlett', cards: [] },
       maxPlayers: 2,
       currentPlayer: {
         playerId: 1, name: 'bob',
@@ -51,7 +52,7 @@ describe('Game', () => {
       ]
     };
 
-    assert.deepStrictEqual(game.state, expected);
+    assert.deepStrictEqual(game.getState(1), expected);
   });
 
   it('Should return true if game is ready', () => {

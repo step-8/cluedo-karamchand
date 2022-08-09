@@ -15,6 +15,14 @@
   width: 90%;
 }
 
+main {
+  height: 100%;
+  width: 1700px;
+  display: flex;
+  column-gap: 30px;
+  margin: 0 20px;
+}
+
 .user {
   font-size: 30px;
   text-transform: capitalize;
@@ -23,4 +31,13 @@
 .current-player {
   stroke: rgb(7, 235, 186);
   stroke-width: 0.4%;
+}
+
+.container {
+  font-size: 18px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.turn-message {
+  font-weight: 600;
 }

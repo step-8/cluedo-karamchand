@@ -64,26 +64,41 @@ const generateBoard = ({ response }) => {
   const rooms = createRooms(boardData);
   const paths = createPaths(boardData);
   const start = createStart(boardData);
-  const body = document.querySelector('body');
+  const main = document.querySelector('main');
   const boardAttr = boardData.attributes.board;
-  body.append(createDom(['svg', {
-    ...boardAttr,
-  }, ...rooms, ...paths, ...start]));
+  main.append(createDom(
+    ['svg', {
+      ...boardAttr,
+    }, ...rooms, ...paths, ...start]));
 };
 
-const highlightCurrentPlayer = (xhr) => {
-  const game = JSON.parse(xhr.response);
+const showTurn = game => {
+  const character = game.currentPlayer.character;
+  let message = `${character}'s turn`.toUpperCase();
+  if (character === game.you.character) {
+    message = 'YOUR TURN';
+  }
+
+  const container = generateHTML(['div', { className: 'container' },
+    ['div', { className: 'turn-message' }, message]]);
+  document.querySelector('main').append(container);
+  console.log(message);
+
+};
+
+const highlightCurrentPlayer = (game) => {
   const character = game.currentPlayer.character;
   const charElement = document.getElementById(character);
-  console.log(charElement);
   charElement.setAttribute('class', 'current-player');
-  console.log(charElement);
-  console.log(character);
 };
 
 const main = () => {
   get('/api/board', generateBoard);
-  get('/api/game', highlightCurrentPlayer);
+  get('/api/game', (xhr) => {
+    const game = JSON.parse(xhr.response);
+    highlightCurrentPlayer(game);
+    showTurn(game);
+  });
 };
 
 window.onload = main;

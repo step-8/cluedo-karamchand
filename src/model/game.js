@@ -63,11 +63,14 @@ class Game {
     return this.#players;
   }
 
-  get state() {
+  getState(playerId) {
     const playerState = this.#players.map(player => player.info);
+    const [you] = this.#players.filter(player =>
+      player.info.playerId === playerId);
 
     return {
       gameId: this.#gameId,
+      you: you.info,
       maxPlayers: this.#maxPlayers,
       characters: this.#characters,
       players: playerState,
