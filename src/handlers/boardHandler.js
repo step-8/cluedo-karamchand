@@ -11,13 +11,9 @@ const boardHandler = (req, res) => {
       ['link', { 'rel': 'stylesheet', 'href': 'css/game.css' }],
       ['script', { 'src': 'js/board.js' }],
       ['script', { 'src': 'js/xhrUtils.js' }]],
-    ['body', {}, ['div', { class: 'header' }, ['h1', {}, 'Cluedo'],
+    ['body', {}, ['div', { class: 'header' }, ['h1', {}, 'CLUEDO'],
       ['div', { class: 'user' }, username]]]];
   res.end(createDom(...board));
 };
 
-const boardApi = (boardData) => (req, res) => {
-  res.json(boardData);
-};
-
-module.exports = { boardHandler, boardApi };
+module.exports = { boardHandler };

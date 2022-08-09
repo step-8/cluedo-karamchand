@@ -1,0 +1,29 @@
+{
+  "weapons": [
+    "revolver",
+    "wrench",
+    "dagger",
+    "rope",
+    "candlestick",
+    "pipe"
+  ],
+  "characters": [
+    "scarlett",
+    "mustard",
+    "green",
+    "peacock",
+    "plum",
+    "white"
+  ],
+  "rooms": [
+    "kitchen",
+    "ballroom",
+    "conservatory",
+    "billiard",
+    "library",
+    "study",
+    "hall",
+    "lounge",
+    "dining"
+  ]
+}
