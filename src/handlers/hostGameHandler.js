@@ -1,3 +1,5 @@
+const { Game } = require('../model/game.js');
+
 const randomIntBetween = (start, end) => {
   const diff = end - start;
   const randomNumber = Math.floor(Math.random() * diff);
@@ -10,28 +12,17 @@ const generateGameId = () => {
 };
 
 const createGame = (gameId, maxPlayers, hostId, hostName) => {
-  const characters = [
-    'scarlett',
-    'mustard',
-    'green',
-    'white',
-    'peacock',
-    'plum'
-  ];
+  const game = new Game(gameId, maxPlayers);
+  game.addPlayer(hostId, hostName);
 
-  return {
-    gameId,
-    players: [{ name: hostName, character: characters[0], playerId: hostId }],
-    characters,
-    maxPlayers
-  };
+  return game;
 };
 
 const hostGame = (games) => (req, res) => {
   const { maxPlayers } = req.body;
-  const gameId = generateGameId();
   const { userId, username } = req.session;
 
+  const gameId = generateGameId();
   games[gameId] = createGame(gameId, +maxPlayers, userId, username);
   req.session.gameId = gameId;
 
