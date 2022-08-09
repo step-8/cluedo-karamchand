@@ -19,11 +19,14 @@ const createGame = (gameId, maxPlayers, hostId, hostName) => {
 };
 
 const hostGame = (games) => (req, res) => {
-  const { maxPlayers } = req.body;
+  let { maxPlayers } = req.body;
   const { userId, username } = req.session;
 
+  maxPlayers = parseInt(maxPlayers);
+  maxPlayers = maxPlayers > 2 && maxPlayers <= 6 ? maxPlayers : 3;
+
   const gameId = generateGameId();
-  games[gameId] = createGame(gameId, +maxPlayers, userId, username);
+  games[gameId] = createGame(gameId, maxPlayers, userId, username);
   req.session.gameId = gameId;
 
   res.redirect(`/lobby/${gameId}`);

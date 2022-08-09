@@ -102,4 +102,28 @@ describe('POST /host', () => {
           .expect(302, done);
       });
   });
+
+  it('Should host the game with 3 players if maxPlayers not provided',
+    (done) => {
+      const app = createApp();
+
+      request(app)
+        .post('/login')
+        .send('username=bob')
+        .end((err, res) => {
+          request(app)
+            .post('/host')
+            .set('Cookie', res.headers['set-cookie'])
+            .send('maxPlayers=')
+            .expect('location', /\/lobby\/...../)
+            .expect(302)
+            .end((err, res) => {
+              request(app)
+                .get('/api/game')
+                .set('Cookie', res.headers['set-cookie'])
+                .expect(/"maxPlayers":3/, done);
+            });
+        });
+    });
+
 });
