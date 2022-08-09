@@ -3,7 +3,8 @@ const serveHomePage = (req, res) => {
 };
 
 const redirectToLobby = (req, res) => {
-  res.redirect('/lobby');
+  const { gameId } = req.session;
+  res.redirect(`/lobby/${gameId}`);
 };
 
 const serveLobby = (req, res) => {

@@ -24,16 +24,36 @@ describe('GET /', () => {
 });
 
 describe('POST /join', () => {
+  let gameId;
+  const app = createApp();
+
+  beforeEach((done) => {
+
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        request(app)
+          .post('/host')
+          .send('maxPlayers=3')
+          .set('Cookie', res.headers['set-cookie'])
+          .end((err, res) => {
+            gameId = res.headers.location.split('/').pop();
+            done();
+          });
+      });
+  });
+
   it('should redirect to lobby for valid user', (done) => {
-    request(createApp())
+    request(app)
       .post('/login')
       .send('username=ab')
       .end((err, res) => {
-        request(createApp())
+        request(app)
           .post('/join')
-          .send('room-id=123')
+          .send(`room-id=${gameId}`)
           .set('Cookie', res.headers['set-cookie'])
-          .expect('location', '/lobby')
+          .expect('location', `/lobby/${gameId}`)
           .expect(302, done);
       });
   });
@@ -58,7 +78,7 @@ describe('POST /host', () => {
           .post('/host')
           .set('Cookie', res.headers['set-cookie'])
           .send('maxPlayers=3')
-          .expect('location', '/lobby')
+          .expect('location', /\/lobby\/...../)
           .expect(302, done);
       });
   });

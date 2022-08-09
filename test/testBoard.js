@@ -38,16 +38,34 @@ describe('GET /game', () => {
       });
   });
 
-  it('Should show board if user joined/hosted a game', (done) => {
-    const app = createApp();
+  let gameId;
+  const app = createApp();
+
+  before((done) => {
 
     request(app)
       .post('/login')
       .send('username=bob')
       .end((err, res) => {
         request(app)
+          .post('/host')
+          .send('maxPlayers=3')
+          .set('Cookie', res.headers['set-cookie'])
+          .end((err, res) => {
+            gameId = res.headers.location.split('/').pop();
+            done();
+          });
+      });
+  });
+
+  it('Should show board if user joined/hosted a game', (done) => {
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        request(app)
           .post('/join')
-          .send('room-id=123')
+          .send(`room-id=${gameId}`)
           .set('Cookie', res.headers['set-cookie'])
           .end((err, res) => {
             request(app)

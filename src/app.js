@@ -20,14 +20,7 @@ const createApp = () => {
   const app = express();
   const MODE = process.env.ENV;
 
-  const games = {
-    123: {
-      gameId: 123,
-      players: [{ name: 'abc', character: 'scarlatte', userId: 1 }],
-      characters: ['scarlatte', 'mustard', 'green'],
-      maxPlayers: 3
-    }
-  };
+  const games = {};
 
   if (MODE === 'PRODUCTION') {
     app.use(morgan('dev'));
@@ -48,7 +41,7 @@ const createApp = () => {
   app.post('/join', validateUser, injectGameId(games),
     injectGame(games), addPlayerToGame, redirectToLobby);
 
-  app.get('/lobby', validateUser, serveLobby);
+  app.get('/lobby/:gameId', validateUser, serveLobby);
   app.get('/api/game', validateUser, injectGame(games), serveGameApi);
 
   app.post('/host', validateUser, hostGame(games));

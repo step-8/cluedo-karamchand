@@ -35,7 +35,7 @@ const hostGame = (games) => (req, res) => {
   games[gameId] = createGame(gameId, +maxPlayers, userId, username);
   req.session.gameId = gameId;
 
-  res.redirect('/lobby');
+  res.redirect(`/lobby/${gameId}`);
 };
 
 module.exports = { hostGame };
