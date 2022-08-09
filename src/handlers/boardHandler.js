@@ -1,10 +1,10 @@
 const { createDom } = require('../utils/htmlGenerator.js');
 
 const boardHandler = (req, res) => {
-  if (!req.session.gameId) {
+  const { username, gameId } = req.session;
+  if (!gameId) {
     return res.redirect('/');
   }
-  const { username } = req.session;
   const board = ['html', {},
     ['head', {},
       ['title', {}, 'Cluedo'],

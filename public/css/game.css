@@ -60,3 +60,16 @@ main {
 .turn-message {
   font-weight: 600;
 }
+
+.cards {
+  display: flex;
+  position: fixed;
+  top: 300px;
+  right: 100px;
+  column-gap: 15px;
+}
+
+.card>img {
+  width: 130px;
+  height: 220px
+}
