@@ -22,6 +22,13 @@ class Player {
     this.#cards.push(card);
   }
 
+  get profile() {
+    return {
+      name: this.#playerName,
+      character: this.#characterName
+    };
+  }
+
   get info() {
     return {
       playerId: this.#playerId,

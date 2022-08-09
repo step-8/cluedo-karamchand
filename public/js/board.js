@@ -111,6 +111,19 @@ const displayProfile = ({ character }) => {
   containerElement.appendChild(characterCardElement);
 };
 
+const cardsTemplate = (cards) => {
+  return cards.map(card => {
+    return ['div', { className: 'card' },
+      ['img', { src: `images/${card}.png` }]];
+  });
+};
+
+const generateCards = ({ cards }) => {
+  const container = document.querySelector('.container');
+  const userCards = ['div', { className: 'cards' }, ...cardsTemplate(cards)];
+  container.append(generateHTML(userCards));
+};
+
 const main = () => {
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
@@ -118,6 +131,7 @@ const main = () => {
     highlightCurrentPlayer(game);
     showTurn(game);
     displayProfile(game.you);
+    generateCards(game.you);
   });
 };
 

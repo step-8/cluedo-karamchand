@@ -35,8 +35,8 @@ describe('Game', () => {
       you: { playerId: 1, name: 'bob', character: 'scarlett', cards: [] },
       maxPlayers: 2,
       currentPlayer: {
-        playerId: 1, name: 'bob',
-        character: 'scarlett', cards: []
+        name: 'bob',
+        character: 'scarlett'
       },
       characters: [
         'scarlett',
@@ -47,8 +47,8 @@ describe('Game', () => {
         'plum'
       ],
       players: [
-        { playerId: 1, name: 'bob', character: 'scarlett', cards: [] },
-        { playerId: 2, name: 'james', character: 'mustard', cards: [] }
+        { name: 'bob', character: 'scarlett' },
+        { name: 'james', character: 'mustard' }
       ]
     };
 
