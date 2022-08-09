@@ -46,8 +46,6 @@ const createApp = () => {
 
   app.post('/host', validateUser, hostGame(games));
 
-  app.get('/game', boardHandler);
-
   app.use(express.static('public'));
   return app;
 };
