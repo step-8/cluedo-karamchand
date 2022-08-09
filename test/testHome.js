@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { createApp } = require('../src/app');
+const assert = require('assert');
 
 describe('GET /', () => {
   it('Should serve home page for valid user', (done) => {
@@ -55,6 +56,25 @@ describe('POST /join', () => {
           .set('Cookie', res.headers['set-cookie'])
           .expect('location', `/lobby/${gameId}`)
           .expect(302, done);
+      });
+  });
+
+  it('should send error for invalid room-id on same page', (done) => {
+    request(app)
+      .post('/login')
+      .send('username=ab')
+      .end((err, res) => {
+        request(app)
+          .post('/join')
+          .send('room-id=12345')
+          .set('Cookie', res.headers['set-cookie'])
+          .expect('location', '/')
+          .expect(302)
+          .end((err, res) => {
+            const cookie = res.headers['set-cookie'][0].split(';')[0];
+            assert.strictEqual(cookie, 'error=40');
+            done();
+          });
       });
   });
 

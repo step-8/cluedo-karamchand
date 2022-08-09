@@ -11,7 +11,7 @@ const generateGameId = () => {
 
 const createGame = (gameId, maxPlayers, hostId, hostName) => {
   const characters = [
-    'scarlatte',
+    'scarlett',
     'mustard',
     'green',
     'white',
