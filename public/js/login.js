@@ -6,7 +6,7 @@ const showErrorMessage = () => {
   }
 
   const errorMessageElement = document.querySelector('.error-message');
-  errorMessageElement.innerText = 'Provide your name!';
+  errorMessageElement.innerText = 'Please enter username!';
 };
 
 window.onload = showErrorMessage;

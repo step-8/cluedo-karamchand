@@ -8,16 +8,13 @@
 
 <body>
   <main class="page-wrapper">
-    <h1>CLUEDO</h1>
-
-    <form action="/login" method="post">
-      <fieldset class="login-form">
-        <input type="text" name="username" id="username" placeholder="Name" class="username-field">
-        <input type="submit" value="Play" class="play-button">
-      </fieldset>
-    </form>
-
-    <div class="error-message"></div>
+    <div class="container">
+      <form action="/login" method="post">
+        <div><input type="text" name="username" id="username" placeholder="Enter name" class="username-field"></div>
+        <div><input type="submit" value="Play" class="play-button"></div>
+      </form>
+      <div class="error-message"></div>
+    </div>
   </main>
 </body>
 

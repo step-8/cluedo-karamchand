@@ -9,8 +9,6 @@ body {
   font-size: 18px;
 
   background-image: url('/images/cluedo.jpeg');
-  background-position: center;
-  background-repeat: no-repeat;
   background-size: cover;
 }
 
@@ -23,7 +21,7 @@ main {
 }
 
 .container {
-  width: 30%;
+  width: 34em;
   height: 45%;
   margin-top: 8em;
   display: flex;
