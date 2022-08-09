@@ -66,4 +66,22 @@ describe('Game', () => {
 
     assert.ok(!game.isReady());
   });
+
+  it('Should return true if envelope is added', () => {
+    const game = new Game(1, 1);
+    game.addEnvelope([1, 2, 3]);
+    assert.ok(game.isEnvelopePresent());
+  });
+
+  it('Should return false if envelope is not added', () => {
+    const game = new Game(1, 1);
+    assert.ok(!game.isEnvelopePresent());
+  });
+
+  it('Should add envelope in game', () => {
+    const game = new Game(1, 1);
+    game.addEnvelope([1, 2]);
+    assert.ok(game.isEnvelopePresent());
+  });
+
 });

@@ -27,11 +27,33 @@ const shuffleCards = (deck) => {
   return shuffledCards;
 };
 
-const distributeCards = (cards, games) => (req, res, next) => {
+const nextPlayer = (players, index) => {
+  return players[index % players.length];
+};
+
+const distribute = (cards, players) => {
+  let index = 0;
+  let player = players[index];
+
+  while (cards.length) {
+    const card = cards.shift();
+    player.addCard(card);
+    index++;
+    player = nextPlayer(players, index);
+  }
+};
+
+const distributeCards = (games, cards) => (req, res, next) => {
   const game = games[req.session.gameId];
+  if (game.isEnvelopePresent()) {
+    return next();
+  }
   const envelope = getEnvelopeCards(cards);
+  game.addEnvelope(envelope);
   const remainingCards = getRemainingCards(cards, envelope);
   const shuffledCards = shuffleCards(remainingCards);
+  distribute(shuffledCards, game.players);
+  next();
 };
 
 module.exports = { distributeCards };

@@ -22,4 +22,16 @@ describe('Player', () => {
 
     assert.deepStrictEqual(player.info, expected);
   });
+
+  it('should add card', () => {
+    const player = new Player(1, 'bob', 'ironman');
+    player.addCard('hall');
+    const expected = {
+      playerId: 1,
+      name: 'bob',
+      character: 'ironman',
+      cards: ['hall']
+    };
+    assert.deepStrictEqual(player.info, expected);
+  });
 });

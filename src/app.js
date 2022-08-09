@@ -33,7 +33,8 @@ const createApp = () => {
     keys: [process.env.SESSION_KEYS]
   }));
 
-  app.get('/game', validateUser, boardHandler);
+  app.get('/game', validateUser, injectGame(games),
+    distributeCards(games, cards), boardHandler);
   app.get('/api/board', validateUser, boardApi(boardData));
 
   const loginRouter = createLoginRouter();

@@ -6,6 +6,7 @@ class Game {
   #players;
   #characters;
   #currentPlayerIndex;
+  #envelope;
 
   constructor(gameId, maxPlayers) {
     this.#gameId = gameId;
@@ -20,6 +21,7 @@ class Game {
       'peacock',
       'plum'
     ];
+    this.#envelope = [];
   }
 
   equals(otherGame) {
@@ -47,6 +49,18 @@ class Game {
     const player = new Player(playerId, playerName, character);
     this.#players.push(player);
     return true;
+  }
+
+  addEnvelope(envelope) {
+    this.#envelope = envelope;
+  }
+
+  isEnvelopePresent() {
+    return this.#envelope.length;
+  }
+
+  get players() {
+    return this.#players;
   }
 
   get state() {

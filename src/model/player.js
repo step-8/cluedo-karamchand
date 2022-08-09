@@ -18,6 +18,10 @@ class Player {
       otherPlayer.#characterName === this.#characterName;
   }
 
+  addCard(card) {
+    this.#cards.push(card);
+  }
+
   get info() {
     return {
       playerId: this.#playerId,
