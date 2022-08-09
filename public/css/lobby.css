@@ -17,11 +17,17 @@ header {
 }
 
 main {
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
   margin-top: 13em;
-  padding: 4em 1em 0;
-  height: 70%;
   width: 36em;
+  height: 36em;
   border-radius: 0.3em;
   border: 3px solid white;
   display: flex;
@@ -57,19 +63,19 @@ form div:nth-child(2)>input {
 }
 
 .room-id {
+  margin: 40px 0;
   padding: 0.3em;
   color: white;
   background-color: #ed1d25;
   width: 45%;
   font-weight: 600;
-  margin-bottom: 20px;
   text-align: center;
   border-radius: 0.2em;
 }
 
 .players {
   width: 80%;
-  row-gap: 20px;
+  row-gap: 40px;
   display: flex;
   justify-content: space-around;
   column-gap: 20px;
