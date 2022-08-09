@@ -82,8 +82,6 @@ const showTurn = game => {
   const container = generateHTML(['div', { className: 'container' },
     ['div', { className: 'turn-message' }, message]]);
   document.querySelector('main').append(container);
-  console.log(message);
-
 };
 
 const highlightCurrentPlayer = (game) => {
@@ -92,12 +90,34 @@ const highlightCurrentPlayer = (game) => {
   charElement.setAttribute('class', 'current-player');
 };
 
+const generateCharacterCard = (character) => {
+  const dom = ['div', { className: 'profile-card' },
+    ['figure', {},
+      ['div', { className: 'image-wrapper' },
+        ['img', { src: `/images/${character}.png`, alt: character }]
+      ]
+    ],
+    ['figcaption', {}, character]
+  ];
+
+  return generateHTML(dom);
+};
+
+const displayProfile = ({ character }) => {
+  console.log(character);
+  const containerElement = document.querySelector('.container');
+  const characterCardElement = generateCharacterCard(character);
+
+  containerElement.appendChild(characterCardElement);
+};
+
 const main = () => {
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
     highlightCurrentPlayer(game);
     showTurn(game);
+    displayProfile(game.you);
   });
 };
 
