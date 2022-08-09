@@ -22,9 +22,9 @@ const createApp = () => {
   const games = {
     123: {
       gameId: 123,
-      players: [{ name: 'abc', character: 'scarlatte', userId: 1 }],
-      characters: ['scarlatte', 'mustard', 'green'],
-      maxPlayers: 3
+      players: [{ name: 'abc', character: 'scarlett', userId: 1 }],
+      characters: ['scarlett', 'mustard', 'green', 'peacock', 'plum'],
+      maxPlayers: 5
     }
   };
 
