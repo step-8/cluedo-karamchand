@@ -17,12 +17,13 @@ const createDom = ([tag, attributes, ...content]) => {
   return element;
 };
 
-const generateStart = ({ position, color }, attributes) => {
+const generateStart = ({ position, color, name }, attributes) => {
   const [xCordinate, yCordinate] = position;
   const tile = ['rect',
     { x: xCordinate, y: yCordinate, ...attributes.start }];
   const character = ['circle',
     {
+      id: name,
       fill: color,
       cx: xCordinate + 0.5, cy: yCordinate + 0.5, ...attributes.character
     }];
@@ -70,8 +71,19 @@ const generateBoard = ({ response }) => {
   }, ...rooms, ...paths, ...start]));
 };
 
+const highlightCurrentPlayer = (xhr) => {
+  const game = JSON.parse(xhr.response);
+  const character = game.currentPlayer.character;
+  const charElement = document.getElementById(character);
+  console.log(charElement);
+  charElement.setAttribute('class', 'current-player');
+  console.log(charElement);
+  console.log(character);
+};
+
 const main = () => {
   get('/api/board', generateBoard);
+  get('/api/game', highlightCurrentPlayer);
 };
 
 window.onload = main;

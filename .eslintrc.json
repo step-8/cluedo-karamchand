@@ -107,7 +107,7 @@
     },
     {
       "files": [
-        "public/scripts/*.js"
+        "public/js/*.js"
       ],
       "rules": {
         "max-len": "warn",

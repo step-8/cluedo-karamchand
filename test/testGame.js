@@ -33,6 +33,10 @@ describe('Game', () => {
     const expected = {
       gameId: 1,
       maxPlayers: 2,
+      currentPlayer: {
+        playerId: 1, name: 'bob',
+        character: 'scarlett', cards: []
+      },
       characters: [
         'scarlett',
         'mustard',

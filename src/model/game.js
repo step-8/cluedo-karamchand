@@ -5,11 +5,13 @@ class Game {
   #maxPlayers;
   #players;
   #characters;
+  #currentPlayerIndex;
 
   constructor(gameId, maxPlayers) {
     this.#gameId = gameId;
     this.#maxPlayers = maxPlayers;
     this.#players = [];
+    this.#currentPlayerIndex = 0;
     this.#characters = [
       'scarlett',
       'mustard',
@@ -54,7 +56,8 @@ class Game {
       gameId: this.#gameId,
       maxPlayers: this.#maxPlayers,
       characters: this.#characters,
-      players: playerState
+      players: playerState,
+      currentPlayer: this.#players[this.#currentPlayerIndex].info
     };
   }
 }

@@ -19,3 +19,8 @@
   font-size: 30px;
   text-transform: capitalize;
 }
+
+.current-player {
+  stroke: rgb(7, 235, 186);
+  stroke-width: 0.4%;
+}

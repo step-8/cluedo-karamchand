@@ -35,7 +35,7 @@ const updateLobby = () => {
 const main = () => {
   setInterval(() => {
     updateLobby();
-  }, 1000);
+  }, 100);
 };
 
 window.onload = main;
