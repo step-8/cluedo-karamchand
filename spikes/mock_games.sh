@@ -14,6 +14,11 @@ function host(){
   local numberOfPlayers=${1};
   curl -vvv localhost:8000/host -d 'maxPlayers='${numberOfPlayers} -H "${host_info}" &> /tmp/response;
 
+  if [[ $? -ne 0 ]]; then
+    echo 'Server is not running';
+    exit;
+  fi;
+  
   local gameId=`getGameId`;
   echo ${gameId};
 }
