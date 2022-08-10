@@ -1,6 +1,6 @@
 const express = require('express');
 const { serveGameApi, boardApi } = require('../handlers/api.js');
-const { injectGame } = require('../middleware/injectGame.js');
+const { injectGame } = require('../middleware/gameMiddleware.js');
 const { validateUser } = require('../middleware/validateUser.js');
 
 const createApiRouter = (games, boardData) => {

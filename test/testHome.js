@@ -126,4 +126,77 @@ describe('POST /host', () => {
         });
     });
 
+  let gameId;
+  let hostCookie;
+  const app = createApp();
+
+  before((done) => {
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        hostCookie = res.headers['set-cookie'];
+        request(app)
+          .post('/host')
+          .send('maxPlayers=3')
+          .set('Cookie', hostCookie)
+          .end((err, res) => {
+            gameId = res.headers.location.split('/').pop();
+            done();
+          });
+      });
+  });
+
+  it('should redirect to game if game is already started for GET /', (done) => {
+    request(app)
+      .post('/login')
+      .send('username=james')
+      .end((err, res) => {
+        request(app)
+          .post('/join')
+          .set('Cookie', res.headers['set-cookie'])
+          .send(`room-id=${gameId}`)
+          .expect('location', `/lobby/${gameId}`)
+          .end(() => {
+            request(app)
+              .post('/login')
+              .send('username=a')
+              .end((err, res) => {
+                request(app)
+                  .post('/join')
+                  .set('Cookie', res.headers['set-cookie'])
+                  .send(`room-id=${gameId}`)
+                  .expect('location', `/lobby/${gameId}`)
+                  .end((err, res) => {
+                    request(app)
+                      .get('/')
+                      .set('Cookie', res.headers['set-cookie'])
+                      .expect('location', '/game', done);
+                  });
+              });
+          });
+      });
+  });
+
+  it('should redirect to lobby if user already join the game for GET /',
+    (done) => {
+      request(app)
+        .post('/login')
+        .send('username=bob')
+        .end((err, res) => {
+          hostCookie = res.headers['set-cookie'];
+          request(app)
+            .post('/host')
+            .send('maxPlayers=3')
+            .set('Cookie', hostCookie)
+            .end((err, res) => {
+              request(app)
+                .get('/')
+                .set('Cookie', res.headers['set-cookie'])
+                .expect('location', /\/lobby/, done);
+            });
+        });
+
+    });
 });
+
