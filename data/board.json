@@ -1144,6 +1144,23 @@
       "width": "900",
       "height": "800",
       "viewBox": "0 0 24 25"
+    },
+    "envelope": {
+      "x": 10.5,
+      "y": 14,
+      "fill": "gray",
+      "stroke": "black",
+      "stroke-width": "0.1%",
+      "height": 2.5,
+      "width": 4
+    },
+    "envelopeText": {
+      "x": 11.4,
+      "y": 15.5,
+      "fill": "white",
+      "stroke": "white",
+      "stroke-width": "0.1%",
+      "font-size": "0.6"
     }
   }
 }

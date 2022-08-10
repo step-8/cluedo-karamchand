@@ -59,17 +59,10 @@ const createRooms = ({ rooms, attributes }) => {
   });
 };
 
-const createEnvelope = () => {
+const createEnvelope = ({ attributes }) => {
   return [['rect',
-    {
-      x: 10.5, y: 14, fill: 'black', stroke: 'white',
-      'stroke-width': '0.3%', height: 2.5, width: 4
-    }],
-  ['text',
-    {
-      x: 11.4, y: 15.5, 'font-size': '0.6',
-      stroke: 'white', 'stroke-width': '0.1%', fill: 'white'
-    }, 'Envelope']];
+    { ...attributes.envelope }],
+  ['text', { ...attributes.envelopeText }, 'Envelope']];
 };
 
 const generateBoard = ({ response }) => {
@@ -77,7 +70,7 @@ const generateBoard = ({ response }) => {
   const rooms = createRooms(boardData);
   const paths = createPaths(boardData);
   const start = createStart(boardData);
-  const envelope = createEnvelope();
+  const envelope = createEnvelope(boardData);
   const board = document.querySelector('.board');
   const boardAttr = boardData.attributes.board;
   board.append(createDom(
