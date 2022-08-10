@@ -8,13 +8,13 @@ const { serveHomePage,
   redirectToLobby } = require('./handlers/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
-const { serveGameApi, boardApi } = require('./handlers/api.js');
 const { boardHandler } = require('./handlers/boardHandler');
 const { injectGameId } = require('./middleware/injectGameId.js');
 const { injectGame } = require('./middleware/injectGame');
 const { addPlayerToGame } = require('./middleware/addPlayerToGame');
 const { hostGame } = require('./handlers/hostGameHandler.js');
 const { distributeCards } = require('./middleware/distributeCards.js');
+const { createApiRouter } = require('./routers/apiRouter.js');
 const boardData = require('../data/board.json');
 const cards = require('../data/cards.json');
 
@@ -45,8 +45,7 @@ const createApp = () => {
     injectGame(games), addPlayerToGame, redirectToLobby);
 
   app.get('/lobby/:gameId', validateUser, serveLobby);
-  app.get('/api/game', validateUser, injectGame(games), serveGameApi);
-  app.get('/api/board', validateUser, boardApi(boardData));
+  app.use('/api', createApiRouter(games, boardData));
 
   app.use(express.static('public'));
   return app;
