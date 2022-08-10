@@ -78,9 +78,9 @@ const generateBoard = ({ response }) => {
   const paths = createPaths(boardData);
   const start = createStart(boardData);
   const envelope = createEnvelope();
-  const main = document.querySelector('main');
+  const board = document.querySelector('.board');
   const boardAttr = boardData.attributes.board;
-  main.append(createDom(
+  board.append(createDom(
     ['svg', {
       ...boardAttr,
     }, ...rooms, ...paths, ...start, ...envelope]));

@@ -13,7 +13,8 @@ const boardHandler = (req, res) => {
       ['script', { 'src': 'js/board.js' }],
       ['script', { 'src': 'js/xhrUtils.js' }]],
     ['body', {}, ['header', { class: 'header' }, ['h1', {}, 'Cluedo'],
-      ['div', { class: 'user' }, username]], ['main', {}, '']]];
+      ['div', { class: 'user' }, username]],
+      ['main', {}, ['div', { class: 'board' }]]]];
   res.end(createDom(...board));
 };
 
