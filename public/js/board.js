@@ -79,8 +79,13 @@ const showTurn = game => {
     message = 'YOUR TURN';
   }
 
-  const container = generateHTML(['div', { className: 'container' },
-    ['div', { className: 'turn-message' }, message]]);
+  const dom = ['div', { className: 'container' },
+    ['div', { className: 'sub-container' },
+      ['div', { className: 'turn-message' }, message]
+    ]
+  ];
+
+  const container = generateHTML(dom);
   document.querySelector('main').append(container);
 };
 
@@ -104,7 +109,7 @@ const generateCharacterCard = (character) => {
 };
 
 const displayProfile = ({ character }) => {
-  const containerElement = document.querySelector('.container');
+  const containerElement = document.querySelector('.sub-container');
   const characterCardElement = generateCharacterCard(character);
 
   containerElement.appendChild(characterCardElement);

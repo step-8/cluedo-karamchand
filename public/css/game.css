@@ -5,7 +5,7 @@
 }
 
 .header {
-  margin: 20px 30px 30px 50px;
+  margin: 20px 100px 30px 50px;
   display: flex;
   justify-content: space-between;
 }
@@ -47,7 +47,7 @@ main {
   width: 150px;
   height: 150px;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 50%;
 }
 
 .image-wrapper>img {
@@ -57,10 +57,18 @@ main {
 .profile-card>figcaption {
   text-align: center;
   font-size: 1.2em;
+  text-transform: capitalize;
 }
 
 .turn-message {
   font-weight: 600;
+  margin-left: 40%;
+}
+
+.sub-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .cards {
