@@ -29,7 +29,7 @@ describe('GET /game', () => {
   let gameId;
   const app = createApp();
 
-  before((done) => {
+  beforeEach((done) => {
 
     request(app)
       .post('/login')
@@ -46,7 +46,26 @@ describe('GET /game', () => {
       });
   });
 
-  it('Should show board if user joined/hosted a game', (done) => {
+  it('Should restrict access to game if game is not ready', (done) => {
+    request(app)
+      .post('/login')
+      .send('username=bob')
+      .end((err, res) => {
+        request(app)
+          .post('/host')
+          .set('Cookie', res.headers['set-cookie'])
+          .end((err, res) => {
+            const id = res.headers.location.split('/').pop();
+            request(app)
+              .get('/game')
+              .set('Cookie', res.headers['set-cookie'])
+              .expect('location', `/lobby/${id}`)
+              .expect(302, done);
+          });
+      });
+  });
+
+  it('Should show board if all players joined', (done) => {
     request(app)
       .post('/login')
       .send('username=bob')
@@ -55,12 +74,24 @@ describe('GET /game', () => {
           .post('/join')
           .send(`room-id=${gameId}`)
           .set('Cookie', res.headers['set-cookie'])
-          .end((err, res) => {
+          .expect(302)
+          .end(() => {
             request(app)
-              .get('/game')
-              .set('Cookie', res.headers['set-cookie'])
-              .expect(/html/)
-              .expect(200, done);
+              .post('/login')
+              .send('username=abc')
+              .end((err, res) => {
+                request(app)
+                  .post('/join')
+                  .send(`room-id=${gameId}`)
+                  .set('Cookie', res.headers['set-cookie'])
+                  .end((err, res) => {
+                    request(app)
+                      .get('/game')
+                      .set('Cookie', res.headers['set-cookie'])
+                      .expect(/html/)
+                      .expect(200, done);
+                  });
+              });
           });
       });
   });

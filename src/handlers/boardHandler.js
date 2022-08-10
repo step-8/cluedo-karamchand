@@ -18,6 +18,7 @@ const boardHandler = (req, res) => {
   if (!gameId) {
     return res.redirect('/');
   }
+
   const board = boardtemplate(username);
   res.end(createDom(...board));
 };

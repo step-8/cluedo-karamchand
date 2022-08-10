@@ -44,10 +44,16 @@ const distribute = (cards, players) => {
 };
 
 const distributeCards = (cards) => (req, res, next) => {
-  const { game } = req;
+  const { game, session: { gameId } } = req;
+
+  if (!game.isReady()) {
+    return res.redirect(`/lobby/${gameId}`);
+  }
+
   if (game.isEnvelopePresent()) {
     return next();
   }
+
   const envelope = getEnvelopeCards(cards);
   game.addEnvelope(envelope);
   const remainingCards = getRemainingCards(cards, envelope);
