@@ -59,17 +59,31 @@ const createRooms = ({ rooms, attributes }) => {
   });
 };
 
+const createEnvelope = () => {
+  return [['rect',
+    {
+      x: 10.5, y: 14, fill: 'black', stroke: 'white',
+      'stroke-width': '0.3%', height: 2.5, width: 4
+    }],
+  ['text',
+    {
+      x: 11.4, y: 15.5, 'font-size': '0.6',
+      stroke: 'white', 'stroke-width': '0.1%', fill: 'white'
+    }, 'Envelope']];
+};
+
 const generateBoard = ({ response }) => {
   const boardData = JSON.parse(response);
   const rooms = createRooms(boardData);
   const paths = createPaths(boardData);
   const start = createStart(boardData);
+  const envelope = createEnvelope();
   const main = document.querySelector('main');
   const boardAttr = boardData.attributes.board;
   main.append(createDom(
     ['svg', {
       ...boardAttr,
-    }, ...rooms, ...paths, ...start]));
+    }, ...rooms, ...paths, ...start, ...envelope]));
 };
 
 const showTurn = game => {
