@@ -25,7 +25,7 @@ class Game {
   }
 
   equals(otherGame) {
-    const isGameEqual = otherGame instanceof Game &&
+    const areGamesEqual = otherGame instanceof Game &&
       otherGame.#gameId === this.#gameId &&
       otherGame.#maxPlayers === this.#maxPlayers;
 
@@ -33,7 +33,7 @@ class Game {
       return player.equals(this.#players[index]);
     });
 
-    return isGameEqual && arePlayersEqual;
+    return areGamesEqual && arePlayersEqual;
   }
 
   isReady() {

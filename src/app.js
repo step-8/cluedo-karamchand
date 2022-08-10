@@ -34,20 +34,19 @@ const createApp = () => {
   }));
 
   app.get('/game', validateUser, injectGame(games),
-    distributeCards(games, cards), boardHandler);
-  app.get('/api/board', validateUser, boardApi(boardData));
+    distributeCards(cards), boardHandler);
 
   const loginRouter = createLoginRouter();
   app.use('/login', loginRouter);
 
   app.get('/', validateUser, serveHomePage);
+  app.post('/host', validateUser, hostGame(games));
   app.post('/join', validateUser, injectGameId(games),
     injectGame(games), addPlayerToGame, redirectToLobby);
 
   app.get('/lobby/:gameId', validateUser, serveLobby);
   app.get('/api/game', validateUser, injectGame(games), serveGameApi);
-
-  app.post('/host', validateUser, hostGame(games));
+  app.get('/api/board', validateUser, boardApi(boardData));
 
   app.use(express.static('public'));
   return app;

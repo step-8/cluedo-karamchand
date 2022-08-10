@@ -43,8 +43,8 @@ const distribute = (cards, players) => {
   }
 };
 
-const distributeCards = (games, cards) => (req, res, next) => {
-  const game = games[req.session.gameId];
+const distributeCards = (cards) => (req, res, next) => {
+  const { game } = req;
   if (game.isEnvelopePresent()) {
     return next();
   }
