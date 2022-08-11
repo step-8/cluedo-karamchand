@@ -137,22 +137,25 @@ const cardsDom = () => {
 };
 
 const closePopup = () => {
-  document.querySelector('.popup').remove();
+  document.querySelector('.popup-container').style.visibility = 'hidden';
 };
 
 const accusationPopupDom = () => {
   const dom = [
-    'div', { className: 'accuse-popup popup' },
+    'div', { className: 'popup-container' },
     [
-      'div', { className: 'envolope-cards' }, ...cardsDom()
-    ],
-    [
-      'div', { className: 'accused-cards' }
-    ],
-    [
-      'div', { className: 'popup-options' },
-      ['button', { id: 'accuse' }, 'ACCUSE'],
-      ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
+      'div', { className: 'accuse-popup popup' },
+      [
+        'div', { className: 'envolope-cards' }, ...cardsDom()
+      ],
+      [
+        'form', { className: 'accused-cards' }
+      ],
+      [
+        'div', { className: 'popup-options' },
+        ['button', { id: 'accuse' }, 'ACCUSE'],
+        ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
+      ]
     ]
   ];
   return dom;
@@ -203,12 +206,16 @@ const diceRoll = () => {
   get('/game/roll-dice', (x) => x);
 };
 
-const startAccusation = () => {
+const generateAccusationPopup = () => {
   document.querySelector('body').append(generateHTML(accusationPopupDom()));
 
   fetch('./api/cards')
     .then((res) => res.json())
     .then(accusationOptionsDropdown);
+};
+
+const showAccusationPopup = () => {
+  document.querySelector('.popup-container').style.visibility = 'visible';
 };
 
 const enableOptions = (permissions) => {
@@ -223,7 +230,7 @@ const enableOptions = (permissions) => {
 const generateOptions = ([dice1, dice2], permissions) => {
   const options = document.querySelector('.options');
   const dom = [['button', {
-    className: 'button', id: 'accuse-button', onclick: startAccusation
+    className: 'button', id: 'accuse-button', onclick: showAccusationPopup
   }, 'Accuse'],
   ['div', { className: 'dice-box' },
     ['div', { className: 'dice' }, dice1],
@@ -245,6 +252,8 @@ const renderGame = () => {
 };
 
 const main = () => {
+  generateAccusationPopup();
+
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
