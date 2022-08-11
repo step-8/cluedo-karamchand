@@ -28,6 +28,10 @@ class Player {
     this.#permissions.rollDice = true;
   }
 
+  disableDice() {
+    this.#permissions.rollDice = false;
+  }
+
   get profile() {
     return {
       name: this.#playerName,

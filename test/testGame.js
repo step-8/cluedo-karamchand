@@ -91,4 +91,12 @@ describe('Game', () => {
     assert.ok(permissions.rollDice);
   });
 
+  it('Should give disable dice permission to the current player', () => {
+    const game = new Game(1, 1);
+    assert.ok(game.addPlayer(1, 'bob'));
+    game.disableDice();
+
+    const { permissions } = game.currentPlayer.info;
+    assert.ok(!permissions.rollDice);
+  });
 });

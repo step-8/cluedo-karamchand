@@ -17,6 +17,7 @@ const cards = require('../data/cards.json');
 const { injectGame,
   injectGameId,
   addPlayerToGame, isUserInGame } = require('./middleware/gameMiddleware.js');
+const { rollDice } = require('./handlers/optionsHandler.js');
 
 const createApp = () => {
   const app = express();
@@ -35,6 +36,7 @@ const createApp = () => {
 
   app.get('/game', validateUser, injectGame(games),
     distributeCards(cards), boardHandler);
+  app.get('/game/roll-dice', validateUser, injectGame(games), rollDice);
 
   const loginRouter = createLoginRouter();
   app.use('/login', loginRouter);

@@ -193,6 +193,14 @@ const accusationOptionsDropdown = (deck) => {
   document.querySelector('.accused-cards').append(...accusationCards);
 };
 
+const updateDice = ({ response }) => {
+  location.reload();
+};
+
+const rollDice = () => {
+  get('/game/roll-dice', updateDice);
+};
+
 const startAccusation = () => {
   document.querySelector('body').append(generateHTML(accusationPopupDom()));
 
@@ -206,7 +214,7 @@ const generateOptions = ([dice1, dice2]) => {
   const dom = [['button', {
     className: 'button', id: 'accuse-button', onclick: startAccusation
   }, 'Accuse'],
-  ['div', { className: 'dice-box' },
+  ['div', { className: 'dice-box', onclick: rollDice },
     ['div', { className: 'dice' }, dice1],
     ['div', { className: 'dice' }, dice2]
   ]];
