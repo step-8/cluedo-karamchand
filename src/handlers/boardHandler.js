@@ -26,7 +26,7 @@ const boardHandler = (req, res) => {
   if (!gameId) {
     return res.redirect('/');
   }
-
+  req.game.enableDice();
   const board = boardtemplate(username);
   res.end(createDom(...board));
 };

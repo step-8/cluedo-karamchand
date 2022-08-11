@@ -24,16 +24,12 @@ class Game {
     this.#envelope = [];
   }
 
-  equals(otherGame) {
-    const areGamesEqual = otherGame instanceof Game &&
-      otherGame.#gameId === this.#gameId &&
-      otherGame.#maxPlayers === this.#maxPlayers;
+  get players() {
+    return this.#players;
+  }
 
-    const arePlayersEqual = otherGame.#players.every((player, index) => {
-      return player.equals(this.#players[index]);
-    });
-
-    return areGamesEqual && arePlayersEqual;
+  get currentPlayer() {
+    return this.#players[this.#currentPlayerIndex];
   }
 
   isReady() {
@@ -59,8 +55,8 @@ class Game {
     return this.#envelope.length;
   }
 
-  get players() {
-    return this.#players;
+  enableDice() {
+    this.currentPlayer.enableDice();
   }
 
   getState(playerId) {
@@ -74,8 +70,20 @@ class Game {
       maxPlayers: this.#maxPlayers,
       characters: this.#characters,
       players: playerState,
-      currentPlayer: this.#players[this.#currentPlayerIndex].profile
+      currentPlayer: this.currentPlayer.profile
     };
+  }
+
+  equals(otherGame) {
+    const areGamesEqual = otherGame instanceof Game &&
+      otherGame.#gameId === this.#gameId &&
+      otherGame.#maxPlayers === this.#maxPlayers;
+
+    const arePlayersEqual = otherGame.#players.every((player, index) => {
+      return player.equals(this.#players[index]);
+    });
+
+    return areGamesEqual && arePlayersEqual;
   }
 }
 

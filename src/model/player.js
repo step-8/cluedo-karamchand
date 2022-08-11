@@ -3,12 +3,14 @@ class Player {
   #playerName;
   #characterName;
   #cards;
+  #permissions;
 
   constructor(playerId, playerName, characterName) {
     this.#playerId = playerId;
     this.#playerName = playerName;
     this.#characterName = characterName;
     this.#cards = [];
+    this.#permissions = { rollDice: false };
   }
 
   equals(otherPlayer) {
@@ -20,6 +22,10 @@ class Player {
 
   addCard(card) {
     this.#cards.push(card);
+  }
+
+  enableDice() {
+    this.#permissions.rollDice = true;
   }
 
   get profile() {
@@ -34,7 +40,8 @@ class Player {
       playerId: this.#playerId,
       name: this.#playerName,
       character: this.#characterName,
-      cards: this.#cards
+      cards: this.#cards,
+      permissions: this.#permissions
     };
   }
 }

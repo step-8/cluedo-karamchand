@@ -32,20 +32,16 @@ describe('Game', () => {
 
     const expected = {
       gameId: 1,
-      you: { playerId: 1, name: 'bob', character: 'scarlett', cards: [] },
+      you: {
+        playerId: 1, name: 'bob', character: 'scarlett',
+        permissions: { rollDice: false }, cards: []
+      },
       maxPlayers: 2,
       currentPlayer: {
         name: 'bob',
         character: 'scarlett'
       },
-      characters: [
-        'scarlett',
-        'mustard',
-        'green',
-        'white',
-        'peacock',
-        'plum'
-      ],
+      characters: ['scarlett', 'mustard', 'green', 'white', 'peacock', 'plum'],
       players: [
         { name: 'bob', character: 'scarlett' },
         { name: 'james', character: 'mustard' }
@@ -81,8 +77,17 @@ describe('Game', () => {
 
   it('Should add envelope in game', () => {
     const game = new Game(1, 1);
-    game.addEnvelope([1, 2]);
+    game.addEnvelope(['a', 'b']);
     assert.ok(game.isEnvelopePresent());
+  });
+
+  it('Should give roll dice permission to the current player', () => {
+    const game = new Game(1, 1);
+    assert.ok(game.addPlayer(1, 'bob'));
+    game.enableDice();
+
+    const { permissions } = game.currentPlayer.info;
+    assert.ok(permissions.rollDice);
   });
 
 });
