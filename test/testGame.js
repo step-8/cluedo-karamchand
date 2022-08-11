@@ -82,13 +82,14 @@ describe('Game', () => {
     assert.ok(game.isEnvelopePresent());
   });
 
-  it('Should give roll dice permission to the current player', () => {
+  it('Should start the game and give permissions to the current player', () => {
     const game = new Game(1, 1);
     assert.ok(game.addPlayer(1, 'bob'));
-    game.enableDice();
+    game.start();
 
     const { permissions } = game.currentPlayer.info;
     assert.ok(permissions.rollDice);
+    assert.ok(game.isStarted);
   });
 
   it('Should give disable dice permission to the current player', () => {

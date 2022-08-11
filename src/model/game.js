@@ -10,6 +10,7 @@ class Game {
   #currentPlayerIndex;
   #envelope;
   #diceValue;
+  #isStarted;
 
   constructor(gameId, maxPlayers) {
     this.#gameId = gameId;
@@ -26,6 +27,7 @@ class Game {
     ];
     this.#envelope = [];
     this.#diceValue = [1, 1];
+    this.#isStarted = false;
   }
 
   get players() {
@@ -36,8 +38,21 @@ class Game {
     return this.#players[this.#currentPlayerIndex];
   }
 
+  get isStarted() {
+    return this.#isStarted;
+  }
+
   isReady() {
     return this.#maxPlayers === this.#players.length;
+  }
+
+  #enablePermissions() {
+    this.#enableDice();
+  }
+
+  start() {
+    this.#isStarted = true;
+    this.#enablePermissions();
   }
 
   addPlayer(playerId, playerName) {
@@ -59,7 +74,7 @@ class Game {
     return this.#envelope.length;
   }
 
-  enableDice() {
+  #enableDice() {
     this.currentPlayer.enableDice();
   }
 
