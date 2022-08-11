@@ -116,8 +116,8 @@ main {
   justify-content: center;
 }
 
-.select-cards {
-  height: 5%;
+.accused-cards {
+  height: 38%;
 }
 
 .popup-options {
@@ -125,4 +125,10 @@ main {
   display: flex;
   justify-content: flex-end;
   column-gap: 1em;
+}
+
+.suit {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
 }

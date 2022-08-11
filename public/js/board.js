@@ -147,10 +147,7 @@ const accusationPopupDom = () => {
       'div', { className: 'envolope-cards' }, ...cardsDom()
     ],
     [
-      'div', { className: 'select-cards' }
-    ],
-    [
-      'div', { className: 'accused-cards' }, ...cardsDom()
+      'div', { className: 'accused-cards' }
     ],
     [
       'div', { className: 'popup-options' },
@@ -161,22 +158,39 @@ const accusationPopupDom = () => {
   return dom;
 };
 
+const showCard = (event) => {
+  const card = event.target.closest('.suit').querySelector('.card');
+  const cardName = event.target.value;
+  card.querySelector('img').src = `images/${cardName}.png`;
+};
+
 const accusationDropdownDom = ([suitName, suit]) => {
   const dom = [
-    'select', { name: suitName, id: suitName, className: 'suit' },
-    [
-      'option', {}, 'Select ' + suitName
-    ],
-    ...suit.map(card => ['option', { value: card }, card])
+    'select', {
+      name: suitName, id: suitName, onchange: showCard
+    },
+    ...suit.map(card => ['option', {
+      value: card,
+    }, card])
+  ];
+  return dom;
+};
+
+const accusationCard = ([suitName, suit]) => {
+  const dom = [
+    'div', { className: 'suit' }, accusationDropdownDom([suitName, suit]),
+    ['div', { className: 'card' }, [
+      'img', { src: `images/${suit[0]}.png` }
+    ]]
   ];
   return dom;
 };
 
 const accusationOptionsDropdown = (deck) => {
-  const dropdown = Object.entries(deck).map((suit) =>
-    generateHTML(accusationDropdownDom(suit)));
+  const accusationCards = Object.entries(deck).map((suit) =>
+    generateHTML(accusationCard(suit)));
 
-  document.querySelector('.select-cards').append(...dropdown);
+  document.querySelector('.accused-cards').append(...accusationCards);
 };
 
 const startAccusation = () => {
