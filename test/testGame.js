@@ -32,6 +32,7 @@ describe('Game', () => {
 
     const expected = {
       gameId: 1,
+      diceValue: [1, 1],
       you: {
         playerId: 1, name: 'bob', character: 'scarlett',
         permissions: { rollDice: false }, cards: []

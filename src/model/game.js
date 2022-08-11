@@ -7,6 +7,7 @@ class Game {
   #characters;
   #currentPlayerIndex;
   #envelope;
+  #diceValue;
 
   constructor(gameId, maxPlayers) {
     this.#gameId = gameId;
@@ -22,6 +23,7 @@ class Game {
       'plum'
     ];
     this.#envelope = [];
+    this.#diceValue = [1, 1];
   }
 
   get players() {
@@ -70,6 +72,7 @@ class Game {
       maxPlayers: this.#maxPlayers,
       characters: this.#characters,
       players: playerState,
+      diceValue: this.#diceValue,
       currentPlayer: this.currentPlayer.profile
     };
   }

@@ -132,3 +132,31 @@ main {
   flex-direction: column;
   row-gap: 1em;
 }
+
+.dice-box {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid black;
+  display: flex;
+  border-radius: 5px;
+  justify-content: space-around;
+}
+
+.dice {
+  width: 40px;
+  aspect-ratio: 1;
+  border: 1px solid black;
+  text-align: center;
+  padding: 6px;
+}
+
+.options {
+  width: 30%;
+  height: 100%;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 10px;
+}

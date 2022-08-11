@@ -201,22 +201,26 @@ const startAccusation = () => {
     .then(accusationOptionsDropdown);
 };
 
-const generateOptionButtons = () => {
-  const dom = [
-    'button', {
-      className: 'button', id: 'accuse-button', onclick: startAccusation
-    }, 'Accuse'
-  ];
+const generateOptions = ([dice1, dice2]) => {
+  const options = document.querySelector('.options');
+  const dom = [['button', {
+    className: 'button', id: 'accuse-button', onclick: startAccusation
+  }, 'Accuse'],
+  ['div', { className: 'dice-box' },
+    ['div', { className: 'dice' }, dice1],
+    ['div', { className: 'dice' }, dice2]
+  ]];
 
-  document.querySelector('.options').append(generateHTML(dom));
+  options.append(...dom.map(generateHTML));
 };
 
 const main = () => {
-  generateOptionButtons();
 
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
+    console.log(game);
+    generateOptions(game.diceValue);
     highlightCurrentPlayer(game);
     showTurn(game);
     displayProfile(game.you);
