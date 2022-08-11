@@ -1,12 +1,4 @@
 {
-  "weapons": [
-    "revolver",
-    "wrench",
-    "dagger",
-    "rope",
-    "candlestick",
-    "pipe"
-  ],
   "characters": [
     "scarlett",
     "mustard",
@@ -25,5 +17,13 @@
     "hall",
     "lounge",
     "dining"
+  ],
+  "weapons": [
+    "revolver",
+    "wrench",
+    "dagger",
+    "rope",
+    "candlestick",
+    "pipe"
   ]
 }

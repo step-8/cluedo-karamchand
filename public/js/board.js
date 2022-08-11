@@ -140,14 +140,14 @@ const closePopup = () => {
   document.querySelector('.popup').remove();
 };
 
-const startAccusation = () => {
+const accusationPopupDom = () => {
   const dom = [
     'div', { className: 'accuse-popup popup' },
     [
       'div', { className: 'envolope-cards' }, ...cardsDom()
     ],
     [
-      'div', { className: 'select-cards' },
+      'div', { className: 'select-cards' }
     ],
     [
       'div', { className: 'accused-cards' }, ...cardsDom()
@@ -158,8 +158,33 @@ const startAccusation = () => {
       ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
     ]
   ];
+  return dom;
+};
 
-  document.querySelector('body').append(generateHTML(dom));
+const accusationDropdownDom = ([suitName, suit]) => {
+  const dom = [
+    'select', { name: suitName, id: suitName, className: 'suit' },
+    [
+      'option', {}, 'Select ' + suitName
+    ],
+    ...suit.map(card => ['option', { value: card }, card])
+  ];
+  return dom;
+};
+
+const accusationOptionsDropdown = (deck) => {
+  const dropdown = Object.entries(deck).map((suit) =>
+    generateHTML(accusationDropdownDom(suit)));
+
+  document.querySelector('.select-cards').append(...dropdown);
+};
+
+const startAccusation = () => {
+  document.querySelector('body').append(generateHTML(accusationPopupDom()));
+
+  fetch('./api/cards')
+    .then((res) => res.json())
+    .then(accusationOptionsDropdown);
 };
 
 const generateOptionButtons = () => {

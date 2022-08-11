@@ -6,4 +6,8 @@ const boardApi = (boardData) => (req, res) => {
   res.json(boardData);
 };
 
-module.exports = { serveGameApi, boardApi };
+const serveCardsApi = (cards) => (req, res) => {
+  res.json(cards);
+};
+
+module.exports = { serveGameApi, boardApi, serveCardsApi };

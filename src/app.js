@@ -45,7 +45,7 @@ const createApp = () => {
     injectGame(games), addPlayerToGame, redirectToLobby);
 
   app.get('/lobby/:gameId', validateUser, serveLobby);
-  app.use('/api', createApiRouter(games, boardData));
+  app.use('/api', createApiRouter(games, boardData, cards));
 
   app.use(express.static('public'));
   return app;
