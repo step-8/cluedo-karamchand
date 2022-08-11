@@ -73,7 +73,4 @@ describe('GET /api/board', () => {
       .expect('location', '/login')
       .expect(302, done);
   });
-  it('For testing Jayanth code',()=>{
-    assert.ok(false);
-  });
 });
