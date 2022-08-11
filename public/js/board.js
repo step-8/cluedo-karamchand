@@ -193,16 +193,14 @@ const accusationOptionsDropdown = (deck) => {
   document.querySelector('.accused-cards').append(...accusationCards);
 };
 
-const updateDice = ({ response }) => {
-  const [dice1, dice2] = JSON.parse(response).diceValue;
+const updateDice = ([dice1, dice2]) => {
   const dice = document.querySelectorAll('.dice');
   dice[0].innerText = dice1;
   dice[1].innerText = dice2;
-  document.querySelector('.dice-box').onclick = '';
 };
 
 const diceRoll = () => {
-  get('/game/roll-dice', updateDice);
+  get('/game/roll-dice', (x) => x);
 };
 
 const startAccusation = () => {
@@ -213,8 +211,16 @@ const startAccusation = () => {
     .then(accusationOptionsDropdown);
 };
 
-const generateOptions = ([dice1, dice2], permissions) => {
+const enableOptions = (permissions) => {
   const { rollDice } = permissions;
+  if (rollDice) {
+    document.querySelector('.dice-box').onclick = diceRoll;
+    return;
+  }
+  document.querySelector('.dice-box').onclick = '';
+};
+
+const generateOptions = ([dice1, dice2], permissions) => {
   const options = document.querySelector('.options');
   const dom = [['button', {
     className: 'button', id: 'accuse-button', onclick: startAccusation
@@ -225,13 +231,20 @@ const generateOptions = ([dice1, dice2], permissions) => {
   ]];
 
   options.append(...dom.map(generateHTML));
-  if (rollDice) {
-    document.querySelector('.dice-box').onclick = diceRoll;
-  }
+  enableOptions(permissions);
+};
+
+const renderGame = () => {
+  setInterval(() => {
+    get('/api/game', (xhr) => {
+      const game = JSON.parse(xhr.response);
+      updateDice(game.diceValue);
+      enableOptions(game.you.permissions);
+    });
+  }, 500);
 };
 
 const main = () => {
-
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
@@ -243,6 +256,8 @@ const main = () => {
     displayProfile(game.you);
     generateCards(game.you);
   });
+
+  renderGame();
 };
 
 window.onload = main;
