@@ -35,4 +35,11 @@ describe('findPossibleMoves', () => {
 
     assert.deepStrictEqual(actual, expected);
   });
+
+  it('Should not give room if entry point is invalid', () => {
+    const actual = findPossibleMoves(cellPositions, 1, [7, 19]);
+    const expected = [[7, 18], [7, 20], [8, 19]];
+
+    assert.deepStrictEqual(actual, expected);
+  });
 });

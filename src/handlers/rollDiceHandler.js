@@ -1,5 +1,9 @@
-const isCellPresent = (cells, cell) => {
-  return cells.some(([row, col]) => row === cell[0] && col === cell[1]);
+const isEqual = (array1, array2) => {
+  return array1.every((element, index) => element === array2[index]);
+};
+
+const isCellPresent = (cells, expectedCell) => {
+  return cells.some(cell => isEqual(cell, expectedCell));
 };
 
 const removeDuplicates = cells => {
@@ -24,16 +28,25 @@ const findAdjecentCells = (cellPositions, [x, y]) => {
   return adjecentCells.filter(cell => isCellPresent(cellPositions, cell));
 };
 
+const isValidAdjecentCell = (cell, cells, baseCell) => {
+  const { roomPositions } = cells;
+  const roomCell = roomPositions.find(({ position }) =>
+    isEqual(position, cell));
+
+  return !(roomCell && !isCellPresent(roomCell.entryPoints, baseCell));
+};
+
 const findPossibleMoves = (cells, moves, currentPosition) => {
-  const allCells = cells.cellPositions;
+  let allCells = cells.cellPositions;
   const roomPositions = cells.roomPositions.map(({ position }) => position);
-  allCells.push(...roomPositions);
+  allCells = allCells.concat(roomPositions);
 
   const possibleMoves = [];
   const adjecentCells = findAdjecentCells(allCells, currentPosition);
 
   if (moves <= 1) {
-    return adjecentCells;
+    return adjecentCells.filter((cell) =>
+      isValidAdjecentCell(cell, cells, currentPosition));
   }
 
   adjecentCells.forEach(cell => {
