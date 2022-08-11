@@ -87,7 +87,42 @@ main {
   box-shadow: 2px 1px 3px gray;
 }
 
+.accuse-popup .card,
 .card>img {
   width: 130px;
   height: 220px
+}
+
+.accuse-popup {
+  padding: 2em;
+  height: 700px;
+  width: 700px;
+  background-color: white;
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2em;
+}
+
+.envolope-cards,
+.accused-cards {
+  width: 90%;
+  height: 35%;
+  margin: 0 auto;
+  display: flex;
+  column-gap: 20px;
+  justify-content: center;
+}
+
+.select-cards {
+  height: 5%;
+}
+
+.popup-options {
+  width: 90%;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 1em;
 }

@@ -131,7 +131,35 @@ const generateCards = ({ cards }) => {
   cardsContainer.append(...userCards.map(generateHTML));
 };
 
+const cardsDom = () => {
+  const cardDom = ['div', { className: 'card' }, '?'];
+  return Array(3).fill(cardDom);
+};
+
+const closePopup = () => {
+  document.querySelector('.popup').remove();
+};
+
 const startAccusation = () => {
+  const dom = [
+    'div', { className: 'accuse-popup popup' },
+    [
+      'div', { className: 'envolope-cards' }, ...cardsDom()
+    ],
+    [
+      'div', { className: 'select-cards' },
+    ],
+    [
+      'div', { className: 'accused-cards' }, ...cardsDom()
+    ],
+    [
+      'div', { className: 'popup-options' },
+      ['button', { id: 'accuse' }, 'ACCUSE'],
+      ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
+    ]
+  ];
+
+  document.querySelector('body').append(generateHTML(dom));
 };
 
 const generateOptionButtons = () => {
