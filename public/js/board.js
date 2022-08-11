@@ -194,10 +194,14 @@ const accusationOptionsDropdown = (deck) => {
 };
 
 const updateDice = ({ response }) => {
-  location.reload();
+  const [dice1, dice2] = JSON.parse(response).diceValue;
+  const dice = document.querySelectorAll('.dice');
+  dice[0].innerText = dice1;
+  dice[1].innerText = dice2;
+  document.querySelector('.dice-box').onclick = '';
 };
 
-const rollDice = () => {
+const diceRoll = () => {
   get('/game/roll-dice', updateDice);
 };
 
@@ -209,17 +213,21 @@ const startAccusation = () => {
     .then(accusationOptionsDropdown);
 };
 
-const generateOptions = ([dice1, dice2]) => {
+const generateOptions = ([dice1, dice2], permissions) => {
+  const { rollDice } = permissions;
   const options = document.querySelector('.options');
   const dom = [['button', {
     className: 'button', id: 'accuse-button', onclick: startAccusation
   }, 'Accuse'],
-  ['div', { className: 'dice-box', onclick: rollDice },
+  ['div', { className: 'dice-box' },
     ['div', { className: 'dice' }, dice1],
     ['div', { className: 'dice' }, dice2]
   ]];
 
   options.append(...dom.map(generateHTML));
+  if (rollDice) {
+    document.querySelector('.dice-box').onclick = diceRoll;
+  }
 };
 
 const main = () => {
@@ -228,7 +236,8 @@ const main = () => {
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
     console.log(game);
-    generateOptions(game.diceValue);
+    generateOptions(game.diceValue, game.you.permissions);
+
     highlightCurrentPlayer(game);
     showTurn(game);
     displayProfile(game.you);
