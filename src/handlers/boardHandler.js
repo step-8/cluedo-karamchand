@@ -10,7 +10,15 @@ const boardtemplate = (username) => {
       ['script', { 'src': 'js/xhrUtils.js' }]],
     ['body', {}, ['header', { class: 'header' }, ['h1', {}, 'Cluedo'],
       ['div', { class: 'user' }, username]],
-      ['main', {}, ['div', { class: 'board' }]]]];
+      ['main', {}, ['div', { class: 'board' }],
+        ['div', { class: 'container' },
+          ['div', { class: 'sub-container' }],
+          ['div', { class: 'cards' }],
+          ['div', { class: 'options' }]
+        ]
+      ]
+    ]
+  ];
 };
 
 const boardHandler = (req, res) => {

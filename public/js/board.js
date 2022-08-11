@@ -86,14 +86,10 @@ const showTurn = game => {
     message = 'YOUR TURN';
   }
 
-  const dom = ['div', { className: 'container' },
-    ['div', { className: 'sub-container' },
-      ['div', { className: 'turn-message' }, message]
-    ]
-  ];
+  const dom = ['div', { className: 'turn-message' }, message];
 
-  const container = generateHTML(dom);
-  document.querySelector('main').append(container);
+  const turnMessage = generateHTML(dom);
+  document.querySelector('.sub-container').append(turnMessage);
 };
 
 const highlightCurrentPlayer = (game) => {
@@ -130,16 +126,30 @@ const cardsTemplate = (cards) => {
 };
 
 const generateCards = ({ cards }) => {
-  const container = document.querySelector('.container');
-  const userCards = ['div', { className: 'cards' }, ...cardsTemplate(cards)];
-  container.append(generateHTML(userCards));
+  const cardsContainer = document.querySelector('.cards');
+  const userCards = cardsTemplate(cards);
+  cardsContainer.append(...userCards.map(generateHTML));
+};
+
+const startAccusation = () => {
+};
+
+const generateOptionButtons = () => {
+  const dom = [
+    'button', {
+      className: 'button', id: 'accuse-button', onclick: startAccusation
+    }, 'Accuse'
+  ];
+
+  document.querySelector('.options').append(generateHTML(dom));
 };
 
 const main = () => {
+  generateOptionButtons();
+
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
-    console.log(game);
     highlightCurrentPlayer(game);
     showTurn(game);
     displayProfile(game.you);
