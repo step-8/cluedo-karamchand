@@ -139,6 +139,7 @@ const main = () => {
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
+    console.log(game);
     highlightCurrentPlayer(game);
     showTurn(game);
     displayProfile(game.you);

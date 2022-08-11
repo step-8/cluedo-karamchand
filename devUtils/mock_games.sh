@@ -1,7 +1,6 @@
 #! /bin/bash
 
-host_info='cookie: Sesssion=eyJ1c2VybmFtZSI6IkJhbmkiLCJ1c2VySWQiOjE2NjAwNDE2NzI1MTR9;path=/;httponly;Sesssion.sig=DqboOX6utU42UOAMl8i9HXHUwiI;path=/;httponly'
-guest1_info='cookie: Sesssion=eyJ1c2VybmFtZSI6ImJhcm5hbGkiLCJ1c2VySWQiOjE2NjAxMDUxNDAyOTgsImdhbWVJZCI6IkhGUlhNIn0=;path=/;httponly;Sesssion.sig=NFxNV03_bdkCXEPGLZ27aqJ9W_k;path=/;httponly'
+PORT=8000;
 
 touch /tmp/response;
 
@@ -10,13 +9,24 @@ function getGameId(){
   echo "${gameId:0:5}";
 };
 
+function getSession(){
+  local session=`grep 'Set-Cookie: Sesssion' /tmp/response | cut -f2 -d: | tr '\n\r' ';'`
+  echo ${session};
+}
+
+function login(){
+  curl -vvv localhost:${PORT}/login -d 'username=Guest' &> /tmp/response;
+  echo `getSession`;
+}
+
 function host(){
   local numberOfPlayers=${1};
-  curl -vvv localhost:8000/host -d 'maxPlayers='${numberOfPlayers} -H "${host_info}" &> /tmp/response;
+  local session=`login`;
+  curl -vvv localhost:${PORT}/host -d 'maxPlayers='${numberOfPlayers} -H "cookie:${session}" &> /tmp/response;
 
   if [[ $? -ne 0 ]]; then
     echo 'Server is not running';
-    exit;
+    return 1;
   fi;
   
   local gameId=`getGameId`;
@@ -26,11 +36,12 @@ function host(){
 function addGuests(){
   local gameId=${1};
   local numberOfGuests=$(( ${2} - 2 ));
+  local session=`login`;
 
   local i=0;
   while [[ i -lt ${numberOfGuests} ]]
   do
-    curl -vvv localhost:8000/join -d "room-id=${gameId}" -H "${guest1_info}" &> /dev/null;
+    curl -vvv localhost:${PORT}/join -d "room-id=${gameId}" -H "cookie: ${session}" &> /dev/null;
     i=$(( ${i} + 1 ));
   done
 }
@@ -43,9 +54,7 @@ function main(){
   while [[ i -le 6 ]]
   do
     local gameId=`host ${i}`;
-    if [[ ${option} == '-j' ]]; then
-      addGuests ${gameId} ${i};
-    fi;
+    [[ ${option} == '-j' ]] && addGuests ${gameId} ${i};
 
     echo ${i} player game : ${gameId};
     i=$(( ${i} + 1 ));
