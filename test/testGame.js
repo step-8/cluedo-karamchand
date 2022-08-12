@@ -112,10 +112,18 @@ describe('Game', () => {
     assert.ok(game.isStarted);
   });
 
-  it('Should give disable dice permission to the current player', () => {
+  it('Should disable dice permission to the current player', () => {
     const game = new Game(1, 1);
     assert.ok(game.addPlayer(1, 'bob'));
     game.disableDice();
+
+    const { permissions } = game.currentPlayer.info;
+    assert.ok(!permissions.rollDice);
+  });
+  it('Should disable pass turn permission to the current player', () => {
+    const game = new Game(1, 1);
+    assert.ok(game.addPlayer(1, 'bob'));
+    game.disablePass();
 
     const { permissions } = game.currentPlayer.info;
     assert.ok(!permissions.rollDice);

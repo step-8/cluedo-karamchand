@@ -64,4 +64,15 @@ describe('Player', () => {
     assert.ok(!permissions.rollDice);
   });
 
+  it('should disable pass turn permission', () => {
+    const player = new Player(1, 'ram', 'scarlett');
+
+    player.enablePassTurn();
+    const { permissions } = player.info;
+    assert.ok(permissions.passTurn);
+
+    player.disablePassTurn();
+    assert.ok(!permissions.passTurn);
+  });
+
 });

@@ -49,6 +49,11 @@ class Game {
     this.#enablePass();
   }
 
+  #disablePermissions() {
+    this.disableDice();
+    this.disablePass();
+  }
+
   start() {
     this.#isStarted = true;
     this.#enablePermissions();
@@ -81,9 +86,14 @@ class Game {
     this.currentPlayer.enablePassTurn();
   }
 
-  passTurn() {
-    this.disablePass();
+  #changePlayer() {
     this.#currentPlayerIndex++;
+  }
+
+  passTurn() {
+    this.#disablePermissions();
+    this.#changePlayer();
+    this.#enablePermissions();
   }
 
   disableDice() {

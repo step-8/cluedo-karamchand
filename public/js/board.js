@@ -79,17 +79,25 @@ const generateBoard = ({ response }) => {
     }, ...rooms, ...paths, ...start, ...envelope]));
 };
 
-const showTurn = game => {
+const getTurn = (game) => {
   const character = game.currentPlayer.character;
   let message = `${character}'s turn`.toUpperCase();
   if (character === game.you.character) {
     message = 'YOUR TURN';
   }
+  return message;
+};
 
+const showTurn = game => {
+  const message = getTurn(game);
   const dom = ['div', { className: 'turn-message' }, message];
-
   const turnMessage = generateHTML(dom);
   document.querySelector('.sub-container').append(turnMessage);
+};
+
+const updateTurn = game => {
+  const turnMessage = document.querySelector('.turn-message');
+  turnMessage.innerText = getTurn(game);
 };
 
 const highlightCurrentPlayer = (game) => {
@@ -284,6 +292,7 @@ const renderGame = () => {
       const game = JSON.parse(xhr.response);
       updateDice(game.diceValue);
       enableOptions(game.you.permissions);
+      updateTurn(game);
     });
   }, 500);
 };
