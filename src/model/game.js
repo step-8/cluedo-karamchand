@@ -10,8 +10,9 @@ class Game {
   #diceValue;
   #isStarted;
   #accusation;
+  #startingPositions;
 
-  constructor(gameId, maxPlayers) {
+  constructor(gameId, maxPlayers, startingPositions) {
     this.#gameId = gameId;
     this.#maxPlayers = maxPlayers;
     this.#players = [];
@@ -27,6 +28,7 @@ class Game {
     this.#envelope = {};
     this.#diceValue = [1, 1];
     this.#isStarted = false;
+    this.#startingPositions = startingPositions;
     this.#accusation = null;
   }
 
@@ -72,7 +74,9 @@ class Game {
     }
 
     const character = this.#characters[this.#players.length];
-    const player = new Player(playerId, playerName, character);
+    const position = this.#startingPositions[character].position;
+
+    const player = new Player(playerId, playerName, character, position);
     this.#players.push(player);
     return true;
   }

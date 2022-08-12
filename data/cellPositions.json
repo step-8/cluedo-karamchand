@@ -829,5 +829,43 @@
         20
       ]
     }
-  ]
+  ],
+  "startingPositions": {
+    "scarlett": {
+      "position": [
+        7,
+        24
+      ]
+    },
+    "mustard": {
+      "position": [
+        0,
+        17
+      ]
+    },
+    "green": {
+      "position": [
+        14,
+        0
+      ]
+    },
+    "white": {
+      "position": [
+        9,
+        0
+      ]
+    },
+    "peacock": {
+      "position": [
+        23,
+        6
+      ]
+    },
+    "plum": {
+      "position": [
+        23,
+        19
+      ]
+    }
+  }
 }

@@ -3,20 +3,21 @@ const { Player } = require('../src/model/player.js');
 
 describe('Player', () => {
   it('Should equate the player', () => {
-    const player1 = new Player(1, 'a', 'abc');
-    const player2 = new Player(1, 'a', 'abc');
-    const player3 = new Player(2, 'e', 'efg');
+    const player1 = new Player(1, 'a', 'abc', [1, 1]);
+    const player2 = new Player(1, 'a', 'abc', [1, 1]);
+    const player3 = new Player(2, 'e', 'efg', [1, 1]);
 
     assert.ok(player1.equals(player2));
     assert.ok(!player1.equals(player3));
   });
 
   it('Should return player info', () => {
-    const player = new Player(1, 'bob', 'ironman');
+    const player = new Player(1, 'bob', 'ironman', [1, 1]);
     const expected = {
       playerId: 1,
       name: 'bob',
       character: 'ironman',
+      position: [1, 1],
       permissions: { rollDice: false, accuse: false, passTurn: false },
       cards: []
     };
@@ -25,20 +26,22 @@ describe('Player', () => {
   });
 
   it('should add card', () => {
-    const player = new Player(1, 'bob', 'ironman');
+    const player = new Player(1, 'bob', 'ironman', [1, 1]);
     player.addCard('hall');
     const expected = {
       playerId: 1,
       name: 'bob',
       character: 'ironman',
+      position: [1, 1],
       permissions: { rollDice: false, accuse: false, passTurn: false },
       cards: ['hall']
     };
+
     assert.deepStrictEqual(player.info, expected);
   });
 
   it('should enable roll dice permission', () => {
-    const player = new Player(1, 'ram', 'scarlett');
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
 
     player.enableDice();
     const { permissions } = player.info;
@@ -46,7 +49,7 @@ describe('Player', () => {
   });
 
   it('should enable pass permission', () => {
-    const player = new Player(1, 'ram', 'scarlett');
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
 
     player.enablePassTurn();
     const { permissions } = player.info;
@@ -54,7 +57,7 @@ describe('Player', () => {
   });
 
   it('should disable roll dice permission', () => {
-    const player = new Player(1, 'ram', 'scarlett');
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
 
     player.enableDice();
     const { permissions } = player.info;
@@ -65,7 +68,7 @@ describe('Player', () => {
   });
 
   it('should disable pass turn permission', () => {
-    const player = new Player(1, 'ram', 'scarlett');
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
 
     player.enablePassTurn();
     const { permissions } = player.info;

@@ -45,7 +45,8 @@ const createApp = () => {
   app.use('/api', apiRouter);
 
   app.get('/', validateUser, isUserInGame(games), serveHomePage);
-  app.post('/host', validateUser, hostGame(games));
+  app.post('/host',
+    validateUser, hostGame(games, cellPositions.startingPositions));
   app.post('/join', validateUser, injectGameId(games),
     injectGame(games), addPlayerToGame, redirectToLobby);
 

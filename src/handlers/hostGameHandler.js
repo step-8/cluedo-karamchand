@@ -11,14 +11,15 @@ const generateGameId = () => {
     String.fromCharCode(randomIntBetween(65, 90))).join('');
 };
 
-const createGame = (gameId, maxPlayers, hostId, hostName) => {
-  const game = new Game(gameId, maxPlayers);
-  game.addPlayer(hostId, hostName);
+const createGame =
+  (gameId, maxPlayers, hostId, hostName, startingPositions) => {
+    const game = new Game(gameId, maxPlayers, startingPositions);
+    game.addPlayer(hostId, hostName);
 
-  return game;
-};
+    return game;
+  };
 
-const hostGame = (games) => (req, res) => {
+const hostGame = (games, startingPositions) => (req, res) => {
   let { maxPlayers } = req.body;
   const { userId, username } = req.session;
 
@@ -26,7 +27,8 @@ const hostGame = (games) => (req, res) => {
   maxPlayers = maxPlayers > 2 && maxPlayers <= 6 ? maxPlayers : 3;
 
   const gameId = generateGameId();
-  games[gameId] = createGame(gameId, maxPlayers, userId, username);
+  games[gameId] =
+    createGame(gameId, maxPlayers, userId, username, startingPositions);
   req.session.gameId = gameId;
 
   res.redirect(`/lobby/${gameId}`);

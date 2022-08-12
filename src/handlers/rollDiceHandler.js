@@ -73,7 +73,7 @@ const servePossibleMoves = (cellPositions) => (req, res) => {
   const moves = diceValue[0] + diceValue[1];
 
   if (you.playerId === userId) {
-    return res.json(findPossibleMoves(cellPositions, moves, [7, 24]));
+    return res.json(findPossibleMoves(cellPositions, moves, you.position));
   }
 
   res.end(401);

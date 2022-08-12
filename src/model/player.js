@@ -5,11 +5,13 @@ class Player {
   #cards;
   #permissions;
   #hasAccused;
+  #position;
 
-  constructor(playerId, playerName, characterName) {
+  constructor(playerId, playerName, characterName, position) {
     this.#playerId = playerId;
     this.#playerName = playerName;
     this.#characterName = characterName;
+    this.#position = position;
     this.#cards = [];
     this.#permissions = { rollDice: false, accuse: false, passTurn: false };
     this.#hasAccused = false;
@@ -70,6 +72,7 @@ class Player {
       playerId: this.#playerId,
       name: this.#playerName,
       character: this.#characterName,
+      position: this.#position,
       cards: this.#cards,
       permissions: this.#permissions
     };
