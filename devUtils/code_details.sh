@@ -1,3 +1,5 @@
+#! /bin/bash
+
 function sum(){
   total=0
   for count in $1
@@ -35,32 +37,32 @@ num_of_test_js_files=`ls ./test/*.js | wc -l`
 num_of_test_js_lines=`cat ./test/*.js | wc -l`
 
 # Report
-echo "\n-----SOURCE CODE-----"
+echo -e "\n-----SOURCE CODE-----"
 
-echo "\n--Number of Files--"
-echo "Javascript (Front-End):"${num_of_frontend_js_files}
-echo "Javascript (Back-End):"${num_of_backend_js_files} 
-echo "HTML:"${num_of_html_files}
-echo "CSS:"${num_of_css_files}
-echo "Shell:"${num_of_shell_files}
-echo "Total:"${total_src_files}
+echo -e "\n--Number of Files--"
+echo -e "Javascript (Front-End):"${num_of_frontend_js_files}
+echo -e "Javascript (Back-End):"${num_of_backend_js_files} 
+echo -e "HTML:"${num_of_html_files}
+echo -e "CSS:"${num_of_css_files}
+echo -e "Shell:"${num_of_shell_files}
+echo -e "Total:"${total_src_files}
 
-echo "\n--Number of Lines of Code--"
-echo "Javascript (Front-End):"${num_of_frontend_js_lines} 
-echo "Javascript (Back-End):"${num_of_backend_js_lines}
-echo "HTML:"${num_of_html_lines}
-echo "CSS:"${num_of_css_lines}
-echo "Shell:"${num_of_shell_lines}
-echo "Total:"${total_lines_of_src_code}
+echo -e "\n--Number of Lines of Code--"
+echo -e "Javascript (Front-End):"${num_of_frontend_js_lines} 
+echo -e "Javascript (Back-End):"${num_of_backend_js_lines}
+echo -e "HTML:"${num_of_html_lines}
+echo -e "CSS:"${num_of_css_lines}
+echo -e "Shell:"${num_of_shell_lines}
+echo -e "Total:"${total_lines_of_src_code}
 
-echo "\n-----TEST CODE-----"
+echo -e "\n-----TEST CODE-----"
 
-echo "\n--Number of Files--"
-echo "Javascript:"${num_of_test_js_files}
+echo -e "\n--Number of Files--"
+echo -e "Javascript:"${num_of_test_js_files}
 
-echo "\n--Number of Lines of Code--"
-echo "Javascript:"${num_of_test_js_lines}
+echo -e "\n--Number of Lines of Code--"
+echo -e "Javascript:"${num_of_test_js_lines}
 
-echo "\n-----TOTAL-----"
-echo "Total files:" $((total_src_files + num_of_test_js_files))
-echo "Total Lines of Code:" $((total_lines_of_src_code + num_of_test_js_lines))
+echo -e "\n-----TOTAL-----"
+echo -e "Total files:" $((total_src_files + num_of_test_js_files))
+echo -e "Total Lines of Code:" $((total_lines_of_src_code + num_of_test_js_lines))
