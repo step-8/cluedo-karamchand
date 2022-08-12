@@ -29,36 +29,42 @@ function host(){
     return 1;
   fi;
   
-  local gameId=`getGameId`;
-  echo ${gameId};
+  echo `getGameId`;
 }
 
 function addGuests(){
   local gameId=${1};
-  local numberOfGuests=$(( ${2} - 2 ));
-  local session=`login`;
+  local numberOfGuests=${2};
 
-  local i=0;
-  while [[ i -lt ${numberOfGuests} ]]
+  for (( j=0; j < ${numberOfGuests} ; j++ ))
   do
+    local session=`login`;
     curl -vvv localhost:${PORT}/join -d "room-id=${gameId}" -H "cookie: ${session}" &> /dev/null;
-    i=$(( ${i} + 1 ));
+  done
+  return 0;
+}
+
+function hostGames(){
+  local option=${1};
+
+  for (( i=3; i <= 6 ; i++ ))
+  do
+    local gameId=`host ${i}`;
+    local guests=$(($i - 2));
+    [[ ${option} == '-j' ]] && addGuests ${gameId} ${guests};
+
+    echo ${i} player game : ${gameId};
   done
 }
 
 function main(){
 
   local option=${1};
+  local id=${2};
 
-  local i=3;
-  while [[ i -le 6 ]]
-  do
-    local gameId=`host ${i}`;
-    [[ ${option} == '-j' ]] && addGuests ${gameId} ${i};
+  [[ ${option} -eq '-j' && ${id} ]] && addGuests ${id} 5 && return;
 
-    echo ${i} player game : ${gameId};
-    i=$(( ${i} + 1 ));
-  done
+  hostGames ${option};
 }
 
-main ${1};
+main ${1} ${2};
