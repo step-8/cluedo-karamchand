@@ -11,7 +11,7 @@
   <main>
 
     <div class="container">
-      <form action="/host" method="post" id="join-form">
+      <form action="/host" method="post" id="host-form">
         <select name="maxPlayers">
           <option value="3">Number of players</option>
           <option value="3">3</option>
@@ -19,14 +19,14 @@
           <option value="5">5</option>
           <option value="6">6</option>
         </select>
-        <input type="submit" value="HOST">
+        <input type="submit" value="HOST" id="host-button">
       </form>
 
       <div class="or">--OR--</div>
 
       <form action="/join" method="post" id="join-form">
         <input type="text" name="room-id" id="" placeholder="Enter room id">
-        <input type="submit" value="JOIN">
+        <input type="submit" value="JOIN" id="join-button">
       </form>
 
       <div class="error-message"></div>

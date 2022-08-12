@@ -14,25 +14,35 @@ const playerHtml = player => {
     ['div', { className: 'player-name' }, player.name]]);
 };
 
-const generateLobby = xhr => {
-  const game = JSON.parse(xhr.response);
-  const roomId = 'Room ID: ' + game.gameId;
-  document.querySelector('.room-id').replaceChildren(roomId);
+const addPlayers = (players, maxPlayers) => {
+  const playerList = players.map(playerHtml);
+  const playersElement = document.querySelector('.players');
+  playersElement.replaceChildren(...playerList);
 
-  const playerList = game.players.map(playerHtml);
-  const players = document.querySelector('.players');
-  players.replaceChildren(...playerList);
-
-  if (game.maxPlayers === playerList.length) {
+  if (maxPlayers === playerList.length) {
     document.querySelector('form').submit();
   }
 };
 
+const generateLobby = () => {
+  sendRequest('GET', '/api/game', '', (xhr) => {
+    const game = JSON.parse(xhr.response);
+    const roomId = 'Room ID: ' + game.gameId;
+    document.querySelector('.room-id').replaceChildren(roomId);
+    addPlayers(game.players, game.maxPlayers);
+  });
+};
+
 const updateLobby = () => {
-  sendRequest('GET', '/api/game', '', generateLobby);
+  sendRequest('GET', '/api/game', '', (xhr) => {
+    const game = JSON.parse(xhr.response);
+    addPlayers(game.players);
+  });
 };
 
 const main = () => {
+  generateLobby();
+
   setInterval(() => {
     updateLobby();
   }, 100);
