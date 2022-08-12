@@ -240,23 +240,35 @@ const disableOptions = (optionElement) => {
   optionElement.onclick = '';
 };
 
+const pass = () => {
+  get('/game/pass-turn', (x) => x);
+};
+
 const enableOptions = (permissions) => {
-  const { rollDice } = permissions;
+  const { rollDice, passTurn } = permissions;
   const diceBox = document.querySelector('.dice-box');
+  const passElement = document.querySelector('.pass');
 
   if (rollDice) {
     diceBox.onclick = diceRoll;
     highlightOptions(diceBox);
-    return;
+  } else {
+    disableOptions(diceBox);
   }
-  disableOptions(diceBox);
+  if (passTurn) {
+    passElement.onclick = pass;
+    highlightOptions(passElement);
+  } else {
+    disableOptions(passElement);
+  }
 };
 
 const generateOptions = ([dice1, dice2], permissions) => {
   const options = document.querySelector('.options');
-  const dom = [['button', {
-    className: 'button', id: 'accuse-button', onclick: showAccusationPopup
-  }, 'Accuse'],
+  const dom = [['button',
+    { className: 'button', id: 'accuse-button', onclick: showAccusationPopup },
+    'Accuse'],
+  ['div', { className: 'pass' }, 'Pass'],
   ['div', { className: 'dice-box' },
     ['div', { className: 'dice' }, dice1],
     ['div', { className: 'dice' }, dice2]

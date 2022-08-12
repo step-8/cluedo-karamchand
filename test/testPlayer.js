@@ -17,7 +17,7 @@ describe('Player', () => {
       playerId: 1,
       name: 'bob',
       character: 'ironman',
-      permissions: { rollDice: false },
+      permissions: { rollDice: false, passTurn: false },
       cards: []
     };
 
@@ -31,7 +31,7 @@ describe('Player', () => {
       playerId: 1,
       name: 'bob',
       character: 'ironman',
-      permissions: { rollDice: false },
+      permissions: { rollDice: false, passTurn: false },
       cards: ['hall']
     };
     assert.deepStrictEqual(player.info, expected);
@@ -43,6 +43,14 @@ describe('Player', () => {
     player.enableDice();
     const { permissions } = player.info;
     assert.ok(permissions.rollDice);
+  });
+
+  it('should enable pass permission', () => {
+    const player = new Player(1, 'ram', 'scarlett');
+
+    player.enablePassTurn();
+    const { permissions } = player.info;
+    assert.ok(permissions.passTurn);
   });
 
   it('should disable roll dice permission', () => {

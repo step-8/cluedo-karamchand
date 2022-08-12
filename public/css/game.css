@@ -143,7 +143,8 @@ main {
   row-gap: 1em;
 }
 
-.dice-box {
+.dice-box,
+.pass {
   width: 50%;
   padding: 10px;
   border: 1px solid black;

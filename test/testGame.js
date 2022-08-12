@@ -35,7 +35,7 @@ describe('Game', () => {
       diceValue: [1, 1],
       you: {
         playerId: 1, name: 'bob', character: 'scarlett',
-        permissions: { rollDice: false }, cards: []
+        permissions: { rollDice: false, passTurn: false }, cards: []
       },
       maxPlayers: 2,
       currentPlayer: {
@@ -89,6 +89,17 @@ describe('Game', () => {
 
     const actual = game.getState(1).diceValue;
     assert.deepStrictEqual(actual, [2, 2]);
+  });
+
+  it('should pass the turn', () => {
+    const game = new Game(1, 2);
+
+    assert.ok(game.addPlayer(1, 'bob'));
+    assert.ok(game.addPlayer(2, 'bobby'));
+    game.passTurn();
+
+    const actual = game.getState(2).currentPlayer;
+    assert.deepStrictEqual(actual, { name: 'bobby', character: 'mustard' });
   });
 
   it('Should start the game and give permissions to the current player', () => {
