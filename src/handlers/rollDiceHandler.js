@@ -18,42 +18,53 @@ const removeDuplicates = cells => {
   return filteredCells;
 };
 
-const findAdjecentCells = (cellPositions, [x, y]) => {
+const getRoomCell = (rooms, cell) => {
+  return rooms.find(({ position }) => isEqual(position, cell));
+};
+
+const isValidAdjecentCell = (cell, baseCell, cells) => {
+  const { cellPositions, roomPositions } = cells;
+
+  if (isCellPresent(cellPositions, cell)) {
+    return true;
+  }
+
+  const roomCell = getRoomCell(roomPositions, cell);
+
+  return roomCell && isEqual(roomCell.entryPoint, baseCell);
+};
+
+const findAdjecentCells = (cells, [x, y]) => {
   const top = [x, y - 1];
   const bottom = [x, y + 1];
   const left = [x - 1, y];
   const right = [x + 1, y];
   const adjecentCells = [top, bottom, left, right];
 
-  return adjecentCells.filter(cell => isCellPresent(cellPositions, cell));
+  return adjecentCells.filter(cell =>
+    isValidAdjecentCell(cell, [x, y], cells));
 };
 
-const isValidAdjecentCell = (cell, cells, baseCell) => {
-  const { roomPositions } = cells;
-  const roomCell = roomPositions.find(({ position }) =>
-    isEqual(position, cell));
-
-  return !(roomCell && !isCellPresent(roomCell.entryPoints, baseCell));
-};
-
-const findPossibleMoves = (cells, moves, currentPosition) => {
-  let allCells = cells.cellPositions;
-  const roomPositions = cells.roomPositions.map(({ position }) => position);
-  allCells = allCells.concat(roomPositions);
-
+const findPossibleMoves = (cells, moves, currentPos, possibleRooms = []) => {
   const possibleMoves = [];
-  const adjecentCells = findAdjecentCells(allCells, currentPosition);
+  let adjecentCells = findAdjecentCells(cells, currentPos);
+  const room = getRoomCell(cells.roomPositions, currentPos);
+
+  if (room) {
+    possibleRooms.push(currentPos);
+    adjecentCells = [room.entryPoint];
+  }
 
   if (moves <= 1) {
-    return adjecentCells.filter((cell) =>
-      isValidAdjecentCell(cell, cells, currentPosition));
+    return [...adjecentCells, ...possibleRooms];
   }
 
   adjecentCells.forEach(cell => {
-    possibleMoves.push(...findPossibleMoves(cells, moves - 1, cell));
+    possibleMoves.push(
+      ...findPossibleMoves(cells, moves - 1, cell, possibleRooms));
   });
 
-  return removeDuplicates(possibleMoves);
+  return removeDuplicates([...possibleMoves, ...possibleRooms]);
 };
 
 const servePossibleMoves = (cellPositions) => (req, res) => {

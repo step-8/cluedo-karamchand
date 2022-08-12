@@ -736,11 +736,9 @@
         4,
         6
       ],
-      "entryPoints": [
-        [
-          4,
-          7
-        ]
+      "entryPoint": [
+        4,
+        7
       ]
     },
     {
@@ -749,28 +747,20 @@
         9,
         7
       ],
-      "entryPoints": [
-        [
-          9,
-          8
-        ],
-        [
-          13,
-          5
-        ]
+      "entryPoint": [
+        9,
+        8
       ]
     },
     {
       "name": "conservatory",
       "position": [
-        17,
+        19,
         5
       ],
-      "entryPoints": [
-        [
-          16,
-          5
-        ]
+      "entryPoint": [
+        18,
+        5
       ]
     },
     {
@@ -779,11 +769,9 @@
         6,
         15
       ],
-      "entryPoints": [
-        [
-          6,
-          16
-        ]
+      "entryPoint": [
+        6,
+        16
       ]
     },
     {
@@ -792,11 +780,9 @@
         18,
         9
       ],
-      "entryPoints": [
-        [
-          19,
-          9
-        ]
+      "entryPoint": [
+        17,
+        9
       ]
     },
     {
@@ -805,11 +791,9 @@
         17,
         16
       ],
-      "entryPoints": [
-        [
-          16,
-          16
-        ]
+      "entryPoint": [
+        16,
+        16
       ]
     },
     {
@@ -818,11 +802,9 @@
         6,
         19
       ],
-      "entryPoints": [
-        [
-          6,
-          18
-        ]
+      "entryPoint": [
+        6,
+        18
       ]
     },
     {
@@ -831,11 +813,9 @@
         12,
         18
       ],
-      "entryPoints": [
-        [
-          12,
-          17
-        ]
+      "entryPoint": [
+        12,
+        17
       ]
     },
     {
@@ -844,11 +824,9 @@
         17,
         21
       ],
-      "entryPoints": [
-        [
-          17,
-          20
-        ]
+      "entryPoint": [
+        17,
+        20
       ]
     }
   ]
