@@ -82,6 +82,15 @@ describe('Game', () => {
     assert.ok(game.isEnvelopePresent());
   });
 
+  it('should roll the dice', () => {
+    const game = new Game(1, 1);
+    assert.ok(game.addPlayer(1, 'bob'));
+    game.rollDice(() => 2);
+
+    const actual = game.getState(1).diceValue;
+    assert.deepStrictEqual(actual, [2, 2]);
+  });
+
   it('Should start the game and give permissions to the current player', () => {
     const game = new Game(1, 1);
     assert.ok(game.addPlayer(1, 'bob'));

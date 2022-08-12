@@ -172,6 +172,7 @@ main {
 }
 
 .highlight {
+  cursor: pointer;
   border: 1px solid orangered;
   box-shadow: 2px 2px 10px orange;
 }

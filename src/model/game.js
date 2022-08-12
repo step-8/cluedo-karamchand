@@ -1,7 +1,5 @@
 const { Player } = require('./player.js');
 
-const randomInt = (num) => Math.ceil(Math.random() * num);
-
 class Game {
   #gameId;
   #maxPlayers;
@@ -82,8 +80,8 @@ class Game {
     this.currentPlayer.disableDice();
   }
 
-  rollDice() {
-    this.#diceValue = [randomInt(6), randomInt(6)];
+  rollDice(diceRoller) {
+    this.#diceValue = [diceRoller(), diceRoller()];
   }
 
   getState(playerId) {
