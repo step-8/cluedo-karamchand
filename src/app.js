@@ -16,7 +16,7 @@ const { createApiRouter } = require('./routers/apiRouter.js');
 const { injectGame,
   injectGameId,
   addPlayerToGame, isUserInGame } = require('./middleware/gameMiddleware.js');
-const { createGameRouter, passTurn } = require('./routers/gameRouter');
+const { createGameRouter } = require('./routers/gameRouter');
 
 const createApp = () => {
   const app = express();
@@ -33,8 +33,6 @@ const createApp = () => {
     name: process.env.SESSION_NAME,
     keys: [process.env.SESSION_KEYS]
   }));
-
-  app.get('/game/pass-turn', validateUser, injectGame(games), passTurn);
 
   const loginRouter = createLoginRouter();
   const gameRouter = createGameRouter(games, cards);
