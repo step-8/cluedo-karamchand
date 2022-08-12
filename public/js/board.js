@@ -218,13 +218,25 @@ const showAccusationPopup = () => {
   document.querySelector('.popup-container').style.visibility = 'visible';
 };
 
+const highlightOptions = (optionElement) => {
+  optionElement.classList.add('highlight');
+};
+
+const disableOptions = (optionElement) => {
+  optionElement.classList.remove('highlight');
+  optionElement.onclick = '';
+};
+
 const enableOptions = (permissions) => {
   const { rollDice } = permissions;
+  const diceBox = document.querySelector('.dice-box');
+
   if (rollDice) {
-    document.querySelector('.dice-box').onclick = diceRoll;
+    diceBox.onclick = diceRoll;
+    highlightOptions(diceBox);
     return;
   }
-  document.querySelector('.dice-box').onclick = '';
+  disableOptions(diceBox);
 };
 
 const generateOptions = ([dice1, dice2], permissions) => {

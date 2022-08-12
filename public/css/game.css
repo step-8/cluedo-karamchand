@@ -170,3 +170,8 @@ main {
   align-items: center;
   border-radius: 10px;
 }
+
+.highlight {
+  border: 1px solid orangered;
+  box-shadow: 2px 2px 10px orange;
+}

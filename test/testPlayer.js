@@ -36,4 +36,24 @@ describe('Player', () => {
     };
     assert.deepStrictEqual(player.info, expected);
   });
+
+  it('should enable roll dice permission', () => {
+    const player = new Player(1, 'ram', 'scarlett');
+
+    player.enableDice();
+    const { permissions } = player.info;
+    assert.ok(permissions.rollDice);
+  });
+
+  it('should disable roll dice permission', () => {
+    const player = new Player(1, 'ram', 'scarlett');
+
+    player.enableDice();
+    const { permissions } = player.info;
+    assert.ok(permissions.rollDice);
+
+    player.disableDice();
+    assert.ok(!permissions.rollDice);
+  });
+
 });
