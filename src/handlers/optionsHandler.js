@@ -7,6 +7,9 @@ const rollDice = (req, res) => {
 };
 
 const handleAccusation = (req, res) => {
+  const { session, body, game } = req;
+  const { ...accusedCards } = body;
+  game.accuse(session.userId, accusedCards);
   res.sendStatus(201);
 };
 

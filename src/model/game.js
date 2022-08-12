@@ -9,6 +9,7 @@ class Game {
   #envelope;
   #diceValue;
   #isStarted;
+  #accusation;
 
   constructor(gameId, maxPlayers) {
     this.#gameId = gameId;
@@ -23,9 +24,10 @@ class Game {
       'peacock',
       'plum'
     ];
-    this.#envelope = [];
+    this.#envelope = {};
     this.#diceValue = [1, 1];
     this.#isStarted = false;
+    this.#accusation = null;
   }
 
   get players() {
@@ -44,8 +46,13 @@ class Game {
     return this.#maxPlayers === this.#players.length;
   }
 
+  #allowToAccuse() {
+    this.currentPlayer.allowToAccuse();
+  }
+
   #enablePermissions() {
     this.#enableDice();
+    this.#allowToAccuse();
     this.#enablePass();
   }
 
@@ -74,8 +81,8 @@ class Game {
     this.#envelope = envelope;
   }
 
-  isEnvelopePresent() {
-    return this.#envelope.length;
+  isEnvelopeEmpty() {
+    return Object.keys(this.#envelope).length === 0;
   }
 
   #enableDice() {
@@ -111,20 +118,47 @@ class Game {
     this.disableDice();
   }
 
+  #isAccusationCorrect(cards) {
+    return Object.keys(cards).every(category =>
+      cards[category] === this.#envelope[category]);
+  }
+
+  accuse(playerId, accusedCards) {
+    const player = this.currentPlayer;
+
+    if (!player.isYourId(playerId) || !player.isAllowedToAccuse()) {
+      return false;
+    }
+    const result = this.#isAccusationCorrect(accusedCards);
+    this.#accusation = {
+      accuser: player.profile,
+      accusedCards,
+      result
+    };
+    player.accused();
+    return true;
+  }
+
   getState(playerId) {
     const playerState = this.#players.map(player => player.profile);
     const [you] = this.#players.filter(player =>
       player.info.playerId === playerId);
 
-    return {
+    const state = {
       gameId: this.#gameId,
       you: you.info,
       maxPlayers: this.#maxPlayers,
       characters: this.#characters,
       players: playerState,
       diceValue: this.#diceValue,
-      currentPlayer: this.currentPlayer.profile
+      currentPlayer: this.currentPlayer.profile,
+      accusation: this.#accusation
     };
+
+    if (this.#accusation && this.currentPlayer.isYourId(playerId)) {
+      state.envelope = this.#envelope;
+    }
+    return state;
   }
 
   equals(otherGame) {

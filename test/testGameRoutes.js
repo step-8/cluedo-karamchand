@@ -49,6 +49,7 @@ describe('POST /game/accuse', () => {
         request(app)
           .post('/game/accuse')
           .set('Cookie', hostCookie)
+          .send({ character: 'green', weapon: 'rope', room: 'hall' })
           .expect(201, done);
       });
   });

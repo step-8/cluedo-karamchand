@@ -35,7 +35,7 @@ describe('Game', () => {
       diceValue: [1, 1],
       you: {
         playerId: 1, name: 'bob', character: 'scarlett',
-        permissions: { rollDice: false, passTurn: false }, cards: []
+        permissions: { rollDice: false, passTurn: false, accuse: false }, cards: []
       },
       maxPlayers: 2,
       currentPlayer: {
@@ -46,7 +46,8 @@ describe('Game', () => {
       players: [
         { name: 'bob', character: 'scarlett' },
         { name: 'james', character: 'mustard' }
-      ]
+      ],
+      accusation: null
     };
 
     assert.deepStrictEqual(game.getState(1), expected);
@@ -68,18 +69,18 @@ describe('Game', () => {
   it('Should return true if envelope is added', () => {
     const game = new Game(1, 1);
     game.addEnvelope([1, 2, 3]);
-    assert.ok(game.isEnvelopePresent());
+    assert.ok(!game.isEnvelopeEmpty());
   });
 
   it('Should return false if envelope is not added', () => {
     const game = new Game(1, 1);
-    assert.ok(!game.isEnvelopePresent());
+    assert.ok(game.isEnvelopeEmpty());
   });
 
   it('Should add envelope in game', () => {
     const game = new Game(1, 1);
     game.addEnvelope(['a', 'b']);
-    assert.ok(game.isEnvelopePresent());
+    assert.ok(!game.isEnvelopeEmpty());
   });
 
   it('should roll the dice', () => {
@@ -140,5 +141,43 @@ describe('Game', () => {
 
     const { permissions } = game.currentPlayer.info;
     assert.ok(!permissions.rollDice);
+  });
+
+  it('Should allow the current player to accuse', () => {
+    const game = new Game(1, 2);
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
+    game.start();
+    assert.ok(game.accuse(1, {
+      character: 'green', weapon: 'rope', room: 'hall'
+    }));
+  });
+
+  it('Should no t allow other players to accuse', () => {
+    const game = new Game(1, 2);
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
+    game.start();
+    assert.ok(!game.accuse(2, {
+      character: 'green', weapon: 'rope', room: 'hall'
+    }));
+  });
+
+  it('Should provide accusation info, if current player accuses', () => {
+    const game = new Game(1, 2);
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
+    game.start();
+    game.accuse(1, { character: 'green', weapon: 'rope', room: 'hall' });
+
+    const { accusation } = game.getState(2);
+    const { result, ...actual } = accusation;
+
+    const expected = {
+      accuser: { name: 'bob', character: 'scarlett' },
+      accusedCards: { character: 'green', weapon: 'rope', room: 'hall' },
+    };
+
+    assert.deepStrictEqual(actual, expected);
   });
 });

@@ -4,13 +4,15 @@ class Player {
   #characterName;
   #cards;
   #permissions;
+  #hasAccused;
 
   constructor(playerId, playerName, characterName) {
     this.#playerId = playerId;
     this.#playerName = playerName;
     this.#characterName = characterName;
     this.#cards = [];
-    this.#permissions = { rollDice: false, passTurn: false };
+    this.#permissions = { rollDice: false, accuse: false, passTurn: false };
+    this.#hasAccused = false;
   }
 
   equals(otherPlayer) {
@@ -24,12 +26,24 @@ class Player {
     this.#cards.push(card);
   }
 
+  isYourId(id) {
+    return this.#playerId === id;
+  }
+
   enableDice() {
     this.#permissions.rollDice = true;
   }
 
   enablePassTurn() {
     this.#permissions.passTurn = true;
+  }
+
+  isAllowedToAccuse() {
+    return !this.#hasAccused && this.#permissions.accuse;
+  }
+
+  allowToAccuse() {
+    this.#permissions.accuse = true;
   }
 
   disableDice() {
@@ -45,6 +59,10 @@ class Player {
       name: this.#playerName,
       character: this.#characterName
     };
+  }
+
+  accused() {
+    this.#hasAccused = true;
   }
 
   get info() {

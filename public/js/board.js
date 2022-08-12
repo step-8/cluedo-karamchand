@@ -158,7 +158,11 @@ const accuse = (event) => {
 
   const accusedCards = JSON.stringify({ character, room, weapon });
 
-  fetch('/game/accuse', { method: 'POST', body: accusedCards });
+  fetch('/game/accuse', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: accusedCards
+  });
 };
 
 const accusationPopupDom = () => {

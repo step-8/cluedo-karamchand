@@ -17,7 +17,7 @@ describe('Player', () => {
       playerId: 1,
       name: 'bob',
       character: 'ironman',
-      permissions: { rollDice: false, passTurn: false },
+      permissions: { rollDice: false, accuse: false, passTurn: false },
       cards: []
     };
 
@@ -31,7 +31,7 @@ describe('Player', () => {
       playerId: 1,
       name: 'bob',
       character: 'ironman',
-      permissions: { rollDice: false, passTurn: false },
+      permissions: { rollDice: false, accuse: false, passTurn: false },
       cards: ['hall']
     };
     assert.deepStrictEqual(player.info, expected);

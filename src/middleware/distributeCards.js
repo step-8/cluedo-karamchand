@@ -3,17 +3,17 @@ const randomInt = (number) => Math.floor(Math.random() * number);
 const getRandomCard = (deck) => deck[randomInt(deck.length)];
 
 const getEnvelopeCards = (cards) => {
-  const envelope = [];
+  const envelope = {};
   for (const deck in cards) {
     const randomCard = getRandomCard(cards[deck]);
-    envelope.push(randomCard);
+    envelope[deck.slice(0, -1)] = randomCard;
   }
   return envelope;
 };
 
 const getRemainingCards = (cards, envelope) => {
   const allCards = Object.values(cards).flat();
-  return allCards.filter(card => !envelope.includes(card));
+  return allCards.filter(card => !Object.values(envelope).includes(card));
 };
 
 const shuffleCards = (deck) => {
@@ -50,7 +50,7 @@ const distributeCards = (cards) => (req, res, next) => {
     return res.redirect(`/lobby/${gameId}`);
   }
 
-  if (game.isEnvelopePresent()) {
+  if (!game.isEnvelopeEmpty()) {
     return next();
   }
 
