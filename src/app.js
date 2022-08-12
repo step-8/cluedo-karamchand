@@ -11,14 +11,12 @@ const { serveHomePage,
   redirectToLobby } = require('./handlers/homePage.js');
 const { validateUser } = require('./middleware/validateUser.js');
 const { createLoginRouter } = require('./routers/loginRouter.js');
-const { boardHandler } = require('./handlers/boardHandler');
 const { hostGame } = require('./handlers/hostGameHandler.js');
-const { distributeCards } = require('./middleware/distributeCards.js');
 const { createApiRouter } = require('./routers/apiRouter.js');
 const { injectGame,
   injectGameId,
   addPlayerToGame, isUserInGame } = require('./middleware/gameMiddleware.js');
-const { rollDice } = require('./handlers/optionsHandler.js');
+const { createGameRouter } = require('./routers/gameRouter');
 
 const createApp = () => {
   const app = express();
@@ -29,18 +27,20 @@ const createApp = () => {
   if (MODE === 'PRODUCTION') {
     app.use(morgan('dev'));
   }
+
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieSession({
     name: process.env.SESSION_NAME,
     keys: [process.env.SESSION_KEYS]
   }));
 
-  app.get('/game', validateUser, injectGame(games),
-    distributeCards(cards), boardHandler);
-  app.get('/game/roll-dice', validateUser, injectGame(games), rollDice);
-
   const loginRouter = createLoginRouter();
+  const gameRouter = createGameRouter(games, cards);
+  const apiRouter = createApiRouter(games, boardData, cards);
+
   app.use('/login', loginRouter);
+  app.use('/game', gameRouter);
+  app.use('/api', apiRouter);
 
   app.get('/', validateUser, isUserInGame(games), serveHomePage);
   app.post('/host', validateUser, hostGame(games));
@@ -48,7 +48,6 @@ const createApp = () => {
     injectGame(games), addPlayerToGame, redirectToLobby);
 
   app.get('/lobby/:gameId', validateUser, serveLobby);
-  app.use('/api', createApiRouter(games, boardData, cards));
 
   app.use(express.static('public'));
   return app;
