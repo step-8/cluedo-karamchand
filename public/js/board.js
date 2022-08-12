@@ -79,17 +79,25 @@ const generateBoard = ({ response }) => {
     }, ...rooms, ...paths, ...start, ...envelope]));
 };
 
-const showTurn = game => {
+const getTurn = (game) => {
   const character = game.currentPlayer.character;
   let message = `${character}'s turn`.toUpperCase();
   if (character === game.you.character) {
     message = 'YOUR TURN';
   }
+  return message;
+};
 
+const showTurn = game => {
+  const message = getTurn(game);
   const dom = ['div', { className: 'turn-message' }, message];
-
   const turnMessage = generateHTML(dom);
   document.querySelector('.sub-container').append(turnMessage);
+};
+
+const updateTurn = game => {
+  const turnMessage = document.querySelector('.turn-message');
+  turnMessage.innerText = getTurn(game);
 };
 
 const highlightCurrentPlayer = (game) => {
@@ -255,23 +263,35 @@ const disableOptions = (optionElement) => {
   optionElement.onclick = '';
 };
 
+const pass = () => {
+  get('/game/pass-turn', (x) => x);
+};
+
 const enableOptions = (permissions) => {
-  const { rollDice } = permissions;
+  const { rollDice, passTurn } = permissions;
   const diceBox = document.querySelector('.dice-box');
+  const passElement = document.querySelector('.pass');
 
   if (rollDice) {
     diceBox.onclick = diceRoll;
     highlightOptions(diceBox);
-    return;
+  } else {
+    disableOptions(diceBox);
   }
-  disableOptions(diceBox);
+  if (passTurn) {
+    passElement.onclick = pass;
+    highlightOptions(passElement);
+  } else {
+    disableOptions(passElement);
+  }
 };
 
 const generateOptions = ([dice1, dice2], permissions) => {
   const options = document.querySelector('.options');
-  const dom = [['button', {
-    className: 'button', id: 'accuse-button', onclick: showAccusationPopup
-  }, 'Accuse'],
+  const dom = [['button',
+    { className: 'button', id: 'accuse-button', onclick: showAccusationPopup },
+    'Accuse'],
+  ['div', { className: 'pass' }, 'Pass'],
   ['div', { className: 'dice-box' },
     ['div', { className: 'dice' }, dice1],
     ['div', { className: 'dice' }, dice2]
@@ -287,6 +307,7 @@ const renderGame = () => {
       const game = JSON.parse(xhr.response);
       updateDice(game.diceValue);
       enableOptions(game.you.permissions);
+      updateTurn(game);
     });
   }, 500);
 };

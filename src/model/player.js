@@ -10,7 +10,7 @@ class Player {
     this.#playerName = playerName;
     this.#characterName = characterName;
     this.#cards = [];
-    this.#permissions = { rollDice: false };
+    this.#permissions = { rollDice: false, passTurn: false };
   }
 
   equals(otherPlayer) {
@@ -28,8 +28,16 @@ class Player {
     this.#permissions.rollDice = true;
   }
 
+  enablePassTurn() {
+    this.#permissions.passTurn = true;
+  }
+
   disableDice() {
     this.#permissions.rollDice = false;
+  }
+
+  disablePassTurn() {
+    this.#permissions.passTurn = false;
   }
 
   get profile() {

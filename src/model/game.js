@@ -46,6 +46,12 @@ class Game {
 
   #enablePermissions() {
     this.#enableDice();
+    this.#enablePass();
+  }
+
+  #disablePermissions() {
+    this.disableDice();
+    this.disablePass();
   }
 
   start() {
@@ -76,12 +82,33 @@ class Game {
     this.currentPlayer.enableDice();
   }
 
+  #enablePass() {
+    this.currentPlayer.enablePassTurn();
+  }
+
+  #changePlayer() {
+    let index = this.#currentPlayerIndex;
+    index++;
+    this.#currentPlayerIndex = index % this.#maxPlayers;
+  }
+
+  passTurn() {
+    this.#disablePermissions();
+    this.#changePlayer();
+    this.#enablePermissions();
+  }
+
   disableDice() {
     this.currentPlayer.disableDice();
   }
 
+  disablePass() {
+    this.currentPlayer.disablePassTurn();
+  }
+
   rollDice(diceRoller) {
     this.#diceValue = [diceRoller(), diceRoller()];
+    this.disableDice();
   }
 
   getState(playerId) {
