@@ -70,7 +70,13 @@ const findPossibleMoves = (cells, moves, currentPos, possibleRooms = []) => {
 const servePossibleMoves = (cellPositions) => (req, res) => {
   const { game, session: { userId } } = req;
   const { diceValue, you } = game.getState(userId);
-  findPossibleMoves(cellPositions, diceValue, [0, 17]);
+  const moves = diceValue[0] + diceValue[1];
+
+  if (you.playerId === userId) {
+    return res.json(findPossibleMoves(cellPositions, moves, [7, 24]));
+  }
+
+  res.end(401);
 };
 
 module.exports = { servePossibleMoves, findPossibleMoves };

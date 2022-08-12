@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 
 const boardData = require('../data/board.json');
 const cards = require('../data/cards.json');
+const cellPositions = require('../data/cellPositions.json');
 
 const { serveHomePage,
   serveLobby,
@@ -16,7 +17,7 @@ const { createApiRouter } = require('./routers/apiRouter.js');
 const { injectGame,
   injectGameId,
   addPlayerToGame, isUserInGame } = require('./middleware/gameMiddleware.js');
-const { createGameRouter } = require('./routers/gameRouter');
+const { createGameRouter } = require('./routers/gameRouter.js');
 
 const createApp = () => {
   const app = express();
@@ -35,7 +36,7 @@ const createApp = () => {
   }));
 
   const loginRouter = createLoginRouter();
-  const gameRouter = createGameRouter(games, cards);
+  const gameRouter = createGameRouter(games, cards, cellPositions);
   const apiRouter = createApiRouter(games, boardData, cards);
 
   app.use('/login', loginRouter);

@@ -37,17 +37,17 @@ const createStart = ({ startingPos, attributes }) => {
 
 const generatePath = ([x, y], attributes) => {
   return ['rect',
-    { x, y, ...attributes.tiles }];
+    { x, y, ...attributes.tiles, id: `${x}-${y}` }]; //Get ids from server.
 };
 
 const createPaths = ({ tiles, attributes }) => {
   return tiles.map(tile => generatePath(tile, attributes));
 };
 
-const generateRoom = ({ points, room, textPosition }, attributes) => {
+const generateRoom = ({ points, room, textPosition, id }, attributes) => {
   const [x, y] = textPosition;
   const roomPosition = ['polygon',
-    { points: `${points.join(' ')}`, ...attributes.room }];
+    { points: `${points.join(' ')}`, id, ...attributes.room }];
   const roomName = ['text',
     { x, y, 'font-size': '1' }, room];
   return [roomPosition, roomName];
@@ -215,8 +215,23 @@ const updateDice = ([dice1, dice2]) => {
   dice[1].innerText = dice2;
 };
 
+const highlightPosition = (position) => {
+  const id = `${position[0]}-${position[1]}`;
+  const targetElement = document.getElementById(id);
+  targetElement.setAttribute('class', 'highlight-path');
+};
+
+const highlighPossiblePosition = (positions) => {
+  positions.forEach(highlightPosition);
+};
+
+const getPossibleMoves = () => {
+  get('/game/possible-moves', (xhr) =>
+    highlighPossiblePosition(JSON.parse(xhr.response)));
+};
+
 const diceRoll = () => {
-  get('/game/roll-dice', (x) => x);
+  get('/game/roll-dice', getPossibleMoves);
 };
 
 const generateAccusationPopup = () => {

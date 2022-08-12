@@ -144,6 +144,14 @@
         "no-process-env": "off",
         "no-undef": "off"
       }
+    },
+    {
+      "files": [
+        "rollDiceHandler.js"
+      ],
+      "rules": {
+        "id-length": "off"
+      }
     }
   ]
 }
