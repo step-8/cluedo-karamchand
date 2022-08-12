@@ -14,7 +14,7 @@ const playerHtml = player => {
     ['div', { className: 'player-name' }, player.name]]);
 };
 
-const addPlayers = (players, maxPlayers) => {
+const addPlayers = ({ players, maxPlayers }) => {
   const playerList = players.map(playerHtml);
   const playersElement = document.querySelector('.players');
   playersElement.replaceChildren(...playerList);
@@ -29,14 +29,14 @@ const generateLobby = () => {
     const game = JSON.parse(xhr.response);
     const roomId = 'Room ID: ' + game.gameId;
     document.querySelector('.room-id').replaceChildren(roomId);
-    addPlayers(game.players, game.maxPlayers);
+    addPlayers(game);
   });
 };
 
 const updateLobby = () => {
   sendRequest('GET', '/api/game', '', (xhr) => {
     const game = JSON.parse(xhr.response);
-    addPlayers(game.players);
+    addPlayers(game);
   });
 };
 
