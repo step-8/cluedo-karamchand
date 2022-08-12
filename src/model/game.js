@@ -87,7 +87,9 @@ class Game {
   }
 
   #changePlayer() {
-    this.#currentPlayerIndex++;
+    let index = this.#currentPlayerIndex;
+    index++;
+    this.#currentPlayerIndex = index % this.#maxPlayers;
   }
 
   passTurn() {
