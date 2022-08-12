@@ -7,4 +7,8 @@ const rollDice = (req, res) => {
   res.json(game.getState(req.session.userId));
 };
 
-module.exports = { rollDice };
+const handleAccusation = (req, res) => {
+  res.sendStatus(201);
+};
+
+module.exports = { rollDice, handleAccusation };

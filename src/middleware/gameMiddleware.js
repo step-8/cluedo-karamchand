@@ -31,6 +31,7 @@ const injectGameId = games => (req, res, next) => {
     next();
     return;
   }
+
   res.cookie('error', '40', { maxAge: 3000 });
   res.redirect('/');
 };

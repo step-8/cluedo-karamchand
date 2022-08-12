@@ -147,34 +147,29 @@ describe('POST /host', () => {
       });
   });
 
-  it('should redirect to game if game is already started for GET /', (done) => {
-    request(app)
+  const login = (username, gameId) => {
+    return request(app)
       .post('/login')
-      .send('username=james')
-      .end((err, res) => {
-        request(app)
+      .send(`username=${username}`)
+      .then(res => {
+        return request(app)
           .post('/join')
           .set('Cookie', res.headers['set-cookie'])
-          .send(`room-id=${gameId}`)
-          .expect('location', `/lobby/${gameId}`)
-          .end(() => {
-            request(app)
-              .post('/login')
-              .send('username=a')
-              .end((err, res) => {
-                request(app)
-                  .post('/join')
-                  .set('Cookie', res.headers['set-cookie'])
-                  .send(`room-id=${gameId}`)
-                  .expect('location', `/lobby/${gameId}`)
-                  .end((err, res) => {
-                    request(app)
-                      .get('/')
-                      .set('Cookie', res.headers['set-cookie'])
-                      .expect('location', '/game', done);
-                  });
-              });
-          });
+          .send(`room-id=${gameId}`);
+      });
+  };
+
+  const aRunningGameWith = (players, gameId) => {
+    return Promise.all(players.map(player => login(player, gameId)));
+  };
+
+  it('should redirect to game if game is already started for GET /', (done) => {
+    aRunningGameWith(['james', 'a'], gameId)
+      .then((res) => {
+        request(app)
+          .get('/')
+          .set('Cookie', res[1].headers['set-cookie'])
+          .expect('location', '/game', done);
       });
   });
 
