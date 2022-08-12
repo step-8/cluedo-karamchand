@@ -1,25 +1,30 @@
 const request = require('supertest');
 const { createApp } = require('../src/app.js');
 
-const hostLogin = (app, username, gameId) => {
+const login = (app, username) => {
   return request(app)
     .post('/login')
-    .send(`username=${username}`)
+    .send(`username=${username}`);
+};
+
+const loginAsHost = (app, username) => {
+  return login(app, username)
     .then(res => {
       return request(app)
         .post('/host')
         .send('maxPlayers=3')
         .set('Cookie', res.headers['set-cookie'])
         .then((res) => {
-          gameId.push(res.headers.location.split('/').pop());
+          return {
+            hostCookie: res.headers['set-cookie'],
+            gameId: res.headers.location.split('/').pop()
+          };
         });
     });
 };
 
-const login = (app, username, gameId) => {
-  return request(app)
-    .post('/login')
-    .send(`username=${username}`)
+const joinGame = (app, username, gameId) => {
+  return login(app, username)
     .then(res => {
       return request(app)
         .post('/join')
@@ -28,32 +33,23 @@ const login = (app, username, gameId) => {
     });
 };
 
-const aRunningGameWith = (app, players, gameId) => {
-  return Promise.all(players.map(player => login(app, player, gameId)));
+const loginAllAsJoinees = (app, players, gameId) => {
+  return Promise.all(players.map(player => joinGame(app, player, gameId)));
 };
 describe('POST /game/accuse', () => {
   const app = createApp();
-  const gameId = [];
 
   it('Should handle accuse', (done) => {
-    request(app)
-      .post('/login')
-      .send('username=vikram')
-      .end((err, res) => {
+    loginAsHost(app, 'vikram')
+      .then(({ hostCookie, gameId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
+          .then(() => hostCookie);
+      })
+      .then((hostCookie) => {
         request(app)
-          .post('/host')
-          .send('maxPlayers=3')
-          .set('Cookie', res.headers['set-cookie'])
-          .end((err, res) => {
-            gameId.push(res.headers.location.split('/').pop());
-            aRunningGameWith(app, ['james', 'rathod'], gameId[0])
-              .then((res) => {
-                request(app)
-                  .post('/game/accuse')
-                  .set('Cookie', res[0].headers['set-cookie'])
-                  .expect(201, done);
-              });
-          });
+          .post('/game/accuse')
+          .set('Cookie', hostCookie)
+          .expect(201, done);
       });
   });
 });

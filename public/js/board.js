@@ -140,6 +140,19 @@ const closePopup = () => {
   document.querySelector('.popup-container').style.visibility = 'hidden';
 };
 
+const accuse = (event) => {
+  const form = document.querySelector('form');
+  const formData = new FormData(form);
+
+  const character = formData.get('characters');
+  const room = formData.get('rooms');
+  const weapon = formData.get('weapons');
+
+  const accusedCards = JSON.stringify({ character, room, weapon });
+
+  fetch('/game/accuse', { method: 'POST', body: accusedCards });
+};
+
 const accusationPopupDom = () => {
   const dom = [
     'div', { className: 'popup-container' },
@@ -153,7 +166,7 @@ const accusationPopupDom = () => {
       ],
       [
         'div', { className: 'popup-options' },
-        ['button', { id: 'accuse' }, 'ACCUSE'],
+        ['button', { id: 'accuse', onclick: accuse }, 'ACCUSE'],
         ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
       ]
     ]
