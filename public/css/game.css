@@ -33,6 +33,11 @@ main {
   stroke-width: 0.4%;
 }
 
+.container,
+.popup {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 .container {
   width: 50%;
   display: flex;
@@ -40,7 +45,6 @@ main {
   align-items: center;
   row-gap: 40px;
   font-size: 18px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .image-wrapper {
@@ -94,6 +98,7 @@ main {
 }
 
 .popup-container {
+  text-align: center;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -116,18 +121,24 @@ main {
   margin: 110px;
 }
 
-.envolope-cards,
+.popup-header {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.envelope-cards,
 .accused-cards {
   width: 90%;
-  height: 35%;
   margin: 0 auto;
   display: flex;
-  column-gap: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
   justify-content: center;
 }
 
 .accused-cards {
-  height: 38%;
+  height: 40%;
 }
 
 .popup-options {
@@ -144,7 +155,7 @@ main {
 }
 
 .dice-box,
-.pass {
+.button {
   width: 50%;
   padding: 10px;
   border: 1px solid black;
@@ -181,4 +192,8 @@ main {
 .highlight-path {
   stroke-width: 0.4%;
   fill: orange;
+}
+
+#accusation-message {
+  width: 100%;
 }

@@ -70,6 +70,7 @@ class Player {
 
   accused() {
     this.#hasAccused = true;
+    // this.#permissions.accuse = false;
   }
 
   get info() {
