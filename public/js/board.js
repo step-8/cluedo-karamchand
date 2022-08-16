@@ -471,16 +471,23 @@ const showNonAccuserPopup = ({ accuser, accusedCards, result }) => {
 
 const accusationResult = (game) => {
   const { currentPlayer, you, accusation, envelope } = game;
+
+  setTimeout(() => {
+    closePopup();
+    renderGame();
+  }, 2000);
+
   if (currentPlayer.character === you.character) {
     updateAccusersPopup(envelope, accusation);
     revealEnvelope(envelope);
+    pass();
     return;
   }
   showNonAccuserPopup(accusation);
 };
 
 const renderGame = () => {
-  setInterval(() => {
+  const intervalId = setInterval(() => {
     get('/api/game', (xhr) => {
       const game = JSON.parse(xhr.response);
       updateDice(game.diceValue);
@@ -490,7 +497,7 @@ const renderGame = () => {
       highlighPossiblePosition(game);
       if (game.accusation) {
         accusationResult(game);
-
+        clearInterval(intervalId);
       }
     });
   }, 100);

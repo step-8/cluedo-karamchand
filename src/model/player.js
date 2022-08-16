@@ -60,6 +60,10 @@ class Player {
     this.#permissions.passTurn = false;
   }
 
+  disableAccuse() {
+    this.#permissions.accuse = false;
+  }
+
   get profile() {
     return {
       name: this.#playerName,

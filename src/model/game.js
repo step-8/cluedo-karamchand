@@ -54,6 +54,10 @@ class Game {
     this.currentPlayer.allowToAccuse();
   }
 
+  #disableAccuse() {
+    this.currentPlayer.disableAccuse();
+  }
+
   #enablePermissions() {
     this.#enableDice();
     this.#allowToAccuse();
@@ -63,6 +67,7 @@ class Game {
   #disablePermissions() {
     this.disableDice();
     this.disablePass();
+    this.#disableAccuse();
   }
 
   start() {
@@ -110,6 +115,7 @@ class Game {
     this.#disablePermissions();
     this.#changePlayer();
     this.#enablePermissions();
+    this.#accusation = null;
   }
 
   disableDice() {
