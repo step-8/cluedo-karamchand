@@ -270,7 +270,15 @@ const disableOptions = (optionElement) => {
   optionElement.onclick = '';
 };
 
+const removeHightlighedPath = () => {
+  const highlightedCells = document.querySelectorAll('.highlight-path');
+  highlightedCells.forEach(node => {
+    node.classList.remove('highlight-path');
+  });
+};
+
 const pass = () => {
+  removeHightlighedPath();
   get('/game/pass-turn', (x) => x);
 };
 
@@ -317,7 +325,6 @@ const renderGame = () => {
       enableOptions(game.you.permissions);
       updateTurn(game);
       highlighPossibleMoves(game.possibleMoves);
-      console.log(game.possibleMoves);
     });
   }, 500);
 };
