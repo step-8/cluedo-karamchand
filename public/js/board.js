@@ -150,6 +150,10 @@ const cardsDom = () => {
 
 const closePopup = () => {
   document.querySelector('.popup-container').style.visibility = 'hidden';
+  const popups = document.querySelectorAll('.popup');
+  popups.forEach(popup => {
+    popup.style.visibility = 'hidden';
+  });
 };
 
 const accuse = (event) => {
@@ -171,28 +175,45 @@ const accuse = (event) => {
 
 const messageDom = attributes => ['div', attributes];
 
+const nonAccuserPopupDom = () => {
+  return ['div', { className: 'non-accuser-popup popup' },
+    ['div', { className: 'popup-header' }, 'RESULT OF ACCUSATION'],
+    messageDom({ id: 'others-accusation-message', className: 'message' }),
+    [
+      'div', { className: 'accused-cards' },
+      ...cardsDom()
+    ],
+    messageDom({ className: 'message result-message' })
+  ];
+};
+
+const accuserPopupDom = () => {
+  return [
+    'div', { className: 'accuse-popup popup' },
+    ['div', { className: 'popup-header' }, 'ACCUSE'],
+    [
+      'div', { className: 'envelope-cards' },
+      messageDom({ id: 'envelope-message', className: 'message' }),
+      ...cardsDom()
+    ],
+    [
+      'form', { className: 'accused-cards' },
+      messageDom({ id: 'accusation-message', className: 'message' })
+    ],
+    [
+      'div', { className: 'popup-options' },
+      ['button', { id: 'accuse', onclick: accuse }, 'ACCUSE'],
+      ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
+    ],
+    messageDom({ id: 'result-message', className: 'message' })
+  ];
+};
+
 const accusationPopupDom = () => {
   const dom = [
     'div', { className: 'popup-container' },
-    [
-      'div', { className: 'accuse-popup popup' },
-      ['div', { className: 'popup-header' }, 'ACCUSE'],
-      [
-        'div', { className: 'envelope-cards' },
-        messageDom({ id: 'envelope-message', className: 'message' }),
-        ...cardsDom()
-      ],
-      [
-        'form', { className: 'accused-cards' },
-        messageDom({ id: 'accusation-message', className: 'message' })
-      ],
-      [
-        'div', { className: 'popup-options' },
-        ['button', { id: 'accuse', onclick: accuse }, 'ACCUSE'],
-        ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
-      ],
-      messageDom({ id: 'result-message', className: 'message' })
-    ]
+    nonAccuserPopupDom(),
+    accuserPopupDom()
   ];
   return dom;
 };
@@ -229,7 +250,8 @@ const accusationOptionsDropdown = (deck) => {
   const accusationCards = Object.entries(deck).map((suit) =>
     generateHTML(accusationCard(suit)));
 
-  document.querySelector('.accused-cards').append(...accusationCards);
+  const accuserPopup = document.querySelector('.accuse-popup');
+  accuserPopup.querySelector('.accused-cards').append(...accusationCards);
 };
 
 const updateDice = ([dice1, dice2]) => {
@@ -292,6 +314,7 @@ const generateAccusationPopup = () => {
 
 const showAccusationPopup = () => {
   document.querySelector('.popup-container').style.visibility = 'visible';
+  document.querySelector('.accuse-popup').style.visibility = 'visible';
 };
 
 const highlightOptions = (optionElement) => {
@@ -374,17 +397,23 @@ const envelopeCardsMessage = ({ character, weapon, room }) =>
   `${character} has murdered Mr.Boddy, in the ${room}, with the ${weapon}`;
 
 const removeAccusationDropdown = () => {
-  const options = document.querySelector('.accused-cards')
+  const accuserPopup = document.querySelector('.accuse-popup');
+  const options = accuserPopup.querySelector('.accused-cards')
     .querySelectorAll('select');
 
-  options.forEach(option => option.remove());
+  if (options) {
+    options.forEach(option => option.remove());
+  }
 };
 
 const accusationMessage = ({ character, weapon, room }) =>
   `You have accused ${character}, in the ${room}, with the ${weapon}`;
 
 const removePopupOptions = () => {
-  document.querySelector('.popup-options').remove();
+  const options = document.querySelector('.popup-options');
+  if (options) {
+    options.remove();
+  }
 };
 
 const accusationResultMessage = ({ result }) =>
@@ -394,15 +423,50 @@ const updateAccusersPopup = (envelope, accusation) => {
   removeAccusationDropdown();
   removePopupOptions();
 
-  document.querySelector('.popup-header').innerText = 'Mystery Revealed!';
-  const envelopeMessageEle = document.querySelector('#envelope-message');
+  const accuserPopup = document.querySelector('.accuse-popup');
+  accuserPopup.querySelector('.popup-header').innerText = 'Mystery Revealed!';
+  const envelopeMessageEle = accuserPopup.querySelector('#envelope-message');
   envelopeMessageEle.innerText = envelopeCardsMessage(envelope);
 
-  const accusationMessageEle = document.querySelector('#accusation-message');
+  const accusationMessageEle = accuserPopup.querySelector('#accusation-message');
   accusationMessageEle.innerText = accusationMessage(accusation.accusedCards);
 
-  const resultMessageEle = document.querySelector('#result-message');
+  const resultMessageEle = accuserPopup.querySelector('#result-message');
   resultMessageEle.innerText = accusationResultMessage(accusation);
+};
+
+const othersAccusationMessage = (accuser, { character, weapon, room }) =>
+  `${accuser.character} accused ${character}, in the ${room}, with the ${weapon}`;
+
+const othersResultMessage = ({ character }, result) => {
+  const resultMessage = result ? 'correct' : 'incorrect';
+  return `${character}'s accusation is ${resultMessage}!`;
+};
+
+const displayAccusedCards = (accusedCards) => {
+  const popup = document.querySelector('.non-accuser-popup');
+  const categories = ['character', 'room', 'weapon'];
+  const cardsElements = popup.querySelectorAll('.card');
+  categories.forEach((category, index) => {
+    const imgDom = ['img', { src: `images/${accusedCards[category]}.png` }];
+    const img = generateHTML(imgDom);
+    cardsElements[index].replaceChildren(img);
+  });
+};
+
+const showNonAccuserPopup = ({ accuser, accusedCards, result }) => {
+  document.querySelector('.popup-container').style.visibility = 'visible';
+  const popup = document.querySelector('.non-accuser-popup');
+  popup.style.visibility = 'visible';
+
+  displayAccusedCards(accusedCards);
+  const accusationMessageEle = popup.querySelector('.message');
+  const accusationMessage = othersAccusationMessage(accuser, accusedCards);
+  accusationMessageEle.innerText = accusationMessage;
+
+  const resultMessageEle = popup.querySelector('.result-message');
+  const resultMessage = othersResultMessage(accuser, result);
+  resultMessageEle.innerText = resultMessage;
 };
 
 const accusationResult = (game) => {
@@ -410,7 +474,9 @@ const accusationResult = (game) => {
   if (currentPlayer.character === you.character) {
     updateAccusersPopup(envelope, accusation);
     revealEnvelope(envelope);
+    return;
   }
+  showNonAccuserPopup(accusation);
 };
 
 const renderGame = () => {
@@ -424,6 +490,7 @@ const renderGame = () => {
       highlighPossiblePosition(game);
       if (game.accusation) {
         accusationResult(game);
+
       }
     });
   }, 100);

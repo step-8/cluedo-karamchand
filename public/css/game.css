@@ -106,11 +106,13 @@ main {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
+  align-items: center;
   visibility: hidden;
 }
 
 
 .accuse-popup {
+  visibility: hidden;
   padding: 2em;
   height: 700px;
   width: 700px;
@@ -138,7 +140,7 @@ main {
 }
 
 .accused-cards {
-  height: 40%;
+  /* height: 40%; */
 }
 
 .popup-options {
@@ -194,6 +196,21 @@ main {
   fill: orange;
 }
 
-#accusation-message {
+.message {
   width: 100%;
+}
+
+.popup {
+  position: fixed;
+}
+
+.non-accuser-popup {
+  visibility: hidden;
+  padding: 2em;
+  width: 700px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2em;
+  margin: 110px;
 }
