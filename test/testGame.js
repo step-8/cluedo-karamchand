@@ -49,12 +49,13 @@ describe('Game', () => {
         name: 'bob',
         character: 'scarlett'
       },
-      characters: ['scarlett', 'mustard', 'green', 'white', 'peacock', 'plum'],
+      characters: ['scarlett', 'mustard', 'white', 'green', 'peacock', 'plum'],
       players: [
         { name: 'bob', character: 'scarlett' },
         { name: 'james', character: 'mustard' }
       ],
-      accusation: null
+      accusation: null,
+      possibleMoves: []
     };
 
     assert.deepStrictEqual(game.getState(1), expected);
@@ -187,6 +188,19 @@ describe('Game', () => {
       accuser: { name: 'bob', character: 'scarlett' },
       accusedCards: { character: 'green', weapon: 'rope', room: 'hall' },
     };
+
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('Should inject the possible moves into game', () => {
+    const game = new Game(1, 2, startingPositions);
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
+    game.start();
+    game.injectPossibleMoves([[1, 2], [2, 2]]);
+
+    const actual = game.getState(1).possibleMoves;
+    const expected = [[1, 2], [2, 2]];
 
     assert.deepStrictEqual(actual, expected);
   });

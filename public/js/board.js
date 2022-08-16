@@ -233,17 +233,20 @@ const highlightPosition = (position) => {
   targetElement.setAttribute('class', 'highlight-path');
 };
 
-const highlighPossiblePosition = (positions) => {
+const highlighPossibleMoves = (positions) => {
   positions.forEach(highlightPosition);
 };
 
 const getPossibleMoves = () => {
   get('/game/possible-moves', (xhr) =>
-    highlighPossiblePosition(JSON.parse(xhr.response)));
+    highlighPossibleMoves(JSON.parse(xhr.response)));
 };
 
 const diceRoll = () => {
-  get('/game/roll-dice', getPossibleMoves);
+  get('/game/roll-dice', (xhr) => {
+    const game = JSON.parse(xhr.response);
+    highlighPossibleMoves(game.possibleMoves);
+  });
 };
 
 const generateAccusationPopup = () => {
@@ -282,6 +285,7 @@ const enableOptions = (permissions) => {
   } else {
     disableOptions(diceBox);
   }
+
   if (passTurn) {
     passElement.onclick = pass;
     highlightOptions(passElement);
@@ -312,6 +316,8 @@ const renderGame = () => {
       updateDice(game.diceValue);
       enableOptions(game.you.permissions);
       updateTurn(game);
+      highlighPossibleMoves(game.possibleMoves);
+      console.log(game.possibleMoves);
     });
   }, 500);
 };

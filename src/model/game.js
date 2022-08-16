@@ -11,6 +11,7 @@ class Game {
   #isStarted;
   #accusation;
   #startingPositions;
+  #possibleMoves;
 
   constructor(gameId, maxPlayers, startingPositions) {
     this.#gameId = gameId;
@@ -20,8 +21,8 @@ class Game {
     this.#characters = [
       'scarlett',
       'mustard',
-      'green',
       'white',
+      'green',
       'peacock',
       'plum'
     ];
@@ -30,6 +31,7 @@ class Game {
     this.#isStarted = false;
     this.#startingPositions = startingPositions;
     this.#accusation = null;
+    this.#possibleMoves = [];
   }
 
   get players() {
@@ -104,6 +106,7 @@ class Game {
   }
 
   passTurn() {
+    this.#possibleMoves = [];
     this.#disablePermissions();
     this.#changePlayer();
     this.#enablePermissions();
@@ -143,10 +146,17 @@ class Game {
     return true;
   }
 
+  injectPossibleMoves(possibleMoves) {
+    this.#possibleMoves = possibleMoves;
+  }
+
   getState(playerId) {
     const playerState = this.#players.map(player => player.profile);
     const [you] = this.#players.filter(player =>
       player.info.playerId === playerId);
+
+    const currentPlayerId = this.currentPlayer.info.playerId;
+    const moves = playerId === currentPlayerId ? this.#possibleMoves : [];
 
     const state = {
       gameId: this.#gameId,
@@ -156,7 +166,8 @@ class Game {
       players: playerState,
       diceValue: this.#diceValue,
       currentPlayer: this.currentPlayer.profile,
-      accusation: this.#accusation
+      accusation: this.#accusation,
+      possibleMoves: moves
     };
 
     if (this.#accusation && this.currentPlayer.isYourId(playerId)) {

@@ -1,9 +1,17 @@
+const { findPossibleMoves } = require('./rollDiceHandler.js');
+
 const diceRoller = () => Math.ceil(Math.random() * 6);
 
-const rollDice = (req, res) => {
-  const { game } = req;
+const rollDice = (cellPositions) => (req, res) => {
+  const { game, session: { userId } } = req;
   game.rollDice(diceRoller);
-  res.json(game.getState(req.session.userId));
+
+  const { diceValue, you } = game.getState(userId);
+  const moves = diceValue[0] + diceValue[1];
+  const possibleMoves = findPossibleMoves(cellPositions, moves, you.position);
+  game.injectPossibleMoves(possibleMoves);
+
+  res.json(game.getState(userId));
 };
 
 const handleAccusation = (req, res) => {

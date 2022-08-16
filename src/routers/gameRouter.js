@@ -5,7 +5,6 @@ const { rollDice, handleAccusation, passTurn } =
 const { distributeCards } = require('../middleware/distributeCards');
 const { injectGame } = require('../middleware/gameMiddleware');
 const { validateUser } = require('../middleware/validateUser');
-const { servePossibleMoves } = require('../handlers/rollDiceHandler.js');
 
 const createGameRouter = (games, cards, cellPositions) => {
   const router = express.Router();
@@ -14,10 +13,9 @@ const createGameRouter = (games, cards, cellPositions) => {
   router.use(injectGame(games));
 
   router.get('/', distributeCards(cards), boardHandler);
-  router.get('/roll-dice', rollDice);
+  router.get('/roll-dice', rollDice(cellPositions));
   router.get('/pass-turn', passTurn);
   router.post('/accuse', handleAccusation);
-  router.get('/possible-moves', servePossibleMoves(cellPositions));
 
   return router;
 };
