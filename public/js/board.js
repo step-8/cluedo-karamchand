@@ -100,10 +100,14 @@ const updateTurn = game => {
   turnMessage.innerText = getTurn(game);
 };
 
-const highlightCurrentPlayer = (game) => {
-  const character = game.currentPlayer.character;
+const highlightCurrentPlayer = (character) => {
   const charElement = document.getElementById(character);
   charElement.setAttribute('class', 'current-player');
+};
+
+const removeHighlight = (character) => {
+  const charElement = document.getElementById(character);
+  charElement.classList.remove('current-player');
 };
 
 const generateCharacterCard = (character) => {
@@ -227,41 +231,39 @@ const updateDice = ([dice1, dice2]) => {
   dice[1].innerText = dice2;
 };
 
-const showTokens = ({ players }) => {
+const createToken = (position, character, currentPlayer) => {
+  const characterElement = document.querySelector(`#${character}`);
+  if (character === currentPlayer.character) {
+    highlightCurrentPlayer(character);
+  } else {
+    removeHighlight(character);
+  }
+  characterElement.setAttribute('cx', position[0] + 0.5);
+  characterElement.setAttribute('cy', position[1] + 0.5);
+};
+
+const showTokens = ({ players, currentPlayer }) => {
   players.forEach(({ position, character }) => {
-    const characterElement = document.querySelector(`#${character}`);
-    characterElement.setAttribute('cx', position[0] + 0.5);
-    characterElement.setAttribute('cy', position[1] + 0.5);
+    createToken(position, character, currentPlayer);
   });
 };
 
-const moveCharacter = (position, disablePosition) => {
+const moveCharacter = (position) => {
   const body = new URLSearchParams(`position=[${position}]`);
-  post('/game/move', body, disablePosition);
+  post('/game/move', body, removeHightlightedPath);
 };
 
-const highlightPosition = (position, disablePosition) => {
+const highlightPosition = (position) => {
   const id = `${position[0]}-${position[1]}`;
   const targetElement = document.getElementById(id);
   targetElement.setAttribute('class', 'highlight-path');
   targetElement.onclick = () =>
-    moveCharacter(position, disablePosition);
-};
-
-const disablePossiblePosition = (possibleMoves) => () => {
-  possibleMoves.forEach(position => {
-    const id = `${position[0]}-${position[1]}`;
-    const targetElement = document.getElementById(id);
-    targetElement.classList.remove('highlight-path');
-    targetElement.onclick = '';
-  });
+    moveCharacter(position);
 };
 
 const highlighPossiblePosition = ({ possibleMoves }) => {
-
-  const disablePosition = disablePossiblePosition(possibleMoves);
   possibleMoves.forEach(position =>
-    highlightPosition(position, disablePosition));
+    highlightPosition(position));
 };
 
 const getPossibleMoves = () => {
@@ -294,16 +296,17 @@ const disableOptions = (optionElement) => {
   optionElement.onclick = '';
 };
 
-const removeHightlighedPath = () => {
+const removeHightlightedPath = () => {
   const highlightedCells = document.querySelectorAll('.highlight-path');
   highlightedCells.forEach(node => {
     node.classList.remove('highlight-path');
+    node.onclick = '';
   });
 };
 
 const pass = () => {
-  removeHightlighedPath();
-  get('/game/pass-turn', (x) => x);
+  removeHightlightedPath();
+  get('/game/pass-turn', () => { });
 };
 
 const enableOptions = (permissions) => {
@@ -361,12 +364,11 @@ const main = () => {
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
     console.log(game);
-    generateOptions(game.diceValue, game.you.permissions);
 
-    highlightCurrentPlayer(game);
+    generateCards(game.you);
     showTurn(game);
     displayProfile(game.you);
-    generateCards(game.you);
+    generateOptions(game.diceValue, game.you.permissions);
   });
 
   renderGame();
