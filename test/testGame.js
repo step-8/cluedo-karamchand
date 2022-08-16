@@ -39,7 +39,6 @@ describe('Game', () => {
     const expected = {
       gameId: 1,
       diceValue: [1, 1],
-      possibleMoves: [[7, 16]],
       you: {
         playerId: 1, name: 'bob', character: 'scarlett', position: [1, 1],
         permissions:
@@ -48,12 +47,13 @@ describe('Game', () => {
       maxPlayers: 2,
       currentPlayer: {
         name: 'bob',
-        character: 'scarlett'
+        character: 'scarlett',
+        position: [1, 1]
       },
       characters: ['scarlett', 'mustard', 'white', 'green', 'peacock', 'plum'],
       players: [
-        { name: 'bob', character: 'scarlett' },
-        { name: 'james', character: 'mustard' }
+        { name: 'bob', character: 'scarlett', position: [1, 1] },
+        { name: 'james', character: 'mustard', position: [2, 2] }
       ],
       accusation: null,
       possibleMoves: []
@@ -112,7 +112,8 @@ describe('Game', () => {
     game.passTurn();
 
     const actual = game.getState(2).currentPlayer;
-    assert.deepStrictEqual(actual, { name: 'bobby', character: 'mustard' });
+    assert.deepStrictEqual(actual,
+      { name: 'bobby', character: 'mustard', position: [2, 2] });
   });
 
   it('should pass the turn to first player after a round', () => {
@@ -124,7 +125,8 @@ describe('Game', () => {
     game.passTurn();
 
     const actual = game.getState(2).currentPlayer;
-    assert.deepStrictEqual(actual, { name: 'bob', character: 'scarlett' });
+    assert.deepStrictEqual(actual,
+      { name: 'bob', character: 'scarlett', position: [1, 1] });
   });
 
   it('Should start the game and give permissions to the current player', () => {
@@ -175,7 +177,7 @@ describe('Game', () => {
     }));
   });
 
-  it('Should no t allow other players to accuse', () => {
+  it('Should not allow other players to accuse', () => {
     const game = new Game(1, 2, startingPositions);
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'raj');
@@ -196,7 +198,7 @@ describe('Game', () => {
     const { result, ...actual } = accusation;
 
     const expected = {
-      accuser: { name: 'bob', character: 'scarlett' },
+      accuser: { name: 'bob', character: 'scarlett', position: [1, 1] },
       accusedCards: { character: 'green', weapon: 'rope', room: 'hall' },
     };
 

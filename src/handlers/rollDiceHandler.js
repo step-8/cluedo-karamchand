@@ -70,8 +70,8 @@ const findPossibleMoves = (cells, moves, currentPos, possibleRooms = []) => {
 const moveCharacter = (req, res) => {
   const { game } = req;
   const { position } = req.body;
-  game.move(position);
-  res.end('');
+  game.move(JSON.parse(position));
+  res.end('ok');
 };
 
 module.exports = { findPossibleMoves, moveCharacter };

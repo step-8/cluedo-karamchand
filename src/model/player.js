@@ -63,7 +63,8 @@ class Player {
   get profile() {
     return {
       name: this.#playerName,
-      character: this.#characterName
+      character: this.#characterName,
+      position: this.#position
     };
   }
 
