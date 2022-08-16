@@ -67,4 +67,11 @@ const findPossibleMoves = (cells, moves, currentPos, possibleRooms = []) => {
   return removeDuplicates([...possibleMoves, ...possibleRooms]);
 };
 
-module.exports = { findPossibleMoves };
+const moveCharacter = (req, res) => {
+  const { game } = req;
+  const { position } = req.body;
+  game.move(position);
+  res.end('');
+};
+
+module.exports = { findPossibleMoves, moveCharacter };

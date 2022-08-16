@@ -17,6 +17,10 @@ class Player {
     this.#hasAccused = false;
   }
 
+  set position(pos) {
+    this.#position = pos;
+  }
+
   equals(otherPlayer) {
     return otherPlayer instanceof Player &&
       otherPlayer.#playerId === this.#playerId &&

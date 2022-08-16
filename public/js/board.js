@@ -227,26 +227,32 @@ const updateDice = ([dice1, dice2]) => {
   dice[1].innerText = dice2;
 };
 
-const highlightPosition = (position) => {
+const moveCharacter = (position, character) => {
+  const characterElement = document.querySelector(`#${character}`);
+  characterElement.setAttribute('cx', position[0] + 0.5);
+  characterElement.setAttribute('cy', position[1] + 0.5);
+  post('/game/move', `position=${position}`, () => { });
+};
+
+const highlightPosition = (position, character) => {
   const id = `${position[0]}-${position[1]}`;
   const targetElement = document.getElementById(id);
   targetElement.setAttribute('class', 'highlight-path');
+  targetElement.onclick = () => moveCharacter(position, character);
 };
 
-const highlighPossibleMoves = (positions) => {
-  positions.forEach(highlightPosition);
+const highlighPossiblePosition = ({ possibleMoves, you: { character } }) => {
+  possibleMoves.forEach(position => highlightPosition(position, character));
 };
 
 const getPossibleMoves = () => {
   get('/game/possible-moves', (xhr) =>
-    highlighPossibleMoves(JSON.parse(xhr.response)));
+    highlighPossiblePosition(JSON.parse(xhr.response)));
 };
 
 const diceRoll = () => {
-  get('/game/roll-dice', (xhr) => {
-    const game = JSON.parse(xhr.response);
-    highlighPossibleMoves(game.possibleMoves);
-  });
+  // get('/game/roll-dice', getPossibleMoves);
+  get('/game/roll-dice', () => { });
 };
 
 const generateAccusationPopup = () => {
@@ -339,6 +345,7 @@ const main = () => {
     generateOptions(game.diceValue, game.you.permissions);
 
     highlightCurrentPlayer(game);
+    highlighPossiblePosition(game);
     showTurn(game);
     displayProfile(game.you);
     generateCards(game.you);

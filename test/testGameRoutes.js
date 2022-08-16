@@ -36,6 +36,7 @@ const joinGame = (app, username, gameId) => {
 const loginAllAsJoinees = (app, players, gameId) => {
   return Promise.all(players.map(player => joinGame(app, player, gameId)));
 };
+
 describe('POST /game/accuse', () => {
   const app = createApp();
 
@@ -51,6 +52,25 @@ describe('POST /game/accuse', () => {
           .set('Cookie', hostCookie)
           .send({ character: 'green', weapon: 'rope', room: 'hall' })
           .expect(201, done);
+      });
+  });
+});
+
+describe('POST /game/move', () => {
+  const app = createApp();
+
+  it('Should move the character', (done) => {
+    loginAsHost(app, 'vikram')
+      .then(({ hostCookie, gameId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
+          .then(() => hostCookie);
+      })
+      .then((hostCookie) => {
+        request(app)
+          .post('/game/move')
+          .set('Cookie', hostCookie)
+          .send('position=[7, 24]')
+          .expect(200, done);
       });
   });
 });

@@ -125,6 +125,11 @@ class Game {
     this.disableDice();
   }
 
+  move(position) {
+    this.currentPlayer.position = position;
+    this.#possibleMoves = [];
+  }
+
   #isAccusationCorrect(cards) {
     return Object.keys(cards).every(category =>
       cards[category] === this.#envelope[category]);

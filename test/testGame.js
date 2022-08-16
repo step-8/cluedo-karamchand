@@ -39,6 +39,7 @@ describe('Game', () => {
     const expected = {
       gameId: 1,
       diceValue: [1, 1],
+      possibleMoves: [[7, 16]],
       you: {
         playerId: 1, name: 'bob', character: 'scarlett', position: [1, 1],
         permissions:
@@ -152,6 +153,16 @@ describe('Game', () => {
 
     const { permissions } = game.currentPlayer.info;
     assert.ok(!permissions.rollDice);
+  });
+
+  it('Should move the current player\'s token', () => {
+    const game = new Game(1, 2, startingPositions);
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
+    game.start();
+    game.move([7, 16]);
+    const currentPlayer = game.currentPlayer.info;
+    assert.deepStrictEqual(currentPlayer.position, [7, 16]);
   });
 
   it('Should allow the current player to accuse', () => {
