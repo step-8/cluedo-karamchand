@@ -7,10 +7,10 @@ const boardtemplate = (username) => {
       ['title', {}, 'CLUEDO'],
       ['link', { 'rel': 'stylesheet', 'href': 'css/game.css' }],
       ['script', { 'src': 'js/domGenerator.js' }],
+      ['script', { 'src': 'js/gameState.js' }],
       ['script', { 'src': 'js/board.js' }],
       ['script', { 'src': 'js/xhrUtils.js' }],
       ['script', { 'src': 'js/poller.js' }],
-      ['script', { 'src': 'js/gameState.js' }],
       ['script', { 'src': 'js/apiLayer.js' }]
     ],
     ['body', {},
