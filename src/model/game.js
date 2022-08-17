@@ -10,27 +10,18 @@ class Game {
   #diceValue;
   #isStarted;
   #accusation;
-  #startingPositions;
   #possibleMoves;
   #board;
 
-  constructor(gameId, maxPlayers, startingPositions, board) {
+  constructor(gameId, maxPlayers, characters, board) {
     this.#gameId = gameId;
     this.#maxPlayers = maxPlayers;
     this.#players = [];
     this.#currentPlayerIndex = 0;
-    this.#characters = [
-      'scarlett',
-      'mustard',
-      'white',
-      'green',
-      'peacock',
-      'plum'
-    ];
+    this.#characters = characters;
     this.#envelope = {};
     this.#diceValue = [1, 1];
     this.#isStarted = false;
-    this.#startingPositions = startingPositions;
     this.#accusation = null;
     this.#possibleMoves = [];
     this.#board = board;
@@ -82,10 +73,10 @@ class Game {
       return false;
     }
 
-    const character = this.#characters[this.#players.length];
-    const position = this.#startingPositions[character].position;
+    const { name: characterName, position } =
+      this.#characters[this.#players.length].info;
 
-    const player = new Player(playerId, playerName, character, position);
+    const player = new Player(playerId, playerName, characterName, position);
     this.#players.push(player);
     return true;
   }
@@ -170,12 +161,13 @@ class Game {
 
     const currentPlayerId = this.currentPlayer.info.playerId;
     const moves = playerId === currentPlayerId ? this.#possibleMoves : [];
+    const characters = this.#characters.map(character => character.info);
 
     const state = {
       gameId: this.#gameId,
       you: you.info,
       maxPlayers: this.#maxPlayers,
-      characters: this.#characters,
+      characters,
       players: playerState,
       diceValue: this.#diceValue,
       currentPlayer: this.currentPlayer.profile,

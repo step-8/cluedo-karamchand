@@ -1,23 +1,27 @@
 const assert = require('assert');
+const { Board } = require('../src/model/board.js');
+const { Character } = require('../src/model/character.js');
 const { Game } = require('../src/model/game.js');
 
-const startingPositions = {
-  'scarlett': { position: [1, 1] },
-  'mustard': { position: [2, 2] },
-  'green': { position: [3, 3] }
-};
+const characters = [
+  new Character('scarlett', [1, 1]),
+  new Character('mustard', [2, 2]),
+  new Character('green', [3, 3])
+];
+
+const board = new Board([], []);
 
 describe('Game', () => {
   it('Should equate game', () => {
-    const game1 = new Game(1, 2, {});
-    const game2 = new Game(1, 2, {});
+    const game1 = new Game(1, 2, characters, board);
+    const game2 = new Game(1, 2, characters, board);
 
     assert.ok(game1.equals(game2));
   });
 
   it('should add player to game', () => {
-    const game1 = new Game(1, 2, { 'scarlett': { position: [1, 1] } });
-    const game2 = new Game(1, 2, { 'scarlett': { position: [1, 1] } });
+    const game1 = new Game(1, 2, characters, board);
+    const game2 = new Game(1, 2, characters, board);
 
     assert.ok(game1.addPlayer(1, 'bob'));
     assert.ok(game2.addPlayer(1, 'bob'));
@@ -25,16 +29,18 @@ describe('Game', () => {
   });
 
   it('Should not add player to game if max players reached', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     game.addPlayer(1, 'bob');
 
     assert.ok(!game.addPlayer(1, 'bob'));
   });
 
   it('Should return the game state', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'james');
+
+    const charactersInfo = characters.map(character => character.info);
 
     const expected = {
       gameId: 1,
@@ -51,7 +57,7 @@ describe('Game', () => {
         character: 'scarlett',
         position: [1, 1]
       },
-      characters: ['scarlett', 'mustard', 'white', 'green', 'peacock', 'plum'],
+      characters: charactersInfo,
       players: [
         { name: 'bob', character: 'scarlett', position: [1, 1] },
         { name: 'james', character: 'mustard', position: [2, 2] }
@@ -64,40 +70,40 @@ describe('Game', () => {
   });
 
   it('Should return true if game is ready', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     game.addPlayer(1, 'bob');
 
     assert.ok(game.isReady());
   });
 
   it('Should return false if game is not ready', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
 
     assert.ok(!game.isReady());
   });
 
   it('Should return true if envelope is added', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     game.addEnvelope([1, 2, 3]);
 
     assert.ok(!game.isEnvelopeEmpty());
   });
 
   it('Should return false if envelope is not added', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
 
     assert.ok(game.isEnvelopeEmpty());
   });
 
   it('Should add envelope in game', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     game.addEnvelope(['a', 'b']);
 
     assert.ok(!game.isEnvelopeEmpty());
   });
 
   it('should roll the dice', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     assert.ok(game.addPlayer(1, 'bob'));
     game.rollDice(() => 2);
 
@@ -106,7 +112,7 @@ describe('Game', () => {
   });
 
   it('should pass the turn', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
 
     assert.ok(game.addPlayer(1, 'bob'));
     assert.ok(game.addPlayer(2, 'bobby'));
@@ -118,7 +124,7 @@ describe('Game', () => {
   });
 
   it('should pass the turn to first player after a round', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
 
     assert.ok(game.addPlayer(1, 'bob'));
     assert.ok(game.addPlayer(2, 'bobby'));
@@ -131,7 +137,7 @@ describe('Game', () => {
   });
 
   it('Should start the game and give permissions to the current player', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     assert.ok(game.addPlayer(1, 'bob'));
     game.start();
 
@@ -141,7 +147,7 @@ describe('Game', () => {
   });
 
   it('Should disable dice permission to the current player', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     assert.ok(game.addPlayer(1, 'bob'));
     game.disableDice();
 
@@ -150,7 +156,7 @@ describe('Game', () => {
   });
 
   it('Should disable pass turn permission to the current player', () => {
-    const game = new Game(1, 1, startingPositions);
+    const game = new Game(1, 1, characters, board);
     assert.ok(game.addPlayer(1, 'bob'));
     game.disablePass();
 
@@ -159,7 +165,7 @@ describe('Game', () => {
   });
 
   it('Should move the current player\'s token', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'raj');
     game.start();
@@ -169,7 +175,7 @@ describe('Game', () => {
   });
 
   it('Should allow the current player to accuse', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'raj');
     game.start();
@@ -179,7 +185,7 @@ describe('Game', () => {
   });
 
   it('Should not allow other players to accuse', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'raj');
     game.start();
@@ -189,7 +195,7 @@ describe('Game', () => {
   });
 
   it('Should provide accusation info, if current player accuses', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'raj');
     game.start();
@@ -207,7 +213,7 @@ describe('Game', () => {
   });
 
   it('Should inject the possible moves into game', () => {
-    const game = new Game(1, 2, startingPositions);
+    const game = new Game(1, 2, characters, board);
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'raj');
     game.start();

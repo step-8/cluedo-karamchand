@@ -2,7 +2,7 @@ const assert = require('assert');
 const { Board } = require('../src/model/board.js');
 
 const { cellPositions, roomPositions }
-  = require('../data/cellPositions.json');
+  = require('../data/gameDetails.json');
 
 describe('Board', () => {
   it('Should return true if position belongs to room', () => {

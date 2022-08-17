@@ -1,5 +1,6 @@
 const { Game } = require('../model/game.js');
 const { Board } = require('../model/board.js');
+const { Character } = require('../model/character.js');
 
 const randomIntBetween = (start, end) => {
   const diff = end - start;
@@ -12,11 +13,19 @@ const generateGameId = () => {
     String.fromCharCode(randomIntBetween(65, 90))).join('');
 };
 
+const createCharacters = (charactersDetails) => {
+
+  return charactersDetails
+    .map(({ name, position }) => new Character(name, position));
+};
+
 const createGame =
   (gameId, maxPlayers, hostId, hostName, boardData) => {
-    const { cellPositions, roomPositions, startingPositions } = boardData;
+    const { cellPositions, roomPositions, characterDetails } = boardData;
     const board = new Board(cellPositions, roomPositions);
-    const game = new Game(gameId, maxPlayers, startingPositions, board);
+    const characters = createCharacters(characterDetails);
+    const game =
+      new Game(gameId, maxPlayers, characters, board);
 
     game.addPlayer(hostId, hostName);
 

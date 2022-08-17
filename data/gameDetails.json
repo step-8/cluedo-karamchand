@@ -830,42 +830,48 @@
       ]
     }
   ],
-  "startingPositions": {
-    "scarlett": {
+  "characterDetails": [
+    {
+      "name": "scarlett",
       "position": [
         7,
         24
       ]
     },
-    "mustard": {
+    {
+      "name": "mustard",
       "position": [
         0,
         17
       ]
     },
-    "green": {
-      "position": [
-        14,
-        0
-      ]
-    },
-    "white": {
+    {
+      "name": "white",
       "position": [
         9,
         0
       ]
     },
-    "peacock": {
+    {
+      "name": "green",
+      "position": [
+        14,
+        0
+      ]
+    },
+    {
+      "name": "peacock",
       "position": [
         23,
         6
       ]
     },
-    "plum": {
+    {
+      "name": "plum",
       "position": [
         23,
         19
       ]
     }
-  }
+  ]
 }

@@ -5,7 +5,7 @@ const cookieSession = require('cookie-session');
 
 const boardData = require('../data/board.json');
 const cards = require('../data/cards.json');
-const cellPositions = require('../data/cellPositions.json');
+const cellPositions = require('../data/gameDetails.json');
 
 const { serveHomePage,
   serveLobby,

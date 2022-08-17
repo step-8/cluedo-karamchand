@@ -1,6 +1,6 @@
 const { findPossibleMoves } = require('../src/handlers/rollDiceHandler.js');
 const assert = require('assert');
-const cellPositions = require('../data/cellPositions.json');
+const cellPositions = require('../data/gameDetails.json');
 
 describe('findPossibleMoves', () => {
   it('Should give possible positions for single move', () => {
