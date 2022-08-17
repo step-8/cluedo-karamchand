@@ -334,11 +334,23 @@ const pass = () => {
   get('/game/pass-turn', () => { });
 };
 
+const showSuspectPopup = () => {
+  alert('Suspect');
+};
+
 const enableOptions = ({ you: { permissions } }) => {
-  const { rollDice, passTurn, accuse } = permissions;
+  const { rollDice, passTurn, accuse, suspect } = permissions;
   const diceBox = document.querySelector('#dice');
   const passElement = document.querySelector('#pass');
   const accuseButton = document.querySelector('#accuse');
+  const suspectButton = document.querySelector('#suspect');
+
+  if (suspect) {
+    suspectButton.onclick = showSuspectPopup;
+    highlightOptions(suspectButton);
+  } else {
+    disableOptions(suspectButton);
+  }
 
   if (rollDice) {
     diceBox.onclick = diceRoll;

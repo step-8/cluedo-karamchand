@@ -55,11 +55,13 @@ class Game {
     this.currentPlayer.disableAccuse();
   }
 
-  #enableSuspect() {
+  #manageSuspectPermission() {
     const currentCharacter = this.#currentPlayerCharacter.position;
     if (this.#board.isInsideRoom(currentCharacter)) {
-      this.currentPlayer.enableSuspect();
+      return this.currentPlayer.enableSuspect();
     }
+
+    this.currentPlayer.disableSuspect();
   }
 
   #disableSuspect() {
@@ -70,7 +72,7 @@ class Game {
     this.#enableDice();
     this.#allowToAccuse();
     this.#enablePass();
-    this.#enableSuspect();
+    this.#manageSuspectPermission();
   }
 
   #disablePermissions() {
@@ -144,6 +146,7 @@ class Game {
   move(newPosition) {
     this.currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
+    this.#manageSuspectPermission();
     this.#possibleMoves = [];
   }
 
