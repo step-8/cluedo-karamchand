@@ -3,7 +3,7 @@ name: Bug report
 about: Bug template for bug stories
 title: ''
 labels: ''
-assignees: ''
+assignees: prajaktagd
 
 ---
 
