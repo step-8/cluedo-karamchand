@@ -16,6 +16,10 @@ You have to find out:
 
 [Read More](https://github.com/step-8/cluedo-karamchand/wiki)
 
+## For playing :
+
+Visit [Cluedo](https://cluedo-karamchand.herokuapp.com/)
+
 ## Installation:
 
 ### Clone the project
