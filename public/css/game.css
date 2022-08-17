@@ -1,31 +1,123 @@
+:root {
+  --border-radius: 0.2em;
+  --font-size: 1.2em;
+  --border: 1px solid black;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  width: 1900px;
+  height: 920px;
+  margin: 0 auto;
 }
 
 .header {
-  width: 1650px;
-  margin: 20px 1% 30px 50px;
+  width: 100%;
+  height: 8%;
+  padding: 1em;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.header>h1 {
-  text-align: center;
-  width: 95%;
+.username {
+  font-size: var(--font-size);
+  text-transform: capitalize;
 }
 
 main {
-  height: 780px;
-  width: 1600px;
+  width: 100%;
+  height: 92%;
   display: flex;
-  column-gap: 30px;
 }
 
-.user {
-  font-size: 30px;
-  text-transform: capitalize;
+.players {
+  width: 15%;
+  height: 100%;
+}
+
+.board {
+  width: 48%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-controls {
+  width: 37%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cards {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 7% 11.5%;
+}
+
+.card {
+  width: 20%;
+  height: 44%;
+  border-radius: var(--border-radius);
+  box-shadow: 3px 3px 5px gray;
+  overflow: hidden;
+}
+
+.card>img {
+  width: 100%;
+  height: 100%;
+}
+
+.options {
+  width: 40%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.btn {
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  font-size: var(--font-size);
+  border-radius: var(--border-radius);
+  padding: 0.8em;
+  border: var(--border);
+  cursor: pointer;
+}
+
+/* .btn {
+  background-color: red;
+  color: white;
+} */
+
+.die {
+  width: 40%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: var(--border);
+  border-radius: var(--border-radius);
+}
+
+.logs {
+  width: 60%;
+  height: 40%;
 }
 
 .current-player {
@@ -33,66 +125,52 @@ main {
   stroke-width: 0.4%;
 }
 
-.container,
+/* .container,
 .popup {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
+} */
 
-.container {
+/* .container {
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   row-gap: 40px;
   font-size: 18px;
-}
+} */
 
-.image-wrapper {
+/* .image-wrapper {
   width: 150px;
   height: 150px;
   overflow: hidden;
   border-radius: 50%;
   box-shadow: 2px 1px 3px gray;
-}
+} */
 
-.image-wrapper>img {
+/* .image-wrapper>img {
   width: 100%;
   border: 2px solid black;
-}
+} */
 
-.profile-card>figcaption {
+/* .profile-card>figcaption {
   text-align: center;
   font-size: 1.2em;
   text-transform: capitalize;
-}
+} */
 
-.turn-message {
+/* .turn-message {
   font-weight: 600;
   margin-left: 40%;
   width: 80%;
-}
+} */
 
-.sub-container {
+/* .sub-container {
   display: flex;
   width: 800px;
   justify-content: space-around;
-}
+} */
 
-.cards {
-  display: flex;
-  column-gap: 20px;
-  justify-content: center;
-}
-
-.card {
-  overflow: hidden;
-  border: 1px solid black;
-  border-radius: 10px;
-  box-shadow: 2px 1px 3px gray;
-}
-
-.accuse-popup .card,
-.card>img {
+.accuse-popup .card {
   width: 130px;
   height: 220px
 }
@@ -109,7 +187,6 @@ main {
   align-items: center;
   visibility: hidden;
 }
-
 
 .accuse-popup {
   visibility: hidden;
@@ -139,10 +216,6 @@ main {
   justify-content: center;
 }
 
-.accused-cards {
-  /* height: 40%; */
-}
-
 .popup-options {
   width: 90%;
   display: flex;
@@ -154,35 +227,6 @@ main {
   display: flex;
   flex-direction: column;
   row-gap: 1em;
-}
-
-.dice-box,
-.button {
-  width: 50%;
-  padding: 10px;
-  border: 1px solid black;
-  display: flex;
-  border-radius: 5px;
-  justify-content: space-around;
-}
-
-.dice {
-  width: 40px;
-  aspect-ratio: 1;
-  border: 1px solid black;
-  text-align: center;
-  padding: 6px;
-}
-
-.options {
-  width: 30%;
-  height: 100%;
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  border-radius: 10px;
 }
 
 .highlight {

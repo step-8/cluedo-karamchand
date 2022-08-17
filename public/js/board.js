@@ -79,26 +79,26 @@ const generateBoard = ({ response }) => {
     }, ...rooms, ...paths, ...start, ...envelope]));
 };
 
-const getTurn = (game) => {
-  const character = game.currentPlayer.character;
-  let message = `${character}'s turn`.toUpperCase();
-  if (character === game.you.character) {
-    message = 'YOUR TURN';
-  }
-  return message;
-};
+// const getTurn = (game) => {
+//   const character = game.currentPlayer.character;
+//   let message = `${character}'s turn`.toUpperCase();
+//   if (character === game.you.character) {
+//     message = 'YOUR TURN';
+//   }
+//   return message;
+// };
 
-const showTurn = game => {
-  const message = getTurn(game);
-  const dom = ['div', { className: 'turn-message' }, message];
-  const turnMessage = generateHTML(dom);
-  document.querySelector('.sub-container').append(turnMessage);
-};
+// const showTurn = game => {
+//   const message = getTurn(game);
+//   const dom = ['div', { className: 'turn-message' }, message];
+//   const turnMessage = generateHTML(dom);
+//   document.querySelector('.sub-container').append(turnMessage);
+// };
 
-const updateTurn = game => {
-  const turnMessage = document.querySelector('.turn-message');
-  turnMessage.innerText = getTurn(game);
-};
+// const updateTurn = game => {
+//   const turnMessage = document.querySelector('.turn-message');
+//   turnMessage.innerText = getTurn(game);
+// };
 
 const highlightCurrentPlayer = (character) => {
   const charElement = document.getElementById(character);
@@ -110,25 +110,25 @@ const removeHighlight = (character) => {
   charElement.classList.remove('current-player');
 };
 
-const generateCharacterCard = (character) => {
-  const dom = ['div', { className: 'profile-card' },
-    ['figure', {},
-      ['div', { className: 'image-wrapper' },
-        ['img', { src: `/images/${character}.png`, alt: character }]
-      ]
-    ],
-    ['figcaption', {}, character]
-  ];
+// const generateCharacterCard = (character) => {
+//   const dom = ['div', { className: 'profile-card' },
+//     ['figure', {},
+//       ['div', { className: 'image-wrapper' },
+//         ['img', { src: `/images/${character}.png`, alt: character }]
+//       ]
+//     ],
+//     ['figcaption', {}, character]
+//   ];
 
-  return generateHTML(dom);
-};
+//   return generateHTML(dom);
+// };
 
-const displayProfile = ({ character }) => {
-  const containerElement = document.querySelector('.sub-container');
-  const characterCardElement = generateCharacterCard(character);
+// const displayProfile = ({ character }) => {
+//   const containerElement = document.querySelector('.sub-container');
+//   const characterCardElement = generateCharacterCard(character);
 
-  containerElement.appendChild(characterCardElement);
-};
+//   containerElement.appendChild(characterCardElement);
+// };
 
 const cardsTemplate = (cards) => {
   return cards.map(card => {
@@ -255,7 +255,7 @@ const accusationOptionsDropdown = (deck) => {
 };
 
 const updateDice = ({ diceValue }) => {
-  const dice = document.querySelectorAll('.dice');
+  const dice = document.querySelectorAll('.die');
   dice[0].innerText = diceValue[0];
   dice[1].innerText = diceValue[1];
 };
@@ -336,9 +336,9 @@ const pass = () => {
 
 const enableOptions = ({ you: { permissions } }) => {
   const { rollDice, passTurn, accuse } = permissions;
-  const diceBox = document.querySelector('.dice-box');
-  const passElement = document.querySelector('.pass');
-  const accuseButton = document.querySelector('#accuse-button');
+  const diceBox = document.querySelector('#dice');
+  const passElement = document.querySelector('#pass');
+  const accuseButton = document.querySelector('#accuse');
 
   if (rollDice) {
     diceBox.onclick = diceRoll;
@@ -362,19 +362,12 @@ const enableOptions = ({ you: { permissions } }) => {
   }
 };
 
-const generateOptions = ([dice1, dice2], permissions) => {
-  const options = document.querySelector('.options');
-  const dom = [['div',
-    { className: 'button', id: 'accuse-button' },
-    'Accuse'],
-  ['div', { className: 'pass button' }, 'Pass'],
-  ['div', { className: 'dice-box' },
-    ['div', { className: 'dice' }, dice1],
-    ['div', { className: 'dice' }, dice2]
-  ]];
+const updateOptions = ([die1, die2], game) => {
+  const dice = document.querySelectorAll('.die');
+  dice[0].innerText = die1;
+  dice[1].innerText = die2;
 
-  options.append(...dom.map(generateHTML));
-  enableOptions(permissions);
+  enableOptions(game);
 };
 
 const revealEnvelope = (envelope) => {
@@ -502,9 +495,7 @@ const main = () => {
     const game = JSON.parse(xhr.response);
 
     generateCards(game.you);
-    showTurn(game);
-    displayProfile(game.you);
-    generateOptions(game.diceValue, game.you.permissions);
+    updateOptions(game.diceValue, game);
   });
 
   const getGame = () =>
@@ -513,7 +504,6 @@ const main = () => {
   const poller = new Poller(getGame, 1000);
   const gameState = new GameState();
 
-  gameState.addObserver(updateTurn);
   gameState.addObserver(enableOptions);
   gameState.addObserver(highlighPossiblePosition);
   gameState.addObserver(showTokens);

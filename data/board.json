@@ -1150,8 +1150,8 @@
       "r": "0.3"
     },
     "board": {
-      "width": "900",
-      "height": "800",
+      "width": "830",
+      "height": "830",
       "viewBox": "0 0 24 25"
     },
     "envelope": {

@@ -1,27 +1,41 @@
 const { createDom } = require('../utils/htmlGenerator.js');
 
 const boardtemplate = (username) => {
-  return ['html', {},
+  return [
+    'html', {},
     ['head', {},
-      ['title', {}, 'Cluedo'],
+      ['title', {}, 'CLUEDO'],
       ['link', { 'rel': 'stylesheet', 'href': 'css/game.css' }],
       ['script', { 'src': 'js/domGenerator.js' }],
       ['script', { 'src': 'js/board.js' }],
+      ['script', { 'src': 'js/xhrUtils.js' }],
       ['script', { 'src': 'js/poller.js' }],
       ['script', { 'src': 'js/gameState.js' }],
-      ['script', { 'src': 'js/apiLayer.js' }],
-      ['script', { 'src': 'js/xhrUtils.js' }]],
-    ['body', {}, ['header', { class: 'header' }, ['h1', {}, 'Cluedo'],
-      ['div', { class: 'user' }, username]],
-      ['main', {}, ['div', { class: 'board' }],
-        ['div', { class: 'container' },
-          ['div', { class: 'sub-container' }],
+      ['script', { 'src': 'js/apiLayer.js' }]
+    ],
+    ['body', {},
+      ['header', { class: 'header' },
+        ['h1', {}, 'CLUEDO'],
+        ['div', { class: 'username' }, `Hey ${username}!`]
+      ],
+      ['main', {},
+        ['div', { class: 'players' }],
+        ['div', { class: 'board' }],
+        ['div', { class: 'player-controls' },
           ['div', { class: 'cards' }],
-          ['div', { class: 'options' }]
+          ['div', { class: 'options' },
+            ['div', { class: 'btn', id: 'accuse' }, 'ACCUSE'],
+            ['div', { class: 'btn', id: 'suspect' }, 'SUSPECT'],
+            ['div', { class: 'btn', id: 'pass' }, 'PASS'],
+            ['div', { class: 'btn', id: 'dice' },
+              ['div', { class: 'die', id: 'die1' }, '1'],
+              ['div', { class: 'die', id: 'die2' }, '2']
+            ]
+          ],
+          ['div', { class: 'logs' }]
         ]
       ]
-    ]
-  ];
+    ]];
 };
 
 const boardHandler = (req, res) => {
