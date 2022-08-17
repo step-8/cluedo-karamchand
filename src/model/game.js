@@ -184,6 +184,7 @@ class Game {
     if (this.#accusation && this.currentPlayer.isYourId(playerId)) {
       state.envelope = this.#envelope;
     }
+
     return state;
   }
 
