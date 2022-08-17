@@ -1,4 +1,5 @@
 const { Game } = require('../model/game.js');
+const { Board } = require('../model/board.js');
 
 const randomIntBetween = (start, end) => {
   const diff = end - start;
@@ -12,14 +13,17 @@ const generateGameId = () => {
 };
 
 const createGame =
-  (gameId, maxPlayers, hostId, hostName, startingPositions) => {
-    const game = new Game(gameId, maxPlayers, startingPositions);
+  (gameId, maxPlayers, hostId, hostName, boardData) => {
+    const { cellPositions, roomPositions, startingPositions } = boardData;
+    const board = new Board(cellPositions, roomPositions);
+    const game = new Game(gameId, maxPlayers, startingPositions, board);
+
     game.addPlayer(hostId, hostName);
 
     return game;
   };
 
-const hostGame = (games, startingPositions) => (req, res) => {
+const hostGame = (games, boardData) => (req, res) => {
   let { maxPlayers } = req.body;
   const { userId, username } = req.session;
 
@@ -28,7 +32,7 @@ const hostGame = (games, startingPositions) => (req, res) => {
 
   const gameId = generateGameId();
   games[gameId] =
-    createGame(gameId, maxPlayers, userId, username, startingPositions);
+    createGame(gameId, maxPlayers, userId, username, boardData);
   req.session.gameId = gameId;
 
   res.redirect(`/lobby/${gameId}`);

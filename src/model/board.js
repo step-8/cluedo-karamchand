@@ -4,18 +4,15 @@ const isEqual = (array1, array2) =>
 class Board {
   #tiles;
   #rooms;
-  #characters;
 
-  constructor(tiles, rooms, characters) {
+  constructor(tiles, rooms) {
     this.#tiles = tiles;
     this.#rooms = rooms;
-    this.#characters = characters;
   }
 
-  isCharacterInsideRoom(characterName) {
-    const characterPosition = this.#characters[characterName].position;
+  isInsideRoom(tile) {
     return this.#rooms.some(({ position }) =>
-      isEqual(position, characterPosition));
+      isEqual(position, tile));
   }
 }
 

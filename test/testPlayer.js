@@ -18,7 +18,8 @@ describe('Player', () => {
       name: 'bob',
       character: 'ironman',
       position: [1, 1],
-      permissions: { rollDice: false, accuse: false, passTurn: false },
+      permissions:
+        { rollDice: false, accuse: false, passTurn: false, suspect: false },
       cards: []
     };
 
@@ -33,7 +34,8 @@ describe('Player', () => {
       name: 'bob',
       character: 'ironman',
       position: [1, 1],
-      permissions: { rollDice: false, accuse: false, passTurn: false },
+      permissions:
+        { rollDice: false, accuse: false, passTurn: false, suspect: false },
       cards: ['hall']
     };
 

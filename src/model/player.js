@@ -13,7 +13,7 @@ class Player {
     this.#characterName = characterName;
     this.#position = position;
     this.#cards = [];
-    this.#permissions = { rollDice: false, accuse: false, passTurn: false };
+    this.#permissions = { rollDice: false, accuse: false, passTurn: false, suspect: false };
     this.#hasAccused = false;
   }
 
@@ -74,7 +74,7 @@ class Player {
 
   accused() {
     this.#hasAccused = true;
-    // this.#permissions.accuse = false;
+    this.#permissions.accuse = false;
   }
 
   get info() {

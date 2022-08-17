@@ -46,7 +46,7 @@ const createApp = () => {
 
   app.get('/', validateUser, isUserInGame(games), serveHomePage);
   app.post('/host',
-    validateUser, hostGame(games, cellPositions.startingPositions));
+    validateUser, hostGame(games, cellPositions));
   app.post('/join', validateUser, injectGameId(games),
     injectGame(games), addPlayerToGame, redirectToLobby);
 

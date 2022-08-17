@@ -42,7 +42,7 @@ describe('Game', () => {
       you: {
         playerId: 1, name: 'bob', character: 'scarlett', position: [1, 1],
         permissions:
-          { rollDice: false, passTurn: false, accuse: false }, cards: []
+          { rollDice: false, passTurn: false, accuse: false, suspect: false }, cards: []
       },
       maxPlayers: 2,
       currentPlayer: {

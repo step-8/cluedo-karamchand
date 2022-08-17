@@ -12,8 +12,9 @@ class Game {
   #accusation;
   #startingPositions;
   #possibleMoves;
+  #board;
 
-  constructor(gameId, maxPlayers, startingPositions) {
+  constructor(gameId, maxPlayers, startingPositions, board) {
     this.#gameId = gameId;
     this.#maxPlayers = maxPlayers;
     this.#players = [];
@@ -32,6 +33,7 @@ class Game {
     this.#startingPositions = startingPositions;
     this.#accusation = null;
     this.#possibleMoves = [];
+    this.#board = board;
   }
 
   get players() {
