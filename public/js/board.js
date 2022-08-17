@@ -464,21 +464,25 @@ const showNonAccuserPopup = ({ accuser, accusedCards, result }) => {
   resultMessageEle.innerText = resultMessage;
 };
 
+const isMyTurn = ({ currentPlayer, you }) =>
+  currentPlayer.character === you.character;
+
 const accusationResult = (game, poller) => {
   const { currentPlayer, you, accusation, envelope } = game;
 
   setTimeout(() => {
     closePopup();
     poller.startPolling();
-  }, 2000);
+  }, 10000);
 
-  if (currentPlayer.character === you.character) {
-    updateAccusersPopup(envelope, accusation);
-    revealEnvelope(envelope);
-    pass();
+  if (!isMyTurn(game)) {
+    showNonAccuserPopup(accusation);
     return;
   }
-  showNonAccuserPopup(accusation);
+
+  updateAccusersPopup(envelope, accusation);
+  revealEnvelope(envelope);
+  setTimeout(pass, 9000);
 };
 
 const showAccusation = (poller) => (game) => {
@@ -503,19 +507,18 @@ const main = () => {
     generateOptions(game.diceValue, game.you.permissions);
   });
 
-  const request = {
-    url: '/api/game',
-    options: { method: 'GET' }
-  };
+  const getGame = () =>
+    API.getGame().then(gameData => gameState.setData(gameData));
 
-  const poller = new Poller(request);
+  const poller = new Poller(getGame, 1000);
+  const gameState = new GameState();
 
-  poller.addHandler(updateTurn);
-  poller.addHandler(enableOptions);
-  poller.addHandler(highlighPossiblePosition);
-  poller.addHandler(showTokens);
-  poller.addHandler(updateDice);
-  poller.addHandler(showAccusation(poller));
+  gameState.addObserver(updateTurn);
+  gameState.addObserver(enableOptions);
+  gameState.addObserver(highlighPossiblePosition);
+  gameState.addObserver(showTokens);
+  gameState.addObserver(updateDice);
+  gameState.addObserver(showAccusation(poller));
 
   poller.startPolling();
 };

@@ -8,6 +8,8 @@ const boardtemplate = (username) => {
       ['script', { 'src': 'js/domGenerator.js' }],
       ['script', { 'src': 'js/board.js' }],
       ['script', { 'src': 'js/poller.js' }],
+      ['script', { 'src': 'js/gameState.js' }],
+      ['script', { 'src': 'js/apiLayer.js' }],
       ['script', { 'src': 'js/xhrUtils.js' }]],
     ['body', {}, ['header', { class: 'header' }, ['h1', {}, 'Cluedo'],
       ['div', { class: 'user' }, username]],
