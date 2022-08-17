@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
-require('dotenv').config();
 const cookieSession = require('cookie-session');
+require('dotenv').config();
 
 const boardData = require('../data/board.json');
 const cards = require('../data/cards.json');
@@ -35,6 +35,7 @@ const createApp = () => {
     name: process.env.SESSION_NAME,
     keys: [process.env.SESSION_KEYS]
   }));
+  app.set('view engine', 'pug');
 
   const loginRouter = createLoginRouter();
   const gameRouter = createGameRouter(games, cards, cellPositions);

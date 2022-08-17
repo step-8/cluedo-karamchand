@@ -37,7 +37,7 @@ main {
   display: flex;
 }
 
-main,
+/* main,
 header,
 .options,
 .board,
@@ -45,8 +45,8 @@ header,
 .player-controls,
 .players,
 .cards {
-  /* border: var(--border); */
-}
+  border: var(--border);
+} */
 
 .players {
   width: 15%;
