@@ -53,6 +53,10 @@ class Player {
     this.#permissions.accuse = true;
   }
 
+  enableSuspect() {
+    this.#permissions.suspect = true;
+  }
+
   disableDice() {
     this.#permissions.rollDice = false;
   }
@@ -65,6 +69,15 @@ class Player {
     this.#permissions.accuse = false;
   }
 
+  disableSuspect() {
+    this.#permissions.suspect = false;
+  }
+
+  accused() {
+    this.#hasAccused = true;
+    this.#permissions.accuse = false;
+  }
+
   get profile() {
     return {
       name: this.#playerName,
@@ -73,19 +86,14 @@ class Player {
     };
   }
 
-  accused() {
-    this.#hasAccused = true;
-    this.#permissions.accuse = false;
-  }
-
   get info() {
     return {
       playerId: this.#playerId,
       name: this.#playerName,
       character: this.#characterName,
       position: this.#position,
-      cards: this.#cards,
-      permissions: this.#permissions
+      cards: [...this.#cards],
+      permissions: { ...this.#permissions }
     };
   }
 }

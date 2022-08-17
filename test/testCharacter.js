@@ -17,4 +17,12 @@ describe('Character', () => {
 
     assert.deepStrictEqual(character.info, expected);
   });
+
+  it('Should update position of the character', () => {
+    const character = new Character('bob', [1, 1]);
+    character.position = [1, 2];
+
+    const expectedCharacter = new Character('bob', [1, 2]);
+    assert.ok(character.equals(expectedCharacter));
+  });
 });

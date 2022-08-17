@@ -3,15 +3,20 @@ const { Board } = require('../src/model/board.js');
 const { Character } = require('../src/model/character.js');
 const { Game } = require('../src/model/game.js');
 
-const characters = [
-  new Character('scarlett', [1, 1]),
-  new Character('mustard', [2, 2]),
-  new Character('green', [3, 3])
-];
-
-const board = new Board([], []);
-
 describe('Game', () => {
+  let characters;
+  let board;
+
+  beforeEach(() => {
+    characters = [
+      new Character('scarlett', [1, 1]),
+      new Character('mustard', [2, 2]),
+      new Character('green', [3, 3])
+    ];
+
+    board = new Board([], []);
+  });
+
   it('Should equate game', () => {
     const game1 = new Game(1, 2, characters, board);
     const game2 = new Game(1, 2, characters, board);

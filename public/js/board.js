@@ -416,7 +416,8 @@ const updateAccusersPopup = (envelope, accusation) => {
   const envelopeMessageEle = accuserPopup.querySelector('#envelope-message');
   envelopeMessageEle.innerText = envelopeCardsMessage(envelope);
 
-  const accusationMessageEle = accuserPopup.querySelector('#accusation-message');
+  const accusationMessageEle =
+    accuserPopup.querySelector('#accusation-message');
   accusationMessageEle.innerText = accusationMessage(accusation.accusedCards);
 
   const resultMessageEle = accuserPopup.querySelector('#result-message');

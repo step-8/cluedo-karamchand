@@ -62,10 +62,11 @@ describe('Player', () => {
     const player = new Player(1, 'ram', 'scarlett', [1, 1]);
 
     player.enableDice();
-    const { permissions } = player.info;
+    let { permissions } = player.info;
     assert.ok(permissions.rollDice);
 
     player.disableDice();
+    permissions = player.info.permissions;
     assert.ok(!permissions.rollDice);
   });
 
@@ -73,11 +74,27 @@ describe('Player', () => {
     const player = new Player(1, 'ram', 'scarlett', [1, 1]);
 
     player.enablePassTurn();
-    const { permissions } = player.info;
+    let { permissions } = player.info;
     assert.ok(permissions.passTurn);
 
     player.disablePassTurn();
+    permissions = player.info.permissions;
     assert.ok(!permissions.passTurn);
   });
 
+  it('Should enable suspect permission', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+    player.enableSuspect();
+
+    const { permissions } = player.info;
+    assert.ok(permissions.suspect);
+  });
+
+  it('Should disable suspect permission', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+    player.disableSuspect();
+
+    const { permissions } = player.info;
+    assert.ok(!permissions.suspect);
+  });
 });

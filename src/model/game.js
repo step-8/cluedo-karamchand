@@ -35,6 +35,10 @@ class Game {
     return this.#players[this.#currentPlayerIndex];
   }
 
+  get #currentPlayerCharacter() {
+    return this.#characters[this.#currentPlayerIndex];
+  }
+
   get isStarted() {
     return this.#isStarted;
   }
@@ -51,16 +55,29 @@ class Game {
     this.currentPlayer.disableAccuse();
   }
 
+  #enableSuspect() {
+    const currentCharacter = this.#currentPlayerCharacter.position;
+    if (this.#board.isInsideRoom(currentCharacter)) {
+      this.currentPlayer.enableSuspect();
+    }
+  }
+
+  #disableSuspect() {
+    this.currentPlayer.disableSuspect();
+  }
+
   #enablePermissions() {
     this.#enableDice();
     this.#allowToAccuse();
     this.#enablePass();
+    this.#enableSuspect();
   }
 
   #disablePermissions() {
     this.disableDice();
     this.disablePass();
     this.#disableAccuse();
+    this.#disableSuspect();
   }
 
   start() {
@@ -124,8 +141,9 @@ class Game {
     this.disableDice();
   }
 
-  move(position) {
-    this.currentPlayer.position = position;
+  move(newPosition) {
+    this.currentPlayer.position = newPosition;
+    this.#currentPlayerCharacter.position = newPosition;
     this.#possibleMoves = [];
   }
 
@@ -165,14 +183,14 @@ class Game {
 
     const state = {
       gameId: this.#gameId,
-      you: you.info,
+      you: { ...you.info },
       maxPlayers: this.#maxPlayers,
       characters,
       players: playerState,
       diceValue: this.#diceValue,
       currentPlayer: this.currentPlayer.profile,
       accusation: this.#accusation,
-      possibleMoves: moves
+      possibleMoves: [...moves]
     };
 
     if (this.#accusation && this.currentPlayer.isYourId(playerId)) {

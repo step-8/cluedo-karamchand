@@ -10,6 +10,14 @@ class Character {
     this.#position = position;
   }
 
+  set position(newPosition) {
+    this.#position = newPosition;
+  }
+
+  get position() {
+    return this.#position;
+  }
+
   get info() {
     return {
       name: this.#name,
