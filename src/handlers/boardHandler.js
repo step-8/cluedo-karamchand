@@ -7,6 +7,7 @@ const boardtemplate = (username) => {
       ['link', { 'rel': 'stylesheet', 'href': 'css/game.css' }],
       ['script', { 'src': 'js/domGenerator.js' }],
       ['script', { 'src': 'js/board.js' }],
+      ['script', { 'src': 'js/poller.js' }],
       ['script', { 'src': 'js/xhrUtils.js' }]],
     ['body', {}, ['header', { class: 'header' }, ['h1', {}, 'Cluedo'],
       ['div', { class: 'user' }, username]],

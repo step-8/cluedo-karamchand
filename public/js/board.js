@@ -254,10 +254,10 @@ const accusationOptionsDropdown = (deck) => {
   accuserPopup.querySelector('.accused-cards').append(...accusationCards);
 };
 
-const updateDice = ([dice1, dice2]) => {
+const updateDice = ({ diceValue }) => {
   const dice = document.querySelectorAll('.dice');
-  dice[0].innerText = dice1;
-  dice[1].innerText = dice2;
+  dice[0].innerText = diceValue[0];
+  dice[1].innerText = diceValue[1];
 };
 
 const createToken = (position, character, currentPlayer) => {
@@ -293,11 +293,6 @@ const highlightPosition = (position) => {
 const highlighPossiblePosition = ({ possibleMoves }) => {
   possibleMoves.forEach(position =>
     highlightPosition(position));
-};
-
-const getPossibleMoves = () => {
-  get('/game/possible-moves', (xhr) =>
-    highlighPossiblePosition(JSON.parse(xhr.response)));
 };
 
 const diceRoll = () => {
@@ -339,7 +334,7 @@ const pass = () => {
   get('/game/pass-turn', () => { });
 };
 
-const enableOptions = (permissions) => {
+const enableOptions = ({ you: { permissions } }) => {
   const { rollDice, passTurn, accuse } = permissions;
   const diceBox = document.querySelector('.dice-box');
   const passElement = document.querySelector('.pass');
@@ -469,12 +464,12 @@ const showNonAccuserPopup = ({ accuser, accusedCards, result }) => {
   resultMessageEle.innerText = resultMessage;
 };
 
-const accusationResult = (game) => {
+const accusationResult = (game, poller) => {
   const { currentPlayer, you, accusation, envelope } = game;
 
   setTimeout(() => {
     closePopup();
-    renderGame();
+    poller.startPolling();
   }, 2000);
 
   if (currentPlayer.character === you.character) {
@@ -486,21 +481,13 @@ const accusationResult = (game) => {
   showNonAccuserPopup(accusation);
 };
 
-const renderGame = () => {
-  const intervalId = setInterval(() => {
-    get('/api/game', (xhr) => {
-      const game = JSON.parse(xhr.response);
-      updateDice(game.diceValue);
-      enableOptions(game.you.permissions);
-      updateTurn(game);
-      showTokens(game);
-      highlighPossiblePosition(game);
-      if (game.accusation) {
-        accusationResult(game);
-        clearInterval(intervalId);
-      }
-    });
-  }, 100);
+const showAccusation = (poller) => (game) => {
+  if (!game.accusation) {
+    return;
+  }
+
+  accusationResult(game, poller);
+  poller.stopPolling();
 };
 
 const main = () => {
@@ -509,7 +496,6 @@ const main = () => {
   get('/api/board', generateBoard);
   get('/api/game', (xhr) => {
     const game = JSON.parse(xhr.response);
-    console.log(game);
 
     generateCards(game.you);
     showTurn(game);
@@ -517,7 +503,21 @@ const main = () => {
     generateOptions(game.diceValue, game.you.permissions);
   });
 
-  renderGame();
+  const request = {
+    url: '/api/game',
+    options: { method: 'GET' }
+  };
+
+  const poller = new Poller(request);
+
+  poller.addHandler(updateTurn);
+  poller.addHandler(enableOptions);
+  poller.addHandler(highlighPossiblePosition);
+  poller.addHandler(showTokens);
+  poller.addHandler(updateDice);
+  poller.addHandler(showAccusation(poller));
+
+  poller.startPolling();
 };
 
 window.onload = main;
