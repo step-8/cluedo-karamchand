@@ -64,3 +64,15 @@ article(id='suspect-popup')
   div(class='popup-options')
     div(class='btn' id='suspect-btn') SUSPECT
     div(class='btn' id='suspect-cancel') CANCEL
+
+//- Suspect-Result-Popup
+article(id='suspect-result-popup')
+  header 
+    h2 RESULT OF SUSPICION
+  div(id='suspicion-breakers')
+    - for (var x = 0; x < 5; x++)
+        div(class='suspicion-breaker')
+  div(id='suspicion-msg')
+  div(class='cards-combo')
+    - for (var x = 0; x < 3; x++)
+        div(class='card')
