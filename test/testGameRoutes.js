@@ -74,3 +74,22 @@ describe('POST /game/move', () => {
       });
   });
 });
+
+describe('POST /game/leave', () => {
+  const app = createApp();
+
+  it('Should leave the game', (done) => {
+    loginAsHost(app, 'James')
+      .then(({ hostCookie, gameId }) => {
+        return loginAllAsJoinees(app, ['John', 'Arthur'], gameId)
+          .then(() => hostCookie);
+      })
+      .then((hostCookie) => {
+        request(app)
+          .post('/game/leave')
+          .set('Cookie', hostCookie)
+          .expect('location', '/')
+          .expect(302, done);
+      });
+  });
+});

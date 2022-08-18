@@ -343,12 +343,25 @@
     resultMessageEle.innerText = resultMessage;
   };
 
+  const showGameOver = () => {
+    const popupContainer = document.querySelector('.popup-container');
+    popupContainer.style.visibility = 'visible';
+
+    const gameOverPopup = document.querySelector('#game-over-popup');
+    gameOverPopup.style.visibility = 'visible';
+  };
+
   const accusationResult = (poller) => {
     setTimeout(() => {
       if (gameState.isMyTurn()) {
         pass();
       }
+
       closePopup();
+
+      if (gameState.accusation.result) {
+        showGameOver();
+      }
       poller.startPolling();
     }, 10000);
 

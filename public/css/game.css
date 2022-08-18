@@ -239,6 +239,14 @@ article {
   gap: 4em;
 }
 
+#game-over-popup button {
+  background-color: white;
+}
+
+#game-over-popup #play-again-btn {
+  width: 100%;
+}
+
 #game-over-popup #winner {
   font-size: 2em;
   font-weight: 400;
@@ -246,6 +254,11 @@ article {
 
 #game-over-popup .popup-options {
   width: 80%;
+}
+
+#game-over-popup #quit-btn {
+  justify-content: center;
+  align-items: center;
 }
 
 #game-over-popup a {
