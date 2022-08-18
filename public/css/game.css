@@ -147,6 +147,10 @@ article {
   visibility: hidden;
 }
 
+#suspect-popup {
+  visibility: visible;
+}
+
 .selected-cards,
 .cards-combo {
   display: flex;
@@ -172,6 +176,10 @@ article {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+}
+
+#selected-room .card {
+  margin-top: 2.5em;
 }
 
 .suit .card {

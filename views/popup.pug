@@ -37,3 +37,30 @@ article(id='accuse-result-popup')
     - for (var x = 0; x < 3; x++)
         div(class='card')
   div(id='accuse-result-msg')
+
+//- Suspect-Popup
+article(id='suspect-popup')
+  header 
+    h2 SUSPECT
+  form(class='selected-cards' id='suspected-cards')
+    div(class='suit')
+      select(name='characters' id='characters')
+        each char in cards.characters
+          option(value=char) #{char}
+      div(class='card')
+        img(src='images/scarlett.png')
+    
+    div(class='suit')
+      select(name='weapons' id='weapons')
+        each weapon in cards.weapons
+          option(value=weapon) #{weapon}
+      div(class='card')
+        img(src='images/revolver.png')
+
+    div(class='suit' id='selected-room')
+      div(class='card')
+        img(src='images/kitchen.png')
+  
+  div(class='popup-options')
+    div(class='btn' id='suspect-btn') SUSPECT
+    div(class='btn' id='suspect-cancel') CANCEL
