@@ -162,7 +162,8 @@
     const weapon = formData.get('weapons');
 
     const accusedCards = JSON.stringify({ character, room, weapon });
-    API.accuse(accusedCards);
+    API.accuse(accusedCards)
+      .then(closePopup);
   };
 
   const showCard = (event) => {
@@ -312,7 +313,7 @@
     });
   };
 
-  const accuseResultPopup = () => {
+  const showAccusationResult = () => {
     const { accuser, accusedCards, result } = gameState.accusation;
 
     document.querySelector('.popup-container').style.visibility = 'visible';
@@ -320,6 +321,7 @@
     popup.style.visibility = 'visible';
 
     displayAccusedCards(accusedCards);
+
     const accusationMsgEle = popup.querySelector('#accusation-msg');
     const accusationMessage = othersAccusationMsg(accuser, accusedCards);
     accusationMsgEle.innerText = accusationMessage;
@@ -331,12 +333,14 @@
 
   const accusationResult = (poller) => {
     setTimeout(() => {
+      if (gameState.isMyTurn()) {
+        pass();
+      }
       closePopup();
       poller.startPolling();
     }, 10000);
 
-    accuseResultPopup();
-    setTimeout(pass, 9000);
+    showAccusationResult();
   };
 
   const showAccusation = (poller) => () => {
