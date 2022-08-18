@@ -1,0 +1,40 @@
+article(class='accuse-popup')
+  header 
+    h2 ACCUSE
+  form(class='selected-cards' id='accused-cards')
+    div(class='suit')
+      select(name='characters' id='characters')
+        option(value='scarlett') Scarlett
+        option(value='mustard') Mustard
+        option(value='white') White
+        option(value='green') Green
+        option(value='peacock') Peacock
+        option(value='plum') Plum
+      div(class='card')
+        img(src='images/scarlett.png')
+    div(class='suit')
+      select(name='rooms' id='rooms')
+        option(value='kitchen') Kitchen
+        option(value='ballroom') Ballroom
+        option(value='conservatory') Conservatory
+        option(value='billiard') Billiard
+        option(value='library') Library
+        option(value='study') Study
+        option(value='hall') Hall
+        option(value='lounge') Lounge
+        option(value='dining') Dining
+      div(class='card')
+        img(src='images/kitchen.png')
+    div(class='suit')
+      select(name='weapons' id='weapons')
+        option(value='revolver') Revolver
+        option(value='wrench') Wrench
+        option(value='dagger') Dagger
+        option(value='rope') Rope
+        option(value='candlestick') Candlestick
+        option(value='pipe') Pipe
+      div(class='card')
+        img(src='images/revolver.png')
+  div(class='popup-options')
+    div(class='btn' id='accuse-btn') ACCUSE
+    div(class='btn' id='accuse-cancel') CANCEL

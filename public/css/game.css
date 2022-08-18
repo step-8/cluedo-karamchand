@@ -136,102 +136,53 @@ header,
   stroke-width: 0.4%;
 }
 
-/* .container,
-.popup {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-} */
-
-/* .container {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: 40px;
-  font-size: 18px;
-} */
-
-/* .image-wrapper {
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-  border-radius: 50%;
-  box-shadow: 2px 1px 3px gray;
-} */
-
-/* .image-wrapper>img {
-  width: 100%;
-  border: 2px solid black;
-} */
-
-/* .profile-card>figcaption {
-  text-align: center;
-  font-size: 1.2em;
-  text-transform: capitalize;
-} */
-
-/* .turn-message {
-  font-weight: 600;
-  margin-left: 40%;
-  width: 80%;
-} */
-
-/* .sub-container {
-  display: flex;
-  width: 800px;
-  justify-content: space-around;
-} */
-
 .accuse-popup .card {
   width: 130px;
   height: 220px
 }
 
 .popup-container {
-  text-align: center;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0px;
   left: 0px;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
+  justify-content: center;
   align-items: center;
   visibility: hidden;
 }
 
-.accuse-popup {
-  visibility: hidden;
+article {
+  height: 50%;
+  width: 35%;
   padding: 2em;
-  height: 700px;
-  width: 700px;
   background-color: white;
   display: flex;
   flex-direction: column;
+  align-items: center;
   row-gap: 2em;
-  margin: 110px;
+  visibility: hidden;
 }
 
-.popup-header {
-  text-align: center;
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.envelope-cards,
-.accused-cards {
-  width: 90%;
-  margin: 0 auto;
+.selected-cards {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
   justify-content: center;
+  gap: 2em;
 }
 
 .popup-options {
-  width: 90%;
+  width: 50%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   column-gap: 1em;
+}
+
+.popup-options>.btn {
+  width: 40%;
+  padding: 0.5em;
 }
 
 .suit {
@@ -253,10 +204,6 @@ header,
 
 .message {
   width: 100%;
-}
-
-.popup {
-  position: fixed;
 }
 
 .non-accuser-popup {

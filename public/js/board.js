@@ -150,14 +150,14 @@
 
   const closePopup = () => {
     document.querySelector('.popup-container').style.visibility = 'hidden';
-    const popups = document.querySelectorAll('.popup');
+    const popups = document.querySelectorAll('article');
     popups.forEach(popup => {
       popup.style.visibility = 'hidden';
     });
   };
 
   const accuse = () => {
-    const form = document.querySelector('form');
+    const form = document.querySelector('#accused-cards');
     const formData = new FormData(form);
 
     const character = formData.get('characters');
@@ -393,7 +393,7 @@
 
   const removeAccusationDropdown = () => {
     const accuserPopup = document.querySelector('.accuse-popup');
-    const options = accuserPopup.querySelector('.accused-cards')
+    const options = accuserPopup.querySelector('#accused-cards')
       .querySelectorAll('select');
 
     if (options) {
@@ -415,22 +415,24 @@
     result ? 'Your accusation is correct!' : 'Your accusation is incorrect!';
 
   const updateAccusersPopup = () => {
-    const envelope = gameState.envelope;
+    // const envelope = gameState.envelope;
     const accusation = gameState.accusation;
 
     removeAccusationDropdown();
     removePopupOptions();
 
     const accuserPopup = document.querySelector('.accuse-popup');
-    accuserPopup.querySelector('.popup-header').innerText = 'Mystery Revealed!';
-    const envelopeMessageEle = accuserPopup.querySelector('#envelope-message');
-    envelopeMessageEle.innerText = envelopeCardsMessage(envelope);
+    accuserPopup.querySelector('header h2').innerText = 'RESULT OF ACCUSATION';
 
-    const accusationMessageEle = accuserPopup.querySelector('#accusation-message');
-    accusationMessageEle.innerText = accusationMessage(accusation.accusedCards);
+    const messageDom = ['div', { id: 'accusation-message' }]
+    const messageEle = generateHTML(messageDom);
+    messageEle.innerText = accusationMessage(accusation.accusedCards);
+    accuserPopup.querySelector('header').appendChild(messageEle);
 
-    const resultMessageEle = accuserPopup.querySelector('#result-message');
-    resultMessageEle.innerText = accusationResultMessage(accusation);
+    const resultDom = ['div', { id: 'result-message' }]
+    const resultMsgEle = generateHTML(resultDom);
+    resultMsgEle.innerText = accusationResultMessage(accusation);
+    accuserPopup.appendChild(resultMsgEle);
   };
 
   const othersAccusationMessage = (accuser, { character, weapon, room }) =>
@@ -481,7 +483,7 @@
     }
 
     updateAccusersPopup();
-    revealEnvelope(gameState.envelope);
+    // revealEnvelope(gameState.envelope);
     setTimeout(pass, 9000);
   };
 
@@ -495,7 +497,11 @@
   };
 
   const main = () => {
-    generateAccusationPopup();
+    // generateAccusationPopup();
+    document.querySelector('#accuse-btn').onclick = accuse;
+    document.querySelector('#accuse-cancel').onclick = closePopup;
+    const selects = document.querySelectorAll('.accuse-popup select');
+    selects.forEach((select) => select.onchange = showCard);
 
     API.getBoardData()
       .then(boardData => generateBoard(boardData));
