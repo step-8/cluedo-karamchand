@@ -147,10 +147,6 @@ article {
   visibility: hidden;
 }
 
-#suspect-popup {
-  visibility: visible;
-}
-
 .selected-cards,
 .cards-combo {
   display: flex;
