@@ -76,3 +76,14 @@ article(id='suspect-result-popup')
   div(class='cards-combo')
     - for (var x = 0; x < 3; x++)
         div(class='card')
+
+//- Game-Over-Popup
+article(id='game-over-popup')
+  header 
+    h2 GAME OVER
+  div(id='winner') Scarlett Won!
+  div(class='popup-options')
+    div(class='btn' id='play-again-btn')
+      a(href='/') PLAY AGAIN
+    div(class='btn' id='quit-btn') 
+      a(href='/logout') QUIT   

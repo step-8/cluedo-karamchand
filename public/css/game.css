@@ -147,6 +147,18 @@ article {
   visibility: hidden;
 }
 
+.popup-options {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  column-gap: 1em;
+}
+
+.popup-options>.btn {
+  width: 40%;
+  padding: 0.5em;
+}
+
 .selected-cards,
 .cards-combo {
   display: flex;
@@ -221,16 +233,25 @@ article {
   height: 95%;
 }
 
-.popup-options {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  column-gap: 1em;
+#game-over-popup {
+  height: 380px;
+  width: 550px;
+  gap: 4em;
 }
 
-.popup-options>.btn {
-  width: 40%;
-  padding: 0.5em;
+#game-over-popup #winner {
+  font-size: 2em;
+  font-weight: 400;
+}
+
+#game-over-popup .popup-options {
+  width: 80%;
+}
+
+#game-over-popup a {
+  display: block;
+  text-decoration: none;
+  color: black;
 }
 
 /* highlight */
