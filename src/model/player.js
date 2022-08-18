@@ -29,8 +29,8 @@ class Player {
       otherPlayer.#characterName === this.#characterName;
   }
 
-  addCard(card) {
-    this.#cards.push(card);
+  addCards(cards) {
+    this.#cards = cards;
   }
 
   isYourId(id) {

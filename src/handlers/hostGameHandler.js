@@ -22,6 +22,7 @@ const createCharacters = (charactersDetails) => {
 const createGame =
   (gameId, maxPlayers, hostId, hostName, boardData) => {
     const { cellPositions, roomPositions, characterDetails } = boardData;
+
     const board = new Board(cellPositions, roomPositions);
     const characters = createCharacters(characterDetails);
     const game =

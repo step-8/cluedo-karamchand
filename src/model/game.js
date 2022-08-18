@@ -1,3 +1,4 @@
+const { Cards } = require('./cards.js');
 const { Player } = require('./player.js');
 
 class Game {
@@ -82,8 +83,20 @@ class Game {
     this.#disableSuspect();
   }
 
+  #distributeCards() {
+    const cards = new Cards();
+    cards.distribute(this.#maxPlayers);
+    const { envelope, sets } = cards.info;
+
+    this.#envelope = envelope;
+
+    this.#players.forEach((player, index) =>
+      player.addCards(sets[index]));
+  }
+
   start() {
     this.#isStarted = true;
+    this.#distributeCards();
     this.#enablePermissions();
   }
 
@@ -98,14 +111,6 @@ class Game {
     const player = new Player(playerId, playerName, characterName, position);
     this.#players.push(player);
     return true;
-  }
-
-  addEnvelope(envelope) {
-    this.#envelope = envelope;
-  }
-
-  isEnvelopeEmpty() {
-    return Object.keys(this.#envelope).length === 0;
   }
 
   #enableDice() {

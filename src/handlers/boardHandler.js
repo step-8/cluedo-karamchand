@@ -1,10 +1,17 @@
 const boardHandler = (boardData, cards) => (req, res) => {
-  const { username, gameId } = req.session;
+  const { game, session } = req;
+  const { username, gameId } = session;
+
   if (!gameId) {
     return res.redirect('/');
   }
-  if (!req.game.isStarted) {
-    req.game.start();
+
+  if (!game.isStarted) {
+    game.start();
+  }
+
+  if (!game.isReady()) {
+    return res.redirect(`/lobby/${gameId}`);
   }
 
   res.render('game', { username, cards });

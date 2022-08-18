@@ -106,26 +106,6 @@ describe('Game', () => {
     assert.ok(!game.isReady());
   });
 
-  it('Should return true if envelope is added', () => {
-    const game = new Game(1, 1, characters, board);
-    game.addEnvelope([1, 2, 3]);
-
-    assert.ok(!game.isEnvelopeEmpty());
-  });
-
-  it('Should return false if envelope is not added', () => {
-    const game = new Game(1, 1, characters, board);
-
-    assert.ok(game.isEnvelopeEmpty());
-  });
-
-  it('Should add envelope in game', () => {
-    const game = new Game(1, 1, characters, board);
-    game.addEnvelope(['a', 'b']);
-
-    assert.ok(!game.isEnvelopeEmpty());
-  });
-
   it('should roll the dice', () => {
     const game = new Game(1, 1, characters, board);
     assert.ok(game.addPlayer(1, 'bob'));
