@@ -79,26 +79,36 @@
       }, ...rooms, ...paths, ...start, ...envelope]));
   };
 
-  // const getTurn = (game) => {
-  //   const character = game.currentPlayer.character;
-  //   let message = `${character}'s turn`.toUpperCase();
-  //   if (character === game.you.character) {
-  //     message = 'YOUR TURN';
-  //   }
-  //   return message;
-  // };
+  const generatePlayersDom = (players, you) => {
+    return players.map(({ name, character }) => {
+      let usernameDom = [['div', { className: 'name' }, name]];
+      if (character === you.character) {
+        usernameDom.push(['div', { className: 'you' }, '(You)']);
+      }
+      return ['div', { className: 'player', id: `${character}-profile` },
+        ['div', { className: 'character' },
+          ['img', { src: `images/${character}.png` }]],
+        ['div', {}, ...usernameDom]
+      ]
+    });
+  };
 
-  // const showTurn = game => {
-  //   const message = getTurn(game);
-  //   const dom = ['div', { className: 'turn-message' }, message];
-  //   const turnMessage = generateHTML(dom);
-  //   document.querySelector('.sub-container').append(turnMessage);
-  // };
+  const generatePlayers = ({ players, you }) => {
+    const playersDom = generatePlayersDom(players, you);
+    const playersEle = generateHTML(['div', { className: 'players' }, ...playersDom]);
+    document.querySelector('main').prepend(playersEle);
+  };
 
-  // const updateTurn = game => {
-  //   const turnMessage = document.querySelector('.turn-message');
-  //   turnMessage.innerText = getTurn(game);
-  // };
+  const highlightTurn = () => {
+    const highlightedEle = document.querySelector('.highlight-profile');
+    if (highlightedEle !== null) {
+      highlightedEle.classList.remove('highlight-profile');
+    }
+
+    const character = gameState.currentPlayer.character;
+    const currentPlayerEle = document.querySelector(`#${character}-profile`);
+    currentPlayerEle.className = 'player highlight-profile';
+  };
 
   const highlightCurrentPlayer = (character) => {
     const charElement = document.getElementById(character);
@@ -109,26 +119,6 @@
     const charElement = document.getElementById(character);
     charElement.classList.remove('current-player');
   };
-
-  // const generateCharacterCard = (character) => {
-  //   const dom = ['div', { className: 'profile-card' },
-  //     ['figure', {},
-  //       ['div', { className: 'image-wrapper' },
-  //         ['img', { src: `/images/${character}.png`, alt: character }]
-  //       ]
-  //     ],
-  //     ['figcaption', {}, character]
-  //   ];
-
-  //   return generateHTML(dom);
-  // };
-
-  // const displayProfile = ({ character }) => {
-  //   const containerElement = document.querySelector('.sub-container');
-  //   const characterCardElement = generateCharacterCard(character);
-
-  //   containerElement.appendChild(characterCardElement);
-  // };
 
   const cardsTemplate = (cards) => {
     return cards.map(card => {
@@ -394,6 +384,7 @@
 
     API.getGame()
       .then(gameData => {
+        generatePlayers(gameData);
         generateCards(gameData.you);
         updateOptions(gameData.diceValue);
       });
@@ -408,6 +399,7 @@
     gameState.addObserver(showTokens);
     gameState.addObserver(updateDice);
     gameState.addObserver(showAccusation(poller));
+    gameState.addObserver(highlightTurn);
 
     poller.startPolling();
   };

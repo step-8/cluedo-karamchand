@@ -28,6 +28,11 @@ body {
   height: 100%;
 }
 
+.suspicion-breaker>img,
+.character>img {
+  width: 100%;
+}
+
 .btn {
   width: 70%;
   display: flex;
@@ -63,6 +68,35 @@ main {
 .players {
   width: 15%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.players .player {
+  width: 80%;
+  height: 15%;
+  padding: 0.4em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.players .character {
+  width: 91px;
+  height: 80%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.players .name,
+.players .you {
+  width: 91px;
+  font-size: 1.2em;
+  text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .board {
@@ -224,10 +258,6 @@ article {
   box-shadow: 3px 3px 5px gray;
 }
 
-.suspicion-breaker>img {
-  width: 100%;
-}
-
 #suspect-result-popup .card {
   width: 23%;
   height: 95%;
@@ -268,6 +298,11 @@ article {
 }
 
 /* highlight */
+.highlight-profile {
+  border: 4px solid orange;
+  border-radius: var(--border-radius);
+}
+
 .highlight {
   cursor: pointer;
   border: 1px solid orangered;
