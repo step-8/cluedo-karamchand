@@ -66,8 +66,7 @@
     ['text', { ...attributes.envelopeText }, 'Envelope']];
   };
 
-  const generateBoard = ({ response }) => {
-    const boardData = JSON.parse(response);
+  const generateBoard = (boardData) => {
     const rooms = createRooms(boardData);
     const paths = createPaths(boardData);
     const start = createStart(boardData);
@@ -157,7 +156,7 @@
     });
   };
 
-  const accuse = (event) => {
+  const accuse = () => {
     const form = document.querySelector('form');
     const formData = new FormData(form);
 
@@ -166,12 +165,7 @@
     const weapon = formData.get('weapons');
 
     const accusedCards = JSON.stringify({ character, room, weapon });
-
-    fetch('/game/accuse', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: accusedCards
-    });
+    API.accuse(accusedCards);
   };
 
   const messageDom = attributes => ['div', attributes];
@@ -281,8 +275,10 @@
   };
 
   const moveCharacter = (position) => {
-    const body = new URLSearchParams(`position=[${position}]`);
-    post('/game/move', body, removeHightlightedPath);
+    const newPosition = new URLSearchParams(`position=[${position}]`);
+
+    API.moveCharacter(newPosition)
+      .then(removeHightlightedPath);
   };
 
   const highlightPosition = (position) => {
@@ -299,15 +295,14 @@
   };
 
   const diceRoll = () => {
-    get('/game/roll-dice', () => { });
+    API.rollDice();
   };
 
   const generateAccusationPopup = () => {
     document.querySelector('body').append(generateHTML(accusationPopupDom()));
 
-    fetch('./api/cards')
-      .then((res) => res.json())
-      .then(accusationOptionsDropdown);
+    API.getCards()
+      .then(cards => accusationOptionsDropdown(cards));
   };
 
   const showAccusationPopup = () => {
@@ -334,7 +329,7 @@
 
   const pass = () => {
     removeHightlightedPath();
-    get('/game/pass-turn', () => { });
+    API.passTurn();
   };
 
   const showSuspectPopup = () => {
@@ -502,13 +497,14 @@
   const main = () => {
     generateAccusationPopup();
 
-    get('/api/board', generateBoard);
-    get('/api/game', (xhr) => {
-      const game = JSON.parse(xhr.response);
+    API.getBoardData()
+      .then(boardData => generateBoard(boardData));
 
-      generateCards(game.you);
-      updateOptions(game.diceValue);
-    });
+    API.getGame()
+      .then(gameData => {
+        generateCards(gameData.you);
+        updateOptions(gameData.diceValue);
+      });
 
     const getGame = () =>
       API.getGame().then(gameData => gameState.setData(gameData));

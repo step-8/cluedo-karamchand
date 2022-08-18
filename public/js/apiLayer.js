@@ -1,9 +1,58 @@
-const fetchJSON = (request) => fetch(request.url, request.options)
+const fetchRequest = (request) => fetch(request.url, request.options);
+
+const fetchJSON = (request) => fetchRequest(request)
   .then(response => response.json())
   .catch(error => {
     throw new Error(error);
   });
 
 const API = {
-  getGame: () => fetchJSON({ url: '/api/game', options: { method: 'GET' } })
+  getGame: () => {
+    const request = { url: '/api/game', options: { method: 'GET' } };
+    return fetchJSON(request);
+  },
+
+  getCards: () => {
+    const request = { url: '/api/cards', options: { method: 'GET' } };
+    return fetchJSON(request);
+  },
+
+  getBoardData: () => {
+    const request = { url: '/api/board', options: { method: 'GET' } };
+    return fetchJSON(request);
+  },
+
+  rollDice: () => {
+    const request = { url: '/game/roll-dice', options: { method: 'GET' } };
+    return fetchRequest(request);
+  },
+
+  passTurn: () => {
+    const request = { url: '/game/pass-turn', options: { method: 'GET' } };
+    return fetchRequest(request);
+  },
+
+  moveCharacter: (newPosition) => {
+    const request = {
+      url: '/game/move',
+      options: {
+        method: 'POST',
+        body: newPosition
+      }
+    };
+    return fetchRequest(request);
+  },
+
+  accuse: (accusedCards) => {
+    const request = {
+      url: '/game/accuse',
+      options: {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: accusedCards
+      }
+    };
+
+    return fetchRequest(request);
+  }
 };

@@ -1,3 +1,6 @@
+const areObjectsEqual = (object1, object2) =>
+  JSON.stringify(object1) === JSON.stringify(object2);
+
 class GameState {
   #data;
   #observers;
@@ -8,6 +11,10 @@ class GameState {
   }
 
   setData(newData) {
+    if (areObjectsEqual(this.#data, newData)) {
+      return;
+    }
+
     this.#data = newData;
     this.#notifyObservers();
   }
@@ -65,6 +72,6 @@ class GameState {
   }
 
   #notifyObservers() {
-    this.#observers.forEach(observer => observer(this.#data));
+    this.#observers.forEach(observer => observer());
   }
 }
