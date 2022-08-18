@@ -1,4 +1,4 @@
-const boardHandler = (req, res) => {
+const boardHandler = (boardData) => (req, res) => {
   const { username, gameId } = req.session;
   if (!gameId) {
     return res.redirect('/');

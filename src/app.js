@@ -38,7 +38,7 @@ const createApp = () => {
   app.set('view engine', 'pug');
 
   const loginRouter = createLoginRouter();
-  const gameRouter = createGameRouter(games, cards, cellPositions);
+  const gameRouter = createGameRouter(games, cards, cellPositions, boardData);
   const apiRouter = createApiRouter(games, boardData, cards);
 
   app.use('/login', loginRouter);
