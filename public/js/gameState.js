@@ -3,10 +3,12 @@ const areObjectsEqual = (object1, object2) =>
 
 class GameState {
   #data;
+  #myPersmissions;
   #observers;
 
   constructor() {
     this.#data = null;
+    this.#myPersmissions = null;
     this.#observers = [];
   }
 
@@ -16,23 +18,24 @@ class GameState {
     }
 
     this.#data = newData;
+    this.#myPersmissions = this.#data.you.permissions;
     this.#notifyObservers();
   }
 
   canRollDice() {
-    return this.#data.you.permissions.rollDice;
+    return this.#myPersmissions.rollDice;
   }
 
   canPassTurn() {
-    return this.#data.you.permissions.passTurn;
+    return this.#myPersmissions.passTurn;
   }
 
   canAccuse() {
-    return this.#data.you.permissions.accuse;
+    return this.#myPersmissions.accuse;
   }
 
   canSuspect() {
-    return this.#data.you.permissions.suspect;
+    return this.#myPersmissions.suspect;
   }
 
   isMyTurn() {

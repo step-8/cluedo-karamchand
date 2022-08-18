@@ -293,12 +293,24 @@
     dice[1].innerText = die2;
   };
 
-  const othersAccusationMsg = (accuser, { character, weapon, room }) =>
-    `${accuser.character} accused ${character}, in the ${room}, with the ${weapon}`;
+  const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
-  const othersResultMessage = ({ character }, result) => {
+  const getAccusationMessage = () => {
+    const { accuser, accusedCards } = gameState.accusation;
+    const { character, room, weapon } = accusedCards;
+
+    const accuserName = gameState.isMyTurn() ? 'you' : accuser.character;
+
+    return `${capitalize(accuserName)} accused ${capitalize(character)}, in the ${capitalize(room)}, with the ${capitalize(weapon)}`;
+  };
+
+  const getAccusationResult = () => {
+    const { accuser: { character }, result } = gameState.accusation;
+
     const resultMessage = result ? 'correct' : 'incorrect';
-    return `${character}'s accusation is ${resultMessage}!`;
+    const accuser = gameState.isMyTurn() ? 'your' : `${character}'s`;
+
+    return `${capitalize(accuser)} accusation is ${resultMessage}!`;
   };
 
   const displayAccusedCards = (accusedCards) => {
@@ -323,11 +335,11 @@
     displayAccusedCards(accusedCards);
 
     const accusationMsgEle = popup.querySelector('#accusation-msg');
-    const accusationMessage = othersAccusationMsg(accuser, accusedCards);
+    const accusationMessage = getAccusationMessage(accuser, accusedCards);
     accusationMsgEle.innerText = accusationMessage;
 
     const resultMessageEle = popup.querySelector('#accuse-result-msg');
-    const resultMessage = othersResultMessage(accuser, result);
+    const resultMessage = getAccusationResult(accuser, result);
     resultMessageEle.innerText = resultMessage;
   };
 
