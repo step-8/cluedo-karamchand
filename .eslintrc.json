@@ -68,6 +68,7 @@
     "no-useless-return": "error",
     "max-depth": "off",
     "no-mixed-operators": "error",
+    "no-unused-vars": "off",
     "complexity": [
       "error",
       5

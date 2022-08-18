@@ -49,6 +49,10 @@ class Player {
     return !this.#hasAccused && this.#permissions.accuse;
   }
 
+  isAllowedToSuspect() {
+    return this.#permissions.suspect;
+  }
+
   allowToAccuse() {
     this.#permissions.accuse = true;
   }

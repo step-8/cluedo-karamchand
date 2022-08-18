@@ -171,6 +171,25 @@ class Game {
     return true;
   }
 
+  // #findSuspicionBreaker(suspectedCards) {
+  //   const index = this.#currentPlayerIndex;
+  //   const players = [
+  //     ...this.#players.slice(index + 1), ...this.#players.slice(0, index)
+  //   ];
+
+  // }
+
+  suspect(playerId, suspectedCards) {
+    const player = this.currentPlayer;
+
+    if (!player.isYourId(playerId) || !player.isAllowedToSuspect()) {
+      return false;
+    }
+
+    return true;
+    // const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
+  }
+
   injectPossibleMoves(possibleMoves) {
     this.#possibleMoves = possibleMoves;
   }

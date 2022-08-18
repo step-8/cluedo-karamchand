@@ -97,4 +97,17 @@ describe('Player', () => {
     const { permissions } = player.info;
     assert.ok(!permissions.suspect);
   });
+
+  it('Should return true if player is allowed to suspect', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+    player.enableSuspect();
+
+    assert.ok(player.isAllowedToSuspect());
+  });
+
+  it('Should return false if player is not allowed to suspect', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+
+    assert.ok(!player.isAllowedToSuspect());
+  });
 });

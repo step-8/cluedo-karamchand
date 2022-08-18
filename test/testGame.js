@@ -3,6 +3,15 @@ const { Board } = require('../src/model/board.js');
 const { Character } = require('../src/model/character.js');
 const { Game } = require('../src/model/game.js');
 
+const createGame = (players, characters, board) => {
+  const game = new Game(1, players.length, characters, board);
+  players.forEach((player, index) => {
+    game.addPlayer(index + 1, player);
+  });
+
+  return game;
+};
+
 describe('Game', () => {
   let characters;
   let board;
@@ -13,8 +22,18 @@ describe('Game', () => {
       new Character('mustard', [2, 2]),
       new Character('green', [3, 3])
     ];
-
-    board = new Board([], []);
+    const rooms = [{
+      'name': 'kitchen',
+      'position': [
+        4,
+        6
+      ],
+      'entryPoint': [
+        4,
+        7
+      ]
+    }];
+    board = new Board([[0, 7]], rooms);
   });
 
   it('Should equate game', () => {
@@ -228,5 +247,25 @@ describe('Game', () => {
     const expected = [[1, 2], [2, 2]];
 
     assert.deepStrictEqual(actual, expected);
+  });
+
+  it('Should return false if current player is not allowed to suspect', () => {
+    const players = ['bob', 'raj', 'rahul'];
+    const game = createGame(players, characters, board);
+    game.start();
+    const cards = { character: 'plum', weapon: 'rope' };
+
+    assert.ok(!game.suspect(1, cards));
+  });
+
+  it('Should return true if current player is allowed to suspect', () => {
+    const players = ['bob', 'raj', 'rahul'];
+    const game = createGame(players, characters, board);
+    game.start();
+
+    game.move([4, 6]);
+    const cards = { character: 'plum', weapon: 'rope' };
+
+    assert.ok(game.suspect(1, cards));
   });
 });
