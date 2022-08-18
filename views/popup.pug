@@ -1,50 +1,39 @@
+//- Accuse-Popup
 article(class='accuse-popup')
   header 
     h2 ACCUSE
   form(class='selected-cards' id='accused-cards')
     div(class='suit')
       select(name='characters' id='characters')
-        option(value='scarlett') Scarlett
-        option(value='mustard') Mustard
-        option(value='white') White
-        option(value='green') Green
-        option(value='peacock') Peacock
-        option(value='plum') Plum
+        each char in cards.characters
+          option(value=char) #{char}
       div(class='card')
         img(src='images/scarlett.png')
+    
     div(class='suit')
       select(name='rooms' id='rooms')
-        option(value='kitchen') Kitchen
-        option(value='ballroom') Ballroom
-        option(value='conservatory') Conservatory
-        option(value='billiard') Billiard
-        option(value='library') Library
-        option(value='study') Study
-        option(value='hall') Hall
-        option(value='lounge') Lounge
-        option(value='dining') Dining
+        each room in cards.rooms
+          option(value=room) #{room}
       div(class='card')
         img(src='images/kitchen.png')
+    
     div(class='suit')
       select(name='weapons' id='weapons')
-        option(value='revolver') Revolver
-        option(value='wrench') Wrench
-        option(value='dagger') Dagger
-        option(value='rope') Rope
-        option(value='candlestick') Candlestick
-        option(value='pipe') Pipe
+        each weapon in cards.weapons
+          option(value=weapon) #{weapon}
       div(class='card')
         img(src='images/revolver.png')
+  
   div(class='popup-options')
     div(class='btn' id='accuse-btn') ACCUSE
     div(class='btn' id='accuse-cancel') CANCEL
 
+//- Accuse-Result-Popup
 article(class='accuse-result-popup')
   header 
     h2 RESULT OF ACCUSATION
   div(class='accusation-msg')
   div(class='cards-combo')
-    div(class='card')
-    div(class='card')
-    div(class='card')
+    - for (var x = 0; x < 3; x++)
+        div(class='card')
   div(class='result-msg')

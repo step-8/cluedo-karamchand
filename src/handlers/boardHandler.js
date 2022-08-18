@@ -1,4 +1,4 @@
-const boardHandler = (boardData) => (req, res) => {
+const boardHandler = (boardData, cards) => (req, res) => {
   const { username, gameId } = req.session;
   if (!gameId) {
     return res.redirect('/');
@@ -7,7 +7,7 @@ const boardHandler = (boardData) => (req, res) => {
     req.game.start();
   }
 
-  res.render('game', { username });
+  res.render('game', { username, cards });
 };
 
 module.exports = { boardHandler };

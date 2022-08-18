@@ -14,7 +14,7 @@ const createGameRouter = (games, cards, cellPositions, boardData) => {
   router.use(validateUser);
   router.use(injectGame(games));
 
-  router.get('/', distributeCards(cards), boardHandler(boardData));
+  router.get('/', distributeCards(cards), boardHandler(boardData, cards));
   router.get('/roll-dice', rollDice(cellPositions));
   router.get('/pass-turn', passTurn);
   router.post('/accuse', handleAccusation);
