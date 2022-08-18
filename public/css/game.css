@@ -78,9 +78,12 @@ header,
   gap: 7% 11%;
 }
 
-.card {
+.cards .card {
   width: 22%;
   height: 44%;
+}
+
+.card {
   border-radius: var(--border-radius);
   box-shadow: 3px 3px 5px gray;
   overflow: hidden;
@@ -166,11 +169,17 @@ article {
   visibility: hidden;
 }
 
-.selected-cards {
+.selected-cards,
+.cards-combo {
   width: 100%;
   display: flex;
   justify-content: center;
   gap: 2em;
+}
+
+.cards-combo .card {
+  width: 25%;
+  height: 85%;
 }
 
 .popup-options {
@@ -200,19 +209,4 @@ article {
 .highlight-path {
   stroke-width: 0.4%;
   fill: orange;
-}
-
-.message {
-  width: 100%;
-}
-
-.non-accuser-popup {
-  visibility: hidden;
-  padding: 2em;
-  width: 700px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  row-gap: 2em;
-  margin: 110px;
 }

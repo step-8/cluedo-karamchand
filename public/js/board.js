@@ -444,7 +444,7 @@
   };
 
   const displayAccusedCards = (accusedCards) => {
-    const popup = document.querySelector('.non-accuser-popup');
+    const popup = document.querySelector('.accuse-result-popup');
     const categories = ['character', 'room', 'weapon'];
     const cardsElements = popup.querySelectorAll('.card');
     categories.forEach((category, index) => {
@@ -458,15 +458,15 @@
     const { accuser, accusedCards, result } = gameState.accusation;
 
     document.querySelector('.popup-container').style.visibility = 'visible';
-    const popup = document.querySelector('.non-accuser-popup');
+    const popup = document.querySelector('.accuse-result-popup');
     popup.style.visibility = 'visible';
 
     displayAccusedCards(accusedCards);
-    const accusationMessageEle = popup.querySelector('.message');
+    const accusationMessageEle = popup.querySelector('.accusation-msg');
     const accusationMessage = othersAccusationMessage(accuser, accusedCards);
     accusationMessageEle.innerText = accusationMessage;
 
-    const resultMessageEle = popup.querySelector('.result-message');
+    const resultMessageEle = popup.querySelector('.result-msg');
     const resultMessage = othersResultMessage(accuser, result);
     resultMessageEle.innerText = resultMessage;
   };
