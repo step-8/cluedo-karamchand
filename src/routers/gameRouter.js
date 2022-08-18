@@ -1,6 +1,6 @@
 const express = require('express');
 const { boardHandler } = require('../handlers/boardHandler');
-const { rollDice, handleAccusation, passTurn } =
+const { rollDice, handleAccusation, passTurn, handleSuspect } =
   require('../handlers/optionsHandler');
 const { injectGame } = require('../middleware/gameMiddleware');
 const { validateUser } = require('../middleware/validateUser');
@@ -20,6 +20,7 @@ const createGameRouter = (games, cards, cellPositions, boardData) => {
   router.post('/accuse', handleAccusation);
   router.post('/move', moveCharacter);
   router.post('/leave', leaveGame);
+  router.post('/suspect', handleSuspect);
 
   return router;
 };

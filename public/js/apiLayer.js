@@ -54,5 +54,18 @@ const API = {
     };
 
     return fetchRequest(request);
+  },
+
+  suspect: (suspectedCards) => {
+    const request = {
+      url: '/game/suspect',
+      options: {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: suspectedCards
+      }
+    };
+
+    return fetchRequest(request);
   }
 };

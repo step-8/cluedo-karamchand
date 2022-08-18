@@ -260,12 +260,12 @@ describe('Game', () => {
     game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
 
     const { suspicion } = game.getState(1);
-    const { suspicionBreakerId } = suspicion;
+    const { suspicionBreakerCharacter } = suspicion;
 
     const expected = {
       suspectedBy: { name: 'bob', character: 'scarlett', position: [4, 6] },
       suspectedCards: { character: 'green', weapon: 'rope', room: 'kitchen' },
-      suspicionBreakerId
+      suspicionBreakerCharacter
     };
 
     assert.deepStrictEqual(suspicion, expected);

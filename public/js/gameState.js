@@ -3,12 +3,12 @@ const areObjectsEqual = (object1, object2) =>
 
 class GameState {
   #data;
-  #myPersmissions;
+  #myPermissions;
   #observers;
 
   constructor() {
     this.#data = null;
-    this.#myPersmissions = null;
+    this.#myPermissions = null;
     this.#observers = [];
   }
 
@@ -18,24 +18,24 @@ class GameState {
     }
 
     this.#data = newData;
-    this.#myPersmissions = this.#data.you.permissions;
+    this.#myPermissions = this.#data.you.permissions;
     this.#notifyObservers();
   }
 
   canRollDice() {
-    return this.#myPersmissions.rollDice;
+    return this.#myPermissions.rollDice;
   }
 
   canPassTurn() {
-    return this.#myPersmissions.passTurn;
+    return this.#myPermissions.passTurn;
   }
 
   canAccuse() {
-    return this.#myPersmissions.accuse;
+    return this.#myPermissions.accuse;
   }
 
   canSuspect() {
-    return this.#myPersmissions.suspect;
+    return this.#myPermissions.suspect;
   }
 
   isMyTurn() {
@@ -44,6 +44,10 @@ class GameState {
 
   hasAnyoneAccused() {
     return this.#data.accusation !== null;
+  }
+
+  hasAnyoneSuspected() {
+    return this.#data.suspicion !== null;
   }
 
   get possibleMoves() {
@@ -64,6 +68,15 @@ class GameState {
 
   get accusation() {
     return this.#data.accusation;
+  }
+
+  get suspicion() {
+    console.log(this.#data.suspicion);
+    return this.#data.suspicion;
+  }
+
+  get room() {
+    return this.#data.you.room;
   }
 
   addObserver(observer) {

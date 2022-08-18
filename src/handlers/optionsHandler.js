@@ -27,4 +27,15 @@ const passTurn = (req, res) => {
   res.json(game.getState(req.session.userId));
 };
 
-module.exports = { rollDice, handleAccusation, passTurn };
+const handleSuspect = (req, res) => {
+  const { session, body, game } = req;
+  const { ...suspectedCards } = body;
+
+  game.suspect(session.userId, suspectedCards);
+  setTimeout(() => {
+    game.stopSuspicionRes();
+  }, 10000);
+  res.sendStatus(201);
+};
+
+module.exports = { rollDice, handleAccusation, passTurn, handleSuspect };

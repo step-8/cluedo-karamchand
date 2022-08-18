@@ -239,7 +239,13 @@
   };
 
   const showSuspectPopup = () => {
-    alert('Suspect');
+    document.querySelector('.popup-container').style.visibility = 'visible';
+    const popup = document.querySelector('#suspect-popup');
+    const room = gameState.room;
+    const container = document.querySelector('#selected-room');
+
+    container.querySelector('img').src = `images/${room}.png`;
+    popup.style.visibility = 'visible';
   };
 
   const enableOptions = () => {
@@ -362,8 +368,61 @@
     if (!gameState.hasAnyoneAccused()) {
       return;
     }
+
     accusationResult(poller);
     poller.stopPolling();
+  };
+
+  const showSuspicionResult = () => {
+    const { suspicionBreakerCharacter } = gameState.suspicion;
+
+    document.querySelector('.popup-container').style.visibility = 'visible';
+    const popup = document.querySelector('#suspect-result-popup');
+    popup.style.visibility = 'visible';
+
+    const message = `Suspicion breaker: ${suspicionBreakerCharacter}`;
+    popup.querySelector('#suspicion-msg').innerText = message;
+  };
+
+  const suspicionResult = (poller) => {
+    setTimeout(() => {
+      closePopup();
+      poller.startPolling();
+    }, 10000);
+
+    showSuspicionResult();
+  };
+
+  const showSuspicion = (poller) => () => {
+    if (!gameState.hasAnyoneSuspected()) {
+      return;
+    }
+
+    suspicionResult(poller);
+    poller.stopPolling();
+  };
+
+  const suspect = () => {
+    const form = document.querySelector('#suspected-cards');
+    const formData = new FormData(form);
+
+    const character = formData.get('characters');
+    const weapon = formData.get('weapons');
+    const room = gameState.room;
+
+    const suspectedCards = JSON.stringify({ character, room, weapon });
+    API.suspect(suspectedCards)
+      .then(closePopup);
+  };
+
+  const setupSuspectPopup = () => {
+    document.querySelector('#suspect-btn').onclick = suspect;
+    document.querySelector('#suspect-cancel').onclick = closePopup;
+
+    const selects = document.querySelectorAll('#suspect-popup select');
+    selects.forEach(select => {
+      select.onchange = showCard;
+    });
   };
 
   const setupAccusePopup = () => {
@@ -378,6 +437,7 @@
 
   const main = () => {
     setupAccusePopup();
+    setupSuspectPopup();
 
     API.getBoardData()
       .then(boardData => generateBoard(boardData));
@@ -400,6 +460,7 @@
     gameState.addObserver(updateDice);
     gameState.addObserver(showAccusation(poller));
     gameState.addObserver(highlightTurn);
+    gameState.addObserver(showSuspicion(poller));
 
     poller.startPolling();
   };

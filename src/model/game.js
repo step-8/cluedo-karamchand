@@ -14,6 +14,7 @@ class Game {
   #possibleMoves;
   #board;
   #suspicion;
+  #respondSuspicion;
 
   constructor(gameId, maxPlayers, characters, board) {
     this.#gameId = gameId;
@@ -28,6 +29,7 @@ class Game {
     this.#suspicion = null;
     this.#possibleMoves = [];
     this.#board = board;
+    this.#respondSuspicion = false;
   }
 
   get players() {
@@ -148,6 +150,7 @@ class Game {
     this.#changePlayer();
     this.#enablePermissions();
     this.#accusation = null;
+    this.#suspicion = null;
   }
 
   disableDice() {
@@ -201,7 +204,12 @@ class Game {
     return players.find(player => player.hasAnyOf(cards));
   }
 
+  stopSuspicionRes() {
+    this.#respondSuspicion = true;
+  }
+
   suspect(playerId, suspectedCards) {
+    this.#respondSuspicion = false;
     const player = this.currentPlayer;
 
     if (!player.isYourId(playerId) || !player.isAllowedToSuspect()) {
@@ -209,14 +217,16 @@ class Game {
     }
 
     const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
-    const suspicionBreakerId = suspicionBreaker ? suspicionBreaker.id : null;
+    const suspicionBreakerCharacter =
+      suspicionBreaker ? suspicionBreaker.character : null;
 
     this.#suspicion = {
       suspectedBy: { ...player.profile },
       suspectedCards: { ...suspectedCards },
-      suspicionBreakerId
+      suspicionBreakerCharacter
     };
 
+    player.disableSuspect();
     return true;
   }
 
@@ -242,9 +252,13 @@ class Game {
       diceValue: this.#diceValue,
       currentPlayer: this.currentPlayer.profile,
       accusation: this.#accusation,
-      suspicion: this.#suspicion,
+      suspicion: null,
       possibleMoves: [...moves]
     };
+
+    if (!this.#respondSuspicion) {
+      state.suspicion = this.#suspicion;
+    }
 
     return state;
   }
