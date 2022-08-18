@@ -277,7 +277,7 @@ article {
   width: 100%;
 }
 
-#game-over-popup #winner {
+#game-over-popup .winner-message {
   font-size: 2em;
   font-weight: 400;
 }

@@ -81,7 +81,7 @@
 
   const generatePlayersDom = (players, you) => {
     return players.map(({ name, character }) => {
-      let usernameDom = [['div', { className: 'name' }, name]];
+      const usernameDom = [['div', { className: 'name' }, name]];
       if (character === you.character) {
         usernameDom.push(['div', { className: 'you' }, '(You)']);
       }
@@ -89,7 +89,7 @@
         ['div', { className: 'character' },
           ['img', { src: `images/${character}.png` }]],
         ['div', {}, ...usernameDom]
-      ]
+      ];
     });
   };
 
@@ -340,6 +340,10 @@
   };
 
   const showGameOver = () => {
+    const winner = gameState.currentPlayer.character;
+    const winnerMessageEle = document.querySelector('#winner');
+    winnerMessageEle.innerText = capitalize(winner) + ' ';
+
     const popupContainer = document.querySelector('.popup-container');
     popupContainer.style.visibility = 'visible';
 
