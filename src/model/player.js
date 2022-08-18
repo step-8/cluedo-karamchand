@@ -29,6 +29,10 @@ class Player {
       otherPlayer.#characterName === this.#characterName;
   }
 
+  get hasAccused() {
+    return this.#hasAccused;
+  }
+
   addCards(cards) {
     this.#cards = cards;
   }

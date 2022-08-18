@@ -123,8 +123,10 @@ class Game {
 
   #changePlayer() {
     let index = this.#currentPlayerIndex;
-    index++;
-    this.#currentPlayerIndex = index % this.#maxPlayers;
+    do {
+      index++;
+      this.#currentPlayerIndex = index % this.#maxPlayers;
+    } while (this.currentPlayer.hasAccused);
   }
 
   passTurn() {
