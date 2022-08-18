@@ -143,11 +143,6 @@
     cardsContainer.append(...userCards.map(generateHTML));
   };
 
-  const cardsDom = () => {
-    const cardDom = ['div', { className: 'card' }, '?'];
-    return Array(3).fill(cardDom);
-  };
-
   const closePopup = () => {
     const popupContainerEle = document.querySelector('.popup-container');
     popupContainerEle.style.visibility = 'hidden';
@@ -168,20 +163,6 @@
 
     const accusedCards = JSON.stringify({ character, room, weapon });
     API.accuse(accusedCards);
-  };
-
-  const messageDom = attributes => ['div', attributes];
-
-  const accusationResultDom = () => {
-    return ['article', { className: 'non-accuser-popup popup' },
-      ['div', { className: 'popup-header' }, 'RESULT OF ACCUSATION'],
-      messageDom({ id: 'others-accusation-message', className: 'message' }),
-      [
-        'div', { className: 'accused-cards' },
-        ...cardsDom()
-      ],
-      messageDom({ className: 'message result-message' })
-    ];
   };
 
   const showCard = (event) => {
@@ -237,11 +218,6 @@
 
   const diceRoll = () => {
     API.rollDice();
-  };
-
-  const generateAccusationResultPopup = () => {
-    const popupContainerEle = document.querySelector('.popup-container');
-    popupContainerEle.append(generateHTML(accusationResultDom()));
   };
 
   const showAccusationPopup = () => {
@@ -316,53 +292,7 @@
     dice[1].innerText = die2;
   };
 
-  const removeAccusationDropdown = () => {
-    const accuserPopup = document.querySelector('.accuse-popup');
-    const options = accuserPopup.querySelector('#accused-cards')
-      .querySelectorAll('select');
-
-    if (options) {
-      options.forEach(option => option.remove());
-    }
-  };
-
-  const accusationMessage = ({ character, weapon, room }) =>
-    `You have accused ${character}, in the ${room}, with the ${weapon}`;
-
-  const removePopupOptions = () => {
-    const options = document.querySelector('.popup-options');
-    if (options) {
-      options.remove();
-    }
-  };
-
-  const accusationResultMessage = ({ result }) =>
-    result ? 'Your accusation is correct!' : 'Your accusation is incorrect!';
-
-  const updateAccusersPopup = () => {
-    const accusation = gameState.accusation;
-
-    removeAccusationDropdown();
-    removePopupOptions();
-
-    const accuserPopup = document.querySelector('.accuse-popup');
-    accuserPopup.querySelector('header h2').innerText = 'RESULT OF ACCUSATION';
-
-    const messageDom = ['div', { id: 'accusation-message' }];
-    const messageEle = generateHTML(messageDom);
-
-    messageEle.innerText = accusationMessage(accusation.accusedCards);
-
-    accuserPopup.querySelector('header').appendChild(messageEle);
-
-    const resultDom = ['div', { id: 'result-message' }];
-    const resultMsgEle = generateHTML(resultDom);
-
-    resultMsgEle.innerText = accusationResultMessage(accusation);
-    accuserPopup.appendChild(resultMsgEle);
-  };
-
-  const othersAccusationMessage = (accuser, { character, weapon, room }) =>
+  const othersAccusationMsg = (accuser, { character, weapon, room }) =>
     `${accuser.character} accused ${character}, in the ${room}, with the ${weapon}`;
 
   const othersResultMessage = ({ character }, result) => {
@@ -382,7 +312,7 @@
     });
   };
 
-  const showNonAccuserPopup = () => {
+  const accuseResultPopup = () => {
     const { accuser, accusedCards, result } = gameState.accusation;
 
     document.querySelector('.popup-container').style.visibility = 'visible';
@@ -390,11 +320,11 @@
     popup.style.visibility = 'visible';
 
     displayAccusedCards(accusedCards);
-    const accusationMessageEle = popup.querySelector('.accusation-msg');
-    const accusationMessage = othersAccusationMessage(accuser, accusedCards);
-    accusationMessageEle.innerText = accusationMessage;
+    const accusationMsgEle = popup.querySelector('#accusation-msg');
+    const accusationMessage = othersAccusationMsg(accuser, accusedCards);
+    accusationMsgEle.innerText = accusationMessage;
 
-    const resultMessageEle = popup.querySelector('.result-msg');
+    const resultMessageEle = popup.querySelector('#accuse-result-msg');
     const resultMessage = othersResultMessage(accuser, result);
     resultMessageEle.innerText = resultMessage;
   };
@@ -405,12 +335,7 @@
       poller.startPolling();
     }, 10000);
 
-    if (!gameState.isMyTurn()) {
-      showNonAccuserPopup();
-      return;
-    }
-
-    updateAccusersPopup();
+    accuseResultPopup();
     setTimeout(pass, 9000);
   };
 
@@ -418,7 +343,6 @@
     if (!gameState.hasAnyoneAccused()) {
       return;
     }
-
     accusationResult(poller);
     poller.stopPolling();
   };
@@ -426,6 +350,7 @@
   const setupAccusePopup = () => {
     document.querySelector('#accuse-btn').onclick = accuse;
     document.querySelector('#accuse-cancel').onclick = closePopup;
+
     const selects = document.querySelectorAll('.accuse-popup select');
     selects.forEach(select => {
       select.onchange = showCard;
@@ -433,7 +358,6 @@
   };
 
   const main = () => {
-    generateAccusationResultPopup();
     setupAccusePopup();
 
     API.getBoardData()
