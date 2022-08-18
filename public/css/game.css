@@ -135,7 +135,7 @@ main {
 
 article {
   height: 450px;
-  width: 650px;
+  width: 640px;
   padding: 2em;
   border-radius: var(--border-radius);
   position: fixed;
@@ -151,21 +151,22 @@ article {
 .cards-combo {
   display: flex;
   justify-content: center;
-  gap: 2em;
 }
 
 .selected-cards {
-  width: 100%;
+  width: 90%;
   height: 70%;
+  gap: 1em;
 }
 
 .cards-combo {
   width: 100%;
   height: 60%;
+  gap: 2em;
 }
 
 .suit {
-  width: 60%;
+  width: 50%;
   height: 100%;
   display: flex;
   flex-direction: column;

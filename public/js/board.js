@@ -223,7 +223,7 @@
 
   const showAccusationPopup = () => {
     document.querySelector('.popup-container').style.visibility = 'visible';
-    document.querySelector('.accuse-popup').style.visibility = 'visible';
+    document.querySelector('#accuse-popup').style.visibility = 'visible';
   };
 
   const highlightOptions = (optionElement) => {
@@ -302,7 +302,7 @@
   };
 
   const displayAccusedCards = (accusedCards) => {
-    const popup = document.querySelector('.accuse-result-popup');
+    const popup = document.querySelector('#accuse-result-popup');
     const categories = ['character', 'room', 'weapon'];
     const cardsElements = popup.querySelectorAll('.card');
 
@@ -317,7 +317,7 @@
     const { accuser, accusedCards, result } = gameState.accusation;
 
     document.querySelector('.popup-container').style.visibility = 'visible';
-    const popup = document.querySelector('.accuse-result-popup');
+    const popup = document.querySelector('#accuse-result-popup');
     popup.style.visibility = 'visible';
 
     displayAccusedCards(accusedCards);
@@ -355,7 +355,7 @@
     document.querySelector('#accuse-btn').onclick = accuse;
     document.querySelector('#accuse-cancel').onclick = closePopup;
 
-    const selects = document.querySelectorAll('.accuse-popup select');
+    const selects = document.querySelectorAll('#accuse-popup select');
     selects.forEach(select => {
       select.onchange = showCard;
     });
