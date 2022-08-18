@@ -149,8 +149,10 @@
   };
 
   const closePopup = () => {
-    document.querySelector('.popup-container').style.visibility = 'hidden';
-    const popups = document.querySelectorAll('article');
+    const popupContainerEle = document.querySelector('.popup-container');
+    popupContainerEle.style.visibility = 'hidden';
+
+    const popups = popupContainerEle.querySelectorAll('article');
     popups.forEach(popup => {
       popup.style.visibility = 'hidden';
     });
@@ -170,8 +172,8 @@
 
   const messageDom = attributes => ['div', attributes];
 
-  const nonAccuserPopupDom = () => {
-    return ['div', { className: 'non-accuser-popup popup' },
+  const accusationResultDom = () => {
+    return ['article', { className: 'non-accuser-popup popup' },
       ['div', { className: 'popup-header' }, 'RESULT OF ACCUSATION'],
       messageDom({ id: 'others-accusation-message', className: 'message' }),
       [
@@ -182,71 +184,10 @@
     ];
   };
 
-  const accuserPopupDom = () => {
-    return [
-      'div', { className: 'accuse-popup popup' },
-      ['div', { className: 'popup-header' }, 'ACCUSE'],
-      [
-        'div', { className: 'envelope-cards' },
-        messageDom({ id: 'envelope-message', className: 'message' }),
-        ...cardsDom()
-      ],
-      [
-        'form', { className: 'accused-cards' },
-        messageDom({ id: 'accusation-message', className: 'message' })
-      ],
-      [
-        'div', { className: 'popup-options' },
-        ['button', { id: 'accuse', onclick: accuse }, 'ACCUSE'],
-        ['button', { id: 'select', onclick: closePopup }, 'CANCEL']
-      ],
-      messageDom({ id: 'result-message', className: 'message' })
-    ];
-  };
-
-  const accusationPopupDom = () => {
-    const dom = [
-      'div', { className: 'popup-container' },
-      nonAccuserPopupDom(),
-      accuserPopupDom()
-    ];
-    return dom;
-  };
-
   const showCard = (event) => {
     const card = event.target.closest('.suit').querySelector('.card');
     const cardName = event.target.value;
     card.querySelector('img').src = `images/${cardName}.png`;
-  };
-
-  const accusationDropdownDom = ([suitName, suit]) => {
-    const dom = [
-      'select', {
-        name: suitName, id: suitName, onchange: showCard
-      },
-      ...suit.map(card => ['option', {
-        value: card,
-      }, card])
-    ];
-    return dom;
-  };
-
-  const accusationCard = ([suitName, suit]) => {
-    const dom = [
-      'div', { className: 'suit' }, accusationDropdownDom([suitName, suit]),
-      ['div', { className: 'card' }, [
-        'img', { src: `images/${suit[0]}.png` }
-      ]]
-    ];
-    return dom;
-  };
-
-  const accusationOptionsDropdown = (deck) => {
-    const accusationCards = Object.entries(deck).map((suit) =>
-      generateHTML(accusationCard(suit)));
-
-    const accuserPopup = document.querySelector('.accuse-popup');
-    accuserPopup.querySelector('.accused-cards').append(...accusationCards);
   };
 
   const updateDice = () => {
@@ -298,11 +239,9 @@
     API.rollDice();
   };
 
-  const generateAccusationPopup = () => {
-    document.querySelector('body').append(generateHTML(accusationPopupDom()));
-
-    API.getCards()
-      .then(cards => accusationOptionsDropdown(cards));
+  const generateAccusationResultPopup = () => {
+    const popupContainerEle = document.querySelector('.popup-container');
+    popupContainerEle.append(generateHTML(accusationResultDom()));
   };
 
   const showAccusationPopup = () => {
@@ -377,20 +316,6 @@
     dice[1].innerText = die2;
   };
 
-  const revealEnvelope = (envelope) => {
-    const categories = ['character', 'room', 'weapon'];
-    const envelopeElement = document.querySelector('.envelope-cards');
-    const cardsElements = envelopeElement.querySelectorAll('.card');
-    categories.forEach((category, index) => {
-      const imgDom = ['img', { src: `images/${envelope[category]}.png` }];
-      const img = generateHTML(imgDom);
-      cardsElements[index].replaceChildren(img);
-    });
-  };
-
-  const envelopeCardsMessage = ({ character, weapon, room }) =>
-    `${character} has murdered Mr.Boddy, in the ${room}, with the ${weapon}`;
-
   const removeAccusationDropdown = () => {
     const accuserPopup = document.querySelector('.accuse-popup');
     const options = accuserPopup.querySelector('#accused-cards')
@@ -415,7 +340,6 @@
     result ? 'Your accusation is correct!' : 'Your accusation is incorrect!';
 
   const updateAccusersPopup = () => {
-    // const envelope = gameState.envelope;
     const accusation = gameState.accusation;
 
     removeAccusationDropdown();
@@ -424,13 +348,16 @@
     const accuserPopup = document.querySelector('.accuse-popup');
     accuserPopup.querySelector('header h2').innerText = 'RESULT OF ACCUSATION';
 
-    const messageDom = ['div', { id: 'accusation-message' }]
+    const messageDom = ['div', { id: 'accusation-message' }];
     const messageEle = generateHTML(messageDom);
+
     messageEle.innerText = accusationMessage(accusation.accusedCards);
+
     accuserPopup.querySelector('header').appendChild(messageEle);
 
-    const resultDom = ['div', { id: 'result-message' }]
+    const resultDom = ['div', { id: 'result-message' }];
     const resultMsgEle = generateHTML(resultDom);
+
     resultMsgEle.innerText = accusationResultMessage(accusation);
     accuserPopup.appendChild(resultMsgEle);
   };
@@ -447,6 +374,7 @@
     const popup = document.querySelector('.accuse-result-popup');
     const categories = ['character', 'room', 'weapon'];
     const cardsElements = popup.querySelectorAll('.card');
+
     categories.forEach((category, index) => {
       const imgDom = ['img', { src: `images/${accusedCards[category]}.png` }];
       const img = generateHTML(imgDom);
@@ -483,7 +411,6 @@
     }
 
     updateAccusersPopup();
-    // revealEnvelope(gameState.envelope);
     setTimeout(pass, 9000);
   };
 
@@ -496,12 +423,18 @@
     poller.stopPolling();
   };
 
-  const main = () => {
-    // generateAccusationPopup();
+  const setupAccusePopup = () => {
     document.querySelector('#accuse-btn').onclick = accuse;
     document.querySelector('#accuse-cancel').onclick = closePopup;
     const selects = document.querySelectorAll('.accuse-popup select');
-    selects.forEach((select) => select.onchange = showCard);
+    selects.forEach(select => {
+      select.onchange = showCard;
+    });
+  };
+
+  const main = () => {
+    generateAccusationResultPopup();
+    setupAccusePopup();
 
     API.getBoardData()
       .then(boardData => generateBoard(boardData));

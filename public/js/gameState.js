@@ -63,10 +63,6 @@ class GameState {
     return this.#data.accusation;
   }
 
-  get envelope() {
-    return this.#data.envelope;
-  }
-
   addObserver(observer) {
     this.#observers.push(observer);
   }

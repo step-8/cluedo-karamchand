@@ -210,3 +210,22 @@ article {
   stroke-width: 0.4%;
   fill: orange;
 }
+
+.message {
+  width: 100%;
+}
+
+.non-accuser-popup {
+  visibility: hidden;
+  padding: 2em;
+  width: 700px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2em;
+  margin: 110px;
+}
+
+.accused-cards {
+  display: flex;
+}
