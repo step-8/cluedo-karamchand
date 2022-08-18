@@ -73,7 +73,8 @@ describe('Game', () => {
         playerId: 1, name: 'bob', character: 'scarlett', position: [1, 1],
         permissions:
           { rollDice: false, passTurn: false, accuse: false, suspect: false },
-        cards: []
+        cards: [],
+        room: null
       },
       maxPlayers: 2,
       currentPlayer: {
@@ -87,6 +88,7 @@ describe('Game', () => {
         { name: 'james', character: 'mustard', position: [2, 2] }
       ],
       accusation: null,
+      suspicion: null,
       possibleMoves: []
     };
 
@@ -244,8 +246,28 @@ describe('Game', () => {
     game.start();
 
     game.move([4, 6]);
-    const cards = { character: 'plum', weapon: 'rope' };
+    const cards = { character: 'plum', weapon: 'rope', room: 'kitchen' };
 
     assert.ok(game.suspect(1, cards));
+  });
+
+  it('Should provide suspicion info, if current player suspect', () => {
+    const game = new Game(1, 2, characters, board);
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
+    game.start();
+    game.move([4, 6]);
+    game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
+
+    const { suspicion } = game.getState(1);
+    const { suspicionBreakerId } = suspicion;
+
+    const expected = {
+      suspectedBy: { name: 'bob', character: 'scarlett', position: [4, 6] },
+      suspectedCards: { character: 'green', weapon: 'rope', room: 'kitchen' },
+      suspicionBreakerId
+    };
+
+    assert.deepStrictEqual(suspicion, expected);
   });
 });

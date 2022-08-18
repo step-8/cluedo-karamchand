@@ -14,6 +14,14 @@ class Board {
     return this.#rooms.some(({ position }) =>
       isEqual(position, tile));
   }
+
+  getRoom(tile) {
+    if (this.isInsideRoom(tile)) {
+      return this.#rooms.find(({ position }) =>
+        isEqual(position, tile)).name;
+    }
+    return null;
+  }
 }
 
 module.exports = { Board };

@@ -13,6 +13,7 @@ class Game {
   #accusation;
   #possibleMoves;
   #board;
+  #suspicion;
 
   constructor(gameId, maxPlayers, characters, board) {
     this.#gameId = gameId;
@@ -24,6 +25,7 @@ class Game {
     this.#diceValue = [1, 1];
     this.#isStarted = false;
     this.#accusation = null;
+    this.#suspicion = null;
     this.#possibleMoves = [];
     this.#board = board;
   }
@@ -44,6 +46,13 @@ class Game {
     return this.#isStarted;
   }
 
+  #getPlayerRoom(player) {
+    const character = this.#characters.find(character =>
+      character.info.name === player.character);
+
+    return this.#board.getRoom(character.position);
+  }
+
   isReady() {
     return this.#maxPlayers === this.#players.length;
   }
@@ -56,9 +65,13 @@ class Game {
     this.currentPlayer.disableAccuse();
   }
 
+  #isCurrentPlayerInsideRoom() {
+    const characterPosition = this.#currentPlayerCharacter.position;
+    return this.#board.isInsideRoom(characterPosition);
+  }
+
   #manageSuspectPermission() {
-    const currentCharacter = this.#currentPlayerCharacter.position;
-    if (this.#board.isInsideRoom(currentCharacter)) {
+    if (this.#isCurrentPlayerInsideRoom()) {
       return this.currentPlayer.enableSuspect();
     }
 
@@ -178,13 +191,15 @@ class Game {
     return true;
   }
 
-  // #findSuspicionBreaker(suspectedCards) {
-  //   const index = this.#currentPlayerIndex;
-  //   const players = [
-  //     ...this.#players.slice(index + 1), ...this.#players.slice(0, index)
-  //   ];
+  #findSuspicionBreaker(suspectedCards) {
+    const cards = Object.values(suspectedCards);
+    const index = this.#currentPlayerIndex;
+    const players = [
+      ...this.#players.slice(index + 1), ...this.#players.slice(0, index)
+    ];
 
-  // }
+    return players.find(player => player.hasAnyOf(cards));
+  }
 
   suspect(playerId, suspectedCards) {
     const player = this.currentPlayer;
@@ -193,8 +208,16 @@ class Game {
       return false;
     }
 
+    const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
+    const suspicionBreakerId = suspicionBreaker ? suspicionBreaker.id : null;
+
+    this.#suspicion = {
+      suspectedBy: { ...player.profile },
+      suspectedCards: { ...suspectedCards },
+      suspicionBreakerId
+    };
+
     return true;
-    // const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
   }
 
   injectPossibleMoves(possibleMoves) {
@@ -203,8 +226,8 @@ class Game {
 
   getState(playerId) {
     const playerState = this.#players.map(player => player.profile);
-    const [you] = this.#players.filter(player =>
-      player.info.playerId === playerId);
+    const you = this.#players.find(player => player.isYourId(playerId));
+    const room = this.#getPlayerRoom(you);
 
     const currentPlayerId = this.currentPlayer.info.playerId;
     const moves = playerId === currentPlayerId ? this.#possibleMoves : [];
@@ -212,19 +235,16 @@ class Game {
 
     const state = {
       gameId: this.#gameId,
-      you: { ...you.info },
+      you: { ...you.info, room },
       maxPlayers: this.#maxPlayers,
       characters,
       players: playerState,
       diceValue: this.#diceValue,
       currentPlayer: this.currentPlayer.profile,
       accusation: this.#accusation,
+      suspicion: this.#suspicion,
       possibleMoves: [...moves]
     };
-
-    if (this.#accusation && this.currentPlayer.isYourId(playerId)) {
-      state.envelope = this.#envelope;
-    }
 
     return state;
   }

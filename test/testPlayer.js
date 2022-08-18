@@ -1,4 +1,5 @@
-const assert = require('assert');
+const chai = require('chai');
+const { assert } = chai;
 const { Player } = require('../src/model/player.js');
 
 describe('Player', () => {
@@ -8,7 +9,7 @@ describe('Player', () => {
     const player3 = new Player(2, 'e', 'efg', [1, 1]);
 
     assert.ok(player1.equals(player2));
-    assert.ok(!player1.equals(player3));
+    assert.notOk(player1.equals(player3));
   });
 
   it('Should return player info', () => {
@@ -67,7 +68,7 @@ describe('Player', () => {
 
     player.disableDice();
     permissions = player.info.permissions;
-    assert.ok(!permissions.rollDice);
+    assert.notOk(permissions.rollDice);
   });
 
   it('should disable pass turn permission', () => {
@@ -79,7 +80,7 @@ describe('Player', () => {
 
     player.disablePassTurn();
     permissions = player.info.permissions;
-    assert.ok(!permissions.passTurn);
+    assert.notOk(permissions.passTurn);
   });
 
   it('Should enable suspect permission', () => {
@@ -95,7 +96,7 @@ describe('Player', () => {
     player.disableSuspect();
 
     const { permissions } = player.info;
-    assert.ok(!permissions.suspect);
+    assert.notOk(permissions.suspect);
   });
 
   it('Should return true if player is allowed to suspect', () => {
@@ -108,6 +109,23 @@ describe('Player', () => {
   it('Should return false if player is not allowed to suspect', () => {
     const player = new Player(1, 'ram', 'scarlett', [1, 1]);
 
-    assert.ok(!player.isAllowedToSuspect());
+    assert.notOk(player.isAllowedToSuspect());
   });
+
+  it('Should return true if player has any of given cards.', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+    player.addCards(['white', 'plum', 'rope']);
+    const cards = ['rope', 'scarlett'];
+
+    assert.ok(player.hasAnyOf(cards));
+  });
+
+  it('Should return false if player do not have any of given cards.',
+    () => {
+      const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+      player.addCards(['white', 'plum', 'rope']);
+      const cards = ['hall', 'scarlett'];
+
+      assert.notOk(player.hasAnyOf(cards));
+    });
 });

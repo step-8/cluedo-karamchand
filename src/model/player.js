@@ -18,15 +18,16 @@ class Player {
     this.#hasAccused = false;
   }
 
-  set position(pos) {
-    this.#position = pos;
+  get id() {
+    return this.#playerId;
   }
 
-  equals(otherPlayer) {
-    return otherPlayer instanceof Player &&
-      otherPlayer.#playerId === this.#playerId &&
-      otherPlayer.#playerName === this.#playerName &&
-      otherPlayer.#characterName === this.#characterName;
+  get character() {
+    return this.#characterName;
+  }
+
+  set position(newPosition) {
+    this.#position = newPosition;
   }
 
   get hasAccused() {
@@ -39,6 +40,10 @@ class Player {
 
   isYourId(id) {
     return this.#playerId === id;
+  }
+
+  hasAnyOf(cards) {
+    return cards.some(card => this.#cards.includes(card));
   }
 
   enableDice() {
@@ -103,6 +108,13 @@ class Player {
       cards: [...this.#cards],
       permissions: { ...this.#permissions }
     };
+  }
+
+  equals(otherPlayer) {
+    return otherPlayer instanceof Player &&
+      otherPlayer.#playerId === this.#playerId &&
+      otherPlayer.#playerName === this.#playerName &&
+      otherPlayer.#characterName === this.#characterName;
   }
 }
 
