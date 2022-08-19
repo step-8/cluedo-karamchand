@@ -1,12 +1,3 @@
-const sendRequest = (method, path, content, cb) => {
-  const xhr = new XMLHttpRequest();
-  xhr.open(method, path);
-  xhr.onload = () => {
-    cb(xhr);
-  };
-  xhr.send(new URLSearchParams(content));
-};
-
 const playerHtml = player => {
   const character = player.character;
   return generateHTML(['div', { id: character, className: 'character' },
@@ -15,27 +6,24 @@ const playerHtml = player => {
     ['div', { className: 'player-name' }, player.name]]);
 };
 
-const addPlayers = ({ players, maxPlayers }) => {
+const addPlayers = ({ players, maxPlayers }, poller) => {
   const playerList = players.map(playerHtml);
   const playersElement = document.querySelector('.players');
   playersElement.replaceChildren(...playerList);
 
   if (maxPlayers === playerList.length) {
+    poller.stopPolling();
     document.querySelector('#start-game').click();
   }
 };
 
-const generateLobby = () => {
-  sendRequest('GET', '/api/game', '', (xhr) => {
-    const game = JSON.parse(xhr.response);
+const generateLobby = (game) => {
+  const username = game.you.name;
+  document.querySelector('.username').innerText = `Hey ${username}!`;
 
-    const username = game.you.name;
-    document.querySelector('.username').innerText = `Hey ${username}!`;
-
-    const roomId = 'Room ID: ' + game.gameId;
-    document.querySelector('.room-id').replaceChildren(roomId);
-    addPlayers(game);
-  });
+  const roomId = 'Room ID: ' + game.gameId;
+  document.querySelector('.room-id').replaceChildren(roomId);
+  addPlayers(game);
 };
 
 const updateStatus = ({ players, maxPlayers }) => {
@@ -45,20 +33,20 @@ const updateStatus = ({ players, maxPlayers }) => {
   statusEle.innerText = `Waiting for ${restOfPlayers} ${msg}...`;
 };
 
-const updateLobby = () => {
-  sendRequest('GET', '/api/game', '', (xhr) => {
-    const game = JSON.parse(xhr.response);
-    addPlayers(game);
-    updateStatus(game);
+const updateLobby = (poller) => API.getGame()
+  .then(gameData => {
+    addPlayers(gameData, poller);
+    updateStatus(gameData);
   });
-};
 
 const main = () => {
-  generateLobby();
+  API.getGame()
+    .then(gameData => {
+      generateLobby(gameData);
+    })
 
-  setInterval(() => {
-    updateLobby();
-  }, 500);
+  const poller = new Poller(() => updateLobby(poller), 500);
+  poller.startPolling();
 };
 
 window.onload = main;
