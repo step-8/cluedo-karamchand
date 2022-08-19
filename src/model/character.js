@@ -18,6 +18,10 @@ class Character {
     return this.#position;
   }
 
+  get name() {
+    return this.#name;
+  }
+
   get info() {
     return {
       name: this.#name,

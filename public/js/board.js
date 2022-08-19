@@ -182,8 +182,8 @@
   };
 
   const showTokens = () => {
-    gameState.players.forEach(({ position, character }) => {
-      createToken(position, character, gameState.currentPlayer);
+    gameState.characters.forEach(({ position, name }) => {
+      createToken(position, name, gameState.currentPlayer);
     });
   };
 

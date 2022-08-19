@@ -167,6 +167,12 @@ class Game {
     this.disableDice();
   }
 
+  #moveCharacter(characterName, position) {
+    const character = this.#characters.find(character =>
+      character.name === characterName);
+    character.position = position;
+  }
+
   move(newPosition) {
     this.currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
@@ -215,6 +221,9 @@ class Game {
     if (!player.isYourId(playerId) || !player.isAllowedToSuspect()) {
       return false;
     }
+
+    const { position } = this.#currentPlayerCharacter;
+    this.#moveCharacter(suspectedCards.character, position);
 
     const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
     const suspicionBreakerCharacter =

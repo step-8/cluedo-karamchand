@@ -20,7 +20,8 @@ describe('Game', () => {
     characters = [
       new Character('scarlett', [1, 1]),
       new Character('mustard', [2, 2]),
-      new Character('green', [3, 3])
+      new Character('green', [3, 3]),
+      new Character('plum', [3, 3])
     ];
     const rooms = [{
       'name': 'kitchen',

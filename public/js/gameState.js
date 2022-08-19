@@ -82,6 +82,10 @@ class GameState {
     return this.#data.you.room;
   }
 
+  get characters() {
+    return this.#data.characters;
+  }
+
   getTurnOrder() {
     const currentPlayerIndex = this.players.findIndex(({ character }) =>
       character === this.currentPlayer.character);
