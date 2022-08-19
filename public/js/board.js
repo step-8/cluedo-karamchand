@@ -309,13 +309,13 @@
     return `${capitalize(accuser)} accusation is ${resultMessage}!`;
   };
 
-  const displayAccusedCards = (accusedCards) => {
-    const popup = document.querySelector('#accuse-result-popup');
+  const showResultCards = (cards, containerId) => {
+    const popup = document.querySelector(containerId);
     const categories = ['character', 'room', 'weapon'];
     const cardsElements = popup.querySelectorAll('.card');
 
     categories.forEach((category, index) => {
-      const imgDom = ['img', { src: `images/${accusedCards[category]}.png` }];
+      const imgDom = ['img', { src: `images/${cards[category]}.png` }];
       const img = generateHTML(imgDom);
       cardsElements[index].replaceChildren(img);
     });
@@ -328,7 +328,7 @@
     const popup = document.querySelector('#accuse-result-popup');
     popup.style.visibility = 'visible';
 
-    displayAccusedCards(accusedCards);
+    showResultCards(accusedCards, '#accuse-result-popup');
 
     const accusationMsgEle = popup.querySelector('#accusation-msg');
     const accusationMessage = getAccusationMessage(accuser, accusedCards);
@@ -377,14 +377,43 @@
     poller.stopPolling();
   };
 
-  const showSuspicionResult = () => {
+  const suspicionMessage = () => {
+    const { suspectedCards } = gameState.suspicion;
+    const { character, room, weapon } = suspectedCards;
+
+    const suspectedBy =
+      gameState.isMyTurn() ? 'You' : gameState.currentPlayer.character;
+    return `${capitalize(suspectedBy)} suspected ${capitalize(character)}, in the ${capitalize(room)}, with the ${capitalize(weapon)}`;
+  };
+
+  const showSuspicionBreaker = () => {
     const { suspicionBreakerCharacter } = gameState.suspicion;
+    const playerOrder = gameState.getTurnOrder();
+
+    const turnOrderEle = document.querySelector('#turn-order');
+
+    const turnOrderChildren = playerOrder.map(({ character }) => {
+      const dom = ['div', {}, ['img', { src: `images/${character}.png` }]];
+      const imgContainer = generateHTML(dom);
+      if (suspicionBreakerCharacter === character) {
+        imgContainer.id = 'suspicion-breaker';
+      }
+
+      return imgContainer;
+    });
+
+    turnOrderEle.replaceChildren(...turnOrderChildren);
+  };
+
+  const showSuspicionResult = () => {
+    const { suspectedCards } = gameState.suspicion;
+    showSuspicionBreaker();
+    showResultCards(suspectedCards, '#suspect-result-popup');
 
     document.querySelector('.popup-container').style.visibility = 'visible';
     const popup = document.querySelector('#suspect-result-popup');
     popup.style.visibility = 'visible';
-
-    const message = `Suspicion breaker: ${suspicionBreakerCharacter}`;
+    const message = suspicionMessage();
     popup.querySelector('#suspicion-msg').innerText = message;
   };
 

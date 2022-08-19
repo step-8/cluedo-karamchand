@@ -151,6 +151,7 @@ class Game {
     this.#enablePermissions();
     this.#accusation = null;
     this.#suspicion = null;
+    this.#respondSuspicion = false;
   }
 
   disableDice() {
@@ -209,7 +210,6 @@ class Game {
   }
 
   suspect(playerId, suspectedCards) {
-    this.#respondSuspicion = false;
     const player = this.currentPlayer;
 
     if (!player.isYourId(playerId) || !player.isAllowedToSuspect()) {

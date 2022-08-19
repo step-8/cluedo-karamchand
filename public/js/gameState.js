@@ -50,6 +50,10 @@ class GameState {
     return this.#data.suspicion !== null;
   }
 
+  get you() {
+    return this.#data.you;
+  }
+
   get possibleMoves() {
     return this.#data.possibleMoves;
   }
@@ -71,12 +75,23 @@ class GameState {
   }
 
   get suspicion() {
-    console.log(this.#data.suspicion);
     return this.#data.suspicion;
   }
 
   get room() {
     return this.#data.you.room;
+  }
+
+  getTurnOrder() {
+    const currentPlayerIndex = this.players.findIndex(({ character }) =>
+      character === this.currentPlayer.character);
+
+    const turnOrder = [
+      ...this.players.slice(currentPlayerIndex + 1),
+      ...this.players.slice(0, currentPlayerIndex)
+    ];
+
+    return turnOrder;
   }
 
   addObserver(observer) {
