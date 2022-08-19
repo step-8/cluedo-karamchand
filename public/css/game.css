@@ -17,7 +17,6 @@ body {
   height: 920px;
   margin: 0 auto;
   background-color: #050c21;
-  color: white;
 }
 
 .card {
@@ -46,6 +45,7 @@ body {
   font-size: var(--font-size);
   border-radius: var(--border-radius);
   background-color: var(--red);
+  color: white;
 }
 
 /* Game Page */
@@ -57,6 +57,7 @@ body {
   justify-content: space-between;
   align-items: center;
   font-size: 1.1em;
+  color: white;
 }
 
 .header span {
@@ -77,6 +78,7 @@ main {
 .players {
   width: 15%;
   height: 100%;
+  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
