@@ -204,6 +204,8 @@ article {
 .popup-options>.btn {
   width: 40%;
   padding: 0.5em;
+  opacity: 1;
+  cursor: pointer;
 }
 
 .selected-cards,
@@ -332,12 +334,24 @@ article {
 }
 
 .highlight-path {
-  stroke-width: 0.4%;
-  fill: orange;
+  stroke: brown;
+  fill: #ffe4b4;
   cursor: pointer;
 }
 
 .current-player {
-  stroke: rgb(7, 235, 186);
-  stroke-width: 0.4%;
+  stroke: cyan;
+  stroke-width: 0.1;
+  animation: pulsar 1.5s linear infinite;
+  animation-direction: alternate;
+}
+
+@keyframes pulsar {
+  from {
+    r: 0.28;
+  }
+
+  to {
+    r: 0.5;
+  }
 }

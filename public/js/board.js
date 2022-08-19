@@ -50,7 +50,7 @@
     const roomPosition = ['polygon',
       { points: `${points.join(' ')}`, id, ...attributes.room }];
     const roomName = ['text',
-      { x, y, 'font-size': '1' }, room];
+      { x, y, 'font-size': '0.6', 'fill': 'white' }, room];
     return [roomPosition, roomName];
   };
 

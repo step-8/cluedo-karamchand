@@ -1126,28 +1126,28 @@
   ],
   "attributes": {
     "room": {
-      "fill": "lightBlue",
-      "stroke": "black",
+      "fill": "#77310ced",
+      "stroke": "lightgrey",
       "stroke-width": "0.2%"
     },
     "tiles": {
-      "fill": "#daa52073",
-      "stroke": "black",
-      "stroke-width": "0.2%",
+      "fill": "#efb958",
+      "stroke": "brown",
+      "stroke-width": "0.05%",
       "height": "1",
       "width": "1"
     },
     "start": {
-      "fill": "goldenRod",
-      "stroke": "black",
+      "fill": "#5f2e14",
+      "stroke": "dimgrey",
       "stroke-width": "0.2%",
       "height": "1",
       "width": "1"
     },
     "character": {
-      "stroke": "black",
-      "stroke-width": "0.05%",
-      "r": "0.3"
+      "stroke": "white",
+      "stroke-width": "0.1%",
+      "r": "0.35"
     },
     "board": {
       "width": "830",
