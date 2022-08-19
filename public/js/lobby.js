@@ -1,13 +1,19 @@
-const playerHtml = player => {
+const playerHtml = (player, you) => {
   const character = player.character;
+
+  const usernameDom = [['div', { className: 'name' }, player.name]];
+  if (character === you.character) {
+    usernameDom.push(['div', {}, '(You)']);
+  }
+
   return generateHTML(['div', { id: character, className: 'character' },
     ['div', { className: 'character-img' },
       ['img', { src: `/images/${character}.png` }, '']],
-    ['div', { className: 'player-name' }, player.name]]);
+    ['div', { className: 'player-name' }, ...usernameDom]]);
 };
 
-const addPlayers = ({ players, maxPlayers }, poller) => {
-  const playerList = players.map(playerHtml);
+const addPlayers = ({ players, maxPlayers, you }, poller) => {
+  const playerList = players.map((player) => playerHtml(player, you));
   const playersElement = document.querySelector('.players');
   playersElement.replaceChildren(...playerList);
 
