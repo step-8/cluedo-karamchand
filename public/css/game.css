@@ -2,6 +2,7 @@
   --border-radius: 0.2em;
   --font-size: 1.2em;
   --border: 1px solid black;
+  --red: #ed1d25;
 }
 
 * {
@@ -15,11 +16,13 @@ body {
   width: 1790px;
   height: 920px;
   margin: 0 auto;
+  background-color: #050c21;
+  color: white;
 }
 
 .card {
   border-radius: var(--border-radius);
-  box-shadow: 3px 3px 5px gray;
+  box-shadow: 1px 1px 10px lightgray;
   overflow: hidden;
 }
 
@@ -35,13 +38,14 @@ body {
 
 .btn {
   width: 70%;
+  padding: 0.8em;
+  opacity: 0.6;
   display: flex;
   justify-content: space-around;
+  border: 1px solid var(--red);
   font-size: var(--font-size);
   border-radius: var(--border-radius);
-  padding: 0.8em;
-  border: var(--border);
-  cursor: pointer;
+  background-color: var(--red);
 }
 
 /* Game Page */
@@ -52,6 +56,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 1.1em;
+}
+
+.header span {
+  color: var(--red);
 }
 
 .username {
@@ -88,6 +97,7 @@ main {
   height: 80%;
   border-radius: 50%;
   overflow: hidden;
+  box-shadow: 3px 3px 13px 0px white;
 }
 
 .players .name,
@@ -144,8 +154,9 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: var(--border);
   border-radius: var(--border-radius);
+  background-color: rgba(255, 255, 255, 0.834);
+  color: var(--red);
 }
 
 .logs {
@@ -307,19 +318,21 @@ article {
 
 /* highlight */
 .highlight-profile {
-  border: 4px solid orange;
+  border: 1px solid var(--red);
   border-radius: var(--border-radius);
+  box-shadow: 0px 0px 15px 2px var(--red);
 }
 
 .highlight {
   cursor: pointer;
-  border: 1px solid orangered;
-  box-shadow: 2px 2px 10px orange;
+  opacity: 1;
+  box-shadow: 0px 0px 15px 2px var(--red);
 }
 
 .highlight-path {
   stroke-width: 0.4%;
   fill: orange;
+  cursor: pointer;
 }
 
 .current-player {
