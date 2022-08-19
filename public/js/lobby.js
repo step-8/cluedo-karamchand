@@ -40,8 +40,9 @@ const generateLobby = () => {
 
 const updateStatus = ({ players, maxPlayers }) => {
   const restOfPlayers = maxPlayers - players.length;
-  const statusEle = document.querySelector('.status');
-  statusEle.innerText = `Waiting for ${restOfPlayers} players...`;
+  const statusEle = document.querySelector('#status-msg');
+  const msg = restOfPlayers > 1 ? 'players' : 'player';
+  statusEle.innerText = `Waiting for ${restOfPlayers} ${msg}...`;
 };
 
 const updateLobby = () => {
