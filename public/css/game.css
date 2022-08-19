@@ -292,11 +292,8 @@ article {
   gap: 4em;
 }
 
-#game-over-popup button {
-  background-color: white;
-}
-
 #game-over-popup #play-again-btn {
+  opacity: 1;
   width: 100%;
 }
 
@@ -317,7 +314,7 @@ article {
 #game-over-popup a {
   display: block;
   text-decoration: none;
-  color: black;
+  color: white;
 }
 
 /* highlight */

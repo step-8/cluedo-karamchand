@@ -341,8 +341,8 @@
 
   const showGameOver = () => {
     const winner = gameState.currentPlayer.character;
-    const winnerMessageEle = document.querySelector('#winner');
-    winnerMessageEle.innerText = capitalize(winner) + ' ';
+    const winnerMessageEle = document.querySelector('.winner-message');
+    winnerMessageEle.innerText = capitalize(winner) + ' Won!';
 
     const popupContainer = document.querySelector('.popup-container');
     popupContainer.style.visibility = 'visible';
