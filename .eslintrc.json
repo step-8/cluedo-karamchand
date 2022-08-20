@@ -154,6 +154,14 @@
       "rules": {
         "id-length": "off"
       }
+    },
+    {
+      "files": [
+        "suspicion.js"
+      ],
+      "rules": {
+        "max-len": "off"
+      }
     }
   ]
 }

@@ -32,9 +32,11 @@ const handleSuspect = (req, res) => {
   const { ...suspectedCards } = body;
 
   game.suspect(session.userId, suspectedCards);
+
   setTimeout(() => {
     game.stopSuspicionRes();
   }, 5000);
+
   res.sendStatus(201);
 };
 
