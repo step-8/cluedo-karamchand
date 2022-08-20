@@ -1,0 +1,25 @@
+html
+  head
+    title Home 
+    link(rel='stylesheet', href='css/styles.css')
+    link(rel='stylesheet', href='css/login-home.css')
+    script(src='js/home.js')
+  body(class='cover-img')
+    header(class='header')
+      h1(class='logo') CL<span class='red-text'>U</span>EDO
+      div(class='username') Hey #{username}!
+    main
+      div(class='container box-design')
+        form(action='/host', method='post', id='host-form')
+          select(name='maxPlayers')
+            - for (var val = 3; val <= 6; val++)
+              option(value=val) #{val}
+          input(type='submit', value='HOST', id='host-button')
+
+        div(class='or') -OR-
+
+        form(action='/join', method='post', id='join-form')
+          input(type='text', name='room-id',id='room-id', placeholder='Enter Room ID')
+          input(type='submit', value='JOIN', id='join-button')
+          
+        div(class='error-message')

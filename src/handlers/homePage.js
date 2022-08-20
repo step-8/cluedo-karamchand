@@ -1,5 +1,6 @@
 const serveHomePage = (req, res) => {
-  res.sendFile('home.html', { root: 'private' });
+  const { username } = req.session;
+  res.render('home', { username });
 };
 
 const redirectToLobby = (req, res) => {
