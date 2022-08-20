@@ -13,7 +13,7 @@ html
         form(action='/host', method='post', id='host-form')
           select(name='maxPlayers')
             - for (var val = 3; val <= 6; val++)
-              option(value=val) #{val}
+              option(value=val) #{val} players
           input(type='submit', value='HOST', id='host-button')
 
         div(class='or') -OR-
