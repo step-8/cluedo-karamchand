@@ -1,6 +1,7 @@
 const { Game } = require('../model/game.js');
 const { Board } = require('../model/board.js');
 const { Character } = require('../model/character.js');
+const { Room } = require('../model/room.js');
 
 const randomIntBetween = (start, end) => {
   const diff = end - start;
@@ -14,16 +15,20 @@ const generateGameId = () => {
 };
 
 const createCharacters = (charactersDetails) => {
-
   return charactersDetails
     .map(({ name, position }) => new Character(name, position));
 };
 
+const createRooms = (roomsDetails) => {
+  return roomsDetails.map(({ name, position, entryPoint, secretPassage }) =>
+    new Room(name, position, entryPoint, secretPassage));
+};
+
 const createGame =
   (gameId, maxPlayers, hostId, hostName, boardData) => {
-    const { cellPositions, roomPositions, characterDetails } = boardData;
-
-    const board = new Board(cellPositions, roomPositions);
+    const { cellPositions, roomDetails, characterDetails } = boardData;
+    const rooms = createRooms(roomDetails);
+    const board = new Board(cellPositions, rooms);
     const characters = createCharacters(characterDetails);
     const game =
       new Game(gameId, maxPlayers, characters, board);
@@ -48,4 +53,4 @@ const hostGame = (games, boardData) => (req, res) => {
   res.redirect(`/lobby/${gameId}`);
 };
 
-module.exports = { hostGame };
+module.exports = { hostGame, createRooms };

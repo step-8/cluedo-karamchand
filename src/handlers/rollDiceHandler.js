@@ -22,44 +22,44 @@ const getRoomCell = (rooms, cell) => {
   return rooms.find(({ position }) => isEqual(position, cell));
 };
 
-const isValidAdjecentCell = (cell, baseCell, cells) => {
-  const { cellPositions, roomPositions } = cells;
+const isValidAdjacentCell = (cell, baseCell, cells) => {
+  const { cellPositions, roomDetails } = cells;
 
   if (isCellPresent(cellPositions, cell)) {
     return true;
   }
 
-  const roomCell = getRoomCell(roomPositions, cell);
+  const roomCell = getRoomCell(roomDetails, cell);
 
   return roomCell && isEqual(roomCell.entryPoint, baseCell);
 };
 
-const findAdjecentCells = (cells, [x, y]) => {
+const findAdjacentCells = (cells, [x, y]) => {
   const top = [x, y - 1];
   const bottom = [x, y + 1];
   const left = [x - 1, y];
   const right = [x + 1, y];
-  const adjecentCells = [top, bottom, left, right];
+  const adjacentCells = [top, bottom, left, right];
 
-  return adjecentCells.filter(cell =>
-    isValidAdjecentCell(cell, [x, y], cells));
+  return adjacentCells.filter(cell =>
+    isValidAdjacentCell(cell, [x, y], cells));
 };
 
 const findPossibleMoves = (cells, moves, currentPos, possibleRooms = []) => {
   const possibleMoves = [];
-  let adjecentCells = findAdjecentCells(cells, currentPos);
-  const room = getRoomCell(cells.roomPositions, currentPos);
+  let adjacentCells = findAdjacentCells(cells, currentPos);
+  const room = getRoomCell(cells.roomDetails, currentPos);
 
   if (room) {
     possibleRooms.push(currentPos);
-    adjecentCells = [room.entryPoint];
+    adjacentCells = [room.entryPoint];
   }
 
   if (moves <= 1) {
-    return [...adjecentCells, ...possibleRooms];
+    return [...adjacentCells, ...possibleRooms];
   }
 
-  adjecentCells.forEach(cell => {
+  adjacentCells.forEach(cell => {
     possibleMoves.push(
       ...findPossibleMoves(cells, moves - 1, cell, possibleRooms));
   });

@@ -729,7 +729,7 @@
       1
     ]
   ],
-  "roomPositions": [
+  "roomDetails": [
     {
       "name": "kitchen",
       "position": [
@@ -739,6 +739,10 @@
       "entryPoint": [
         4,
         7
+      ],
+      "secretPassage": [
+        17,
+        21
       ]
     },
     {
@@ -761,6 +765,10 @@
       "entryPoint": [
         18,
         5
+      ],
+      "secretPassage": [
+        6,
+        19
       ]
     },
     {
@@ -805,6 +813,10 @@
       "entryPoint": [
         6,
         18
+      ],
+      "secretPassage": [
+        19,
+        5
       ]
     },
     {
@@ -827,6 +839,10 @@
       "entryPoint": [
         17,
         20
+      ],
+      "secretPassage": [
+        4,
+        6
       ]
     }
   ],

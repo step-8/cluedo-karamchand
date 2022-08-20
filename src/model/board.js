@@ -11,16 +11,14 @@ class Board {
   }
 
   isInsideRoom(tile) {
-    return this.#rooms.some(({ position }) =>
-      isEqual(position, tile));
+    return this.#rooms.some(room => {
+      return room.isInside(tile);
+    });
   }
 
   getRoom(tile) {
-    if (this.isInsideRoom(tile)) {
-      return this.#rooms.find(({ position }) =>
-        isEqual(position, tile)).name;
-    }
-    return null;
+    const room = this.#rooms.find(room => room.isInside(tile));
+    return room ? room.info.name : null;
   }
 }
 

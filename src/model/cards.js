@@ -51,12 +51,11 @@ class Cards {
 
   #createEnvelope() {
     const characters = this.#characters;
-    const [character] = characters.splice(randomInt(characters.length), 1);
-
     const rooms = this.#rooms;
-    const [room] = rooms.splice(randomInt(rooms.length), 1);
-
     const weapons = this.#weapons;
+
+    const [character] = characters.splice(randomInt(characters.length), 1);
+    const [room] = rooms.splice(randomInt(rooms.length), 1);
     const [weapon] = weapons.splice(randomInt(weapons.length), 1);
 
     return { character, room, weapon };

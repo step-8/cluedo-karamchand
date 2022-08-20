@@ -1,4 +1,5 @@
 const assert = require('assert');
+const { createRooms } = require('../src/handlers/hostGameHandler.js');
 const { Board } = require('../src/model/board.js');
 const { Character } = require('../src/model/character.js');
 const { Game } = require('../src/model/game.js');
@@ -23,7 +24,7 @@ describe('Game', () => {
       new Character('green', [3, 3]),
       new Character('plum', [3, 3])
     ];
-    const rooms = [{
+    const roomDetails = [{
       'name': 'kitchen',
       'position': [
         4,
@@ -34,6 +35,9 @@ describe('Game', () => {
         7
       ]
     }];
+
+    const rooms = createRooms(roomDetails);
+
     board = new Board([[0, 7]], rooms);
   });
 
