@@ -52,4 +52,16 @@ const isUserInGame = games => (req, res, next) => {
   next();
 };
 
-module.exports = { injectGame, injectGameId, addPlayerToGame, isUserInGame };
+const validateCurrentPlayer = (req, res, next) => {
+  const { game, session } = req;
+  if (game.isCurrentPlayer(session.userId)) {
+    next();
+    return;
+  }
+
+  res.sendStatus(405);
+};
+
+module.exports = {
+  injectGame, injectGameId, addPlayerToGame, isUserInGame, validateCurrentPlayer
+};

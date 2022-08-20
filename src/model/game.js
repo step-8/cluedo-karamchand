@@ -144,6 +144,10 @@ class Game {
     } while (this.currentPlayer.hasAccused);
   }
 
+  isCurrentPlayer(playerId) {
+    return this.currentPlayer.isYourId(playerId);
+  }
+
   passTurn() {
     this.#possibleMoves = [];
     this.#disablePermissions();

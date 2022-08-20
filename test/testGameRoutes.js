@@ -75,6 +75,25 @@ describe('POST /game/move', () => {
   });
 });
 
+describe('POST /game/accuse', () => {
+  const app = createApp();
+
+  it('Should not allow user to accuse if user is not current player',
+    (done) => {
+      loginAsHost(app, 'vikram')
+        .then(({ hostCookie, gameId }) => {
+          return loginAllAsJoinees(app, ['james', 'rathod'], gameId);
+        })
+        .then((res) => {
+          request(app)
+            .post('/game/accuse')
+            .set('Cookie', res[1].headers['set-cookie'])
+            .send({ character: 'green', weapon: 'rope', room: 'hall' })
+            .expect(405, done);
+        });
+    });
+});
+
 describe('POST /game/leave', () => {
   const app = createApp();
 

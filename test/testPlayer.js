@@ -20,7 +20,10 @@ describe('Player', () => {
       character: 'ironman',
       position: [1, 1],
       permissions:
-        { rollDice: false, accuse: false, passTurn: false, suspect: false },
+      {
+        rollDice: false, passTurn: false, accuse: false, suspect: false,
+        move: false
+      },
       cards: []
     };
 
@@ -36,7 +39,10 @@ describe('Player', () => {
       character: 'ironman',
       position: [1, 1],
       permissions:
-        { rollDice: false, accuse: false, passTurn: false, suspect: false },
+      {
+        rollDice: false, passTurn: false, accuse: false, suspect: false,
+        move: false
+      },
       cards: ['hall']
     };
 
@@ -136,7 +142,8 @@ describe('Player', () => {
       player.allowToAccuse();
 
       const expected = {
-        rollDice: false, accuse: false, passTurn: false, suspect: false
+        rollDice: false, passTurn: false, accuse: false, suspect: false,
+        move: false
       };
 
       player.accused();

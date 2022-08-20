@@ -9,8 +9,8 @@ class Options {
     this.#options = [];
   }
 
-  add(btnId, isAllowed, callBack) {
-    this.#options.push(new Option(btnId, isAllowed, callBack));
+  add(name, btnId, isAllowed, callBack) {
+    this.#options.push(new Option(name, btnId, isAllowed, callBack));
   }
 
   enable() {
@@ -19,11 +19,13 @@ class Options {
 }
 
 class Option {
+  #name;
   #btnId;
   #isAllowed;
   #callBack;
 
-  constructor(btnId, isAllowed, callBack) {
+  constructor(name, btnId, isAllowed, callBack) {
+    this.#name = name;
     this.#btnId = btnId;
     this.#isAllowed = isAllowed;
     this.#callBack = callBack;

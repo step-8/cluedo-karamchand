@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { assert } = require('chai');
 const { createRooms } = require('../src/handlers/hostGameHandler.js');
 const { Board } = require('../src/model/board.js');
 const { Character } = require('../src/model/character.js');
@@ -61,7 +61,7 @@ describe('Game', () => {
     const game = new Game(1, 1, characters, board);
     game.addPlayer(1, 'bob');
 
-    assert.ok(!game.addPlayer(1, 'bob'));
+    assert.notOk(game.addPlayer(1, 'bob'));
   });
 
   it('Should return the game state', () => {
@@ -77,7 +77,10 @@ describe('Game', () => {
       you: {
         playerId: 1, name: 'bob', character: 'scarlett', position: [1, 1],
         permissions:
-          { rollDice: false, passTurn: false, accuse: false, suspect: false },
+        {
+          rollDice: false, passTurn: false, accuse: false, suspect: false,
+          move: false
+        },
         cards: [],
         room: null
       },
@@ -110,7 +113,7 @@ describe('Game', () => {
   it('Should return false if game is not ready', () => {
     const game = new Game(1, 1, characters, board);
 
-    assert.ok(!game.isReady());
+    assert.notOk(game.isReady());
   });
 
   it('should roll the dice', () => {
@@ -163,7 +166,7 @@ describe('Game', () => {
     game.disableDice();
 
     const { permissions } = game.currentPlayer.info;
-    assert.ok(!permissions.rollDice);
+    assert.notOk(permissions.rollDice);
   });
 
   it('Should disable pass turn permission to the current player', () => {
@@ -172,7 +175,7 @@ describe('Game', () => {
     game.disablePass();
 
     const { permissions } = game.currentPlayer.info;
-    assert.ok(!permissions.rollDice);
+    assert.notOk(permissions.rollDice);
   });
 
   it('Should move the current player\'s token', () => {
@@ -200,7 +203,7 @@ describe('Game', () => {
     game.addPlayer(1, 'bob');
     game.addPlayer(2, 'raj');
     game.start();
-    assert.ok(!game.accuse(2, {
+    assert.notOk(game.accuse(2, {
       character: 'green', weapon: 'rope', room: 'hall'
     }));
   });
@@ -242,7 +245,7 @@ describe('Game', () => {
     game.start();
     const cards = { character: 'plum', weapon: 'rope' };
 
-    assert.ok(!game.suspect(1, cards));
+    assert.notOk(game.suspect(1, cards));
   });
 
   it('Should return true if current player is allowed to suspect', () => {
@@ -275,4 +278,23 @@ describe('Game', () => {
 
     assert.deepStrictEqual(suspicion, expected);
   });
+
+  it('should return true if given id is belongs to current player', () => {
+    const game = new Game(1, 2, characters, board);
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
+    game.start();
+
+    assert.ok(game.isCurrentPlayer(1));
+  });
+
+  it('should return false if given id does not belong to current player',
+    () => {
+      const game = new Game(1, 2, characters, board);
+      game.addPlayer(1, 'bob');
+      game.addPlayer(2, 'raj');
+      game.start();
+
+      assert.notOk(game.isCurrentPlayer(2));
+    });
 });

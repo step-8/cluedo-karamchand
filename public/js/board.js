@@ -238,18 +238,18 @@
 
   const enableOptions = () => {
     const options = new Options();
-    options.add('#dice', gameState.canRollDice(), ({ target }) => {
+    options.add('rollDice', '#dice', gameState.canRollDice(), ({ target }) => {
       rollDice();
       disableOption(target.closest('#dice'));
     });
 
-    options.add('#pass', gameState.canPassTurn(), () => {
+    options.add('pass', '#pass', gameState.canPassTurn(), () => {
       pass();
       disableAllOptions();
     });
 
-    options.add('#suspect', gameState.canSuspect(), showSuspectPopup);
-    options.add('#accuse', gameState.canAccuse(), showAccusationPopup);
+    options.add('suspect', '#suspect', gameState.canSuspect(), showSuspectPopup);
+    options.add('accuse', '#accuse', gameState.canAccuse(), showAccusationPopup);
 
     options.enable();
   };
