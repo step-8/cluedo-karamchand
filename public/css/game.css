@@ -119,6 +119,66 @@ main {
   align-items: center;
 }
 
+.tile,
+.starting-tile {
+  width: 1;
+  height: 1;
+}
+
+.tile {
+  fill: #efb958;
+  stroke: brown;
+  stroke-width: 0.05%;
+}
+
+.starting-tile {
+  fill: #5f2e14;
+  stroke: dimgrey;
+  stroke-width: 0.2%;
+}
+
+.room {
+  fill: #77310ced;
+  stroke: lightgrey;
+  stroke-width: 0.2%;
+}
+
+.room-name {
+  fill: white;
+  font-size: 0.6;
+}
+
+/* Character tokens */
+.token {
+  r: 0.35;
+  stroke: white;
+  stroke-width: 0.1%;
+}
+
+#scarlett {
+  fill: var(--red);
+}
+
+#mustard {
+  fill: yellow;
+}
+
+#white {
+  fill: white;
+}
+
+#green {
+  fill: green;
+}
+
+#peacock {
+  fill: blue;
+}
+
+#plum {
+  fill: purple;
+}
+
 .player-controls {
   width: 37%;
   height: 100%;

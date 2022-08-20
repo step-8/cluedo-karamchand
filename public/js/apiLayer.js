@@ -17,11 +17,6 @@ const API = {
     return fetchJSON(request);
   },
 
-  getBoardData: () => {
-    const request = { url: '/api/board', options: { method: 'GET' } };
-    return fetchJSON(request);
-  },
-
   rollDice: () => {
     const request = { url: '/game/roll-dice', options: { method: 'GET' } };
     return fetchRequest(request);

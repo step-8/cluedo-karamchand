@@ -7,9 +7,9 @@
     Object.entries(attributes).forEach(attSet => createAttr(attSet, element));
   };
 
-  const createDom = ([tag, attributes, ...content]) => {
+  const createElementTree = ([tag, attributes, ...content]) => {
     const newContent = content.map(
-      subTag => Array.isArray(subTag) ? createDom(subTag) : subTag);
+      subTag => Array.isArray(subTag) ? createElementTree(subTag) : subTag);
 
     const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
     setAttributes(attributes, element);
@@ -18,65 +18,26 @@
     return element;
   };
 
-  const generateStart = ({ position, color, name }, attributes) => {
-    const [xCordinate, yCordinate] = position;
-    const tile = ['rect',
-      { x: xCordinate, y: yCordinate, ...attributes.start }];
-    const character = ['circle',
+  const createTokenDom = (characterName, position) => {
+    const token = ['circle',
       {
-        id: name,
-        fill: color,
-        cx: xCordinate + 0.5, cy: yCordinate + 0.5, ...attributes.character
+        id: characterName,
+        cx: position[0] + 0.5,
+        cy: position[1] + 0.5,
+        class: 'token'
       }];
-    return [tile, character];
+    return token;
   };
 
-  const createStart = ({ startingPos, attributes }) => {
-    return startingPos.flatMap(cell =>
-      generateStart(cell, attributes));
-  };
+  const includeTokens = (characters) => {
+    const board = document.querySelector('.board>svg');
 
-  const generatePath = ([x, y], attributes) => {
-    return ['rect',
-      { x, y, ...attributes.tiles, id: `${x}-${y}` }]; //Get ids from server.
-  };
-
-  const createPaths = ({ tiles, attributes }) => {
-    return tiles.map(tile => generatePath(tile, attributes));
-  };
-
-  const generateRoom = ({ points, room, textPosition, id }, attributes) => {
-    const [x, y] = textPosition;
-    const roomPosition = ['polygon',
-      { points: `${points.join(' ')}`, id, ...attributes.room }];
-    const roomName = ['text',
-      { x, y, 'font-size': '0.6', 'fill': 'white' }, room];
-    return [roomPosition, roomName];
-  };
-
-  const createRooms = ({ rooms, attributes }) => {
-    return rooms.flatMap(room => {
-      return generateRoom(room, attributes);
+    const playerTokens = characters.map((character) => {
+      const { name, position } = character;
+      return createElementTree(createTokenDom(name, position));
     });
-  };
 
-  const createEnvelope = ({ attributes }) => {
-    return [['rect',
-      { ...attributes.envelope }],
-    ['text', { ...attributes.envelopeText }, 'Envelope']];
-  };
-
-  const generateBoard = (boardData) => {
-    const rooms = createRooms(boardData);
-    const paths = createPaths(boardData);
-    const start = createStart(boardData);
-    const envelope = createEnvelope(boardData);
-    const board = document.querySelector('.board');
-    const boardAttr = boardData.attributes.board;
-    board.append(createDom(
-      ['svg', {
-        ...boardAttr,
-      }, ...rooms, ...paths, ...start, ...envelope]));
+    board.append(...playerTokens);
   };
 
   const generatePlayersDom = (players, you) => {
@@ -107,12 +68,12 @@
 
     const character = gameState.currentPlayer.character;
     const currentPlayerEle = document.querySelector(`#${character}-profile`);
-    currentPlayerEle.className = 'player highlight-profile';
+    currentPlayerEle.classList.add('highlight-profile');
   };
 
   const highlightCurrentPlayer = (character) => {
     const charElement = document.getElementById(character);
-    charElement.setAttribute('class', 'current-player');
+    charElement.classList.add('current-player');
   };
 
   const removeHighlight = (character) => {
@@ -184,7 +145,8 @@
   const highlightPosition = (position) => {
     const id = `${position[0]}-${position[1]}`;
     const targetElement = document.getElementById(id);
-    targetElement.setAttribute('class', 'highlight-path');
+    console.log(targetElement);
+    targetElement.classList.add('highlight-path');
     targetElement.onclick = () =>
       moveCharacter(position);
   };
@@ -254,7 +216,7 @@
     options.enable();
   };
 
-  const updateOptions = ([die1, die2]) => {
+  const setDice = ([die1, die2]) => {
     const dice = document.querySelectorAll('.die');
     dice[0].innerText = die1;
     dice[1].innerText = die2;
@@ -444,14 +406,12 @@
     setupPopup('suspect', suspect);
     setupPopup('accuse', accuse);
 
-    API.getBoardData()
-      .then(boardData => generateBoard(boardData));
-
     API.getGame()
       .then(gameData => {
         generatePlayers(gameData);
         generateCards(gameData.you);
-        updateOptions(gameData.diceValue);
+        setDice(gameData.diceValue);
+        includeTokens(gameData.characters);
       });
 
     const getGame = () =>

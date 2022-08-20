@@ -14,7 +14,7 @@ const boardHandler = (boardData, cards) => (req, res) => {
     return res.redirect(`/lobby/${gameId}`);
   }
 
-  res.render('game', { username, cards });
+  res.render('game', { username, cards, boardData });
 };
 
 module.exports = { boardHandler };

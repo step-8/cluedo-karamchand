@@ -1,48 +1,36 @@
 {
-  "startingPos": [
+  "startingTiles": [
     {
-      "name": "white",
-      "color": "white",
       "position": [
         9,
         0
       ]
     },
     {
-      "name": "green",
-      "color": "green",
       "position": [
         14,
         0
       ]
     },
     {
-      "name": "peacock",
-      "color": "blue",
       "position": [
         23,
         6
       ]
     },
     {
-      "name": "mustard",
-      "color": "yellow",
       "position": [
         0,
         17
       ]
     },
     {
-      "name": "scarlett",
-      "color": "red",
       "position": [
         7,
         24
       ]
     },
     {
-      "name": "plum",
-      "color": "purple",
       "position": [
         23,
         19
@@ -781,7 +769,7 @@
   ],
   "rooms": [
     {
-      "room": "Kitchen",
+      "name": "Kitchen",
       "textPosition": [
         2,
         4
@@ -815,7 +803,7 @@
       ]
     },
     {
-      "room": "Ballroom",
+      "name": "Ballroom",
       "textPosition": [
         10,
         5
@@ -857,7 +845,7 @@
       ]
     },
     {
-      "room": "Conservatory",
+      "name": "Conservatory",
       "textPosition": [
         18.4,
         3
@@ -891,7 +879,7 @@
       ]
     },
     {
-      "room": "Dining",
+      "name": "Dining",
       "textPosition": [
         2,
         13
@@ -925,7 +913,7 @@
       ]
     },
     {
-      "room": "Billiard",
+      "name": "Billiard",
       "textPosition": [
         19,
         11
@@ -951,7 +939,7 @@
       ]
     },
     {
-      "room": "Library",
+      "name": "Library",
       "textPosition": [
         19,
         17
@@ -1005,7 +993,7 @@
       ]
     },
     {
-      "room": "Study",
+      "name": "Study",
       "textPosition": [
         19,
         23
@@ -1039,7 +1027,7 @@
       ]
     },
     {
-      "room": "Hall",
+      "name": "Hall",
       "textPosition": [
         11,
         22
@@ -1065,7 +1053,7 @@
       ]
     },
     {
-      "room": "Lounge",
+      "name": "Lounge",
       "textPosition": [
         2,
         22
@@ -1099,7 +1087,7 @@
       ]
     },
     {
-      "room": "Cluedo",
+      "name": "Cluedo",
       "textPosition": [
         11,
         13
@@ -1123,53 +1111,5 @@
         ]
       ]
     }
-  ],
-  "attributes": {
-    "room": {
-      "fill": "#77310ced",
-      "stroke": "lightgrey",
-      "stroke-width": "0.2%"
-    },
-    "tiles": {
-      "fill": "#efb958",
-      "stroke": "brown",
-      "stroke-width": "0.05%",
-      "height": "1",
-      "width": "1"
-    },
-    "start": {
-      "fill": "#5f2e14",
-      "stroke": "dimgrey",
-      "stroke-width": "0.2%",
-      "height": "1",
-      "width": "1"
-    },
-    "character": {
-      "stroke": "white",
-      "stroke-width": "0.1%",
-      "r": "0.35"
-    },
-    "board": {
-      "width": "830",
-      "height": "830",
-      "viewBox": "0 0 24 25"
-    },
-    "envelope": {
-      "x": 10.5,
-      "y": 14,
-      "fill": "gray",
-      "stroke": "black",
-      "stroke-width": "0.1%",
-      "height": 2.5,
-      "width": 4
-    },
-    "envelopeText": {
-      "x": 11.4,
-      "y": 15.5,
-      "fill": "white",
-      "stroke": "white",
-      "stroke-width": "0.1%",
-      "font-size": "0.6"
-    }
-  }
+  ]
 }

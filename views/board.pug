@@ -1,0 +1,15 @@
+svg(width='830', height='830', viewBox='0 0 24 25')
+  each room in boardData.rooms
+    - var points = '';  
+    each pos in room.points
+      - points += pos + ' ';
+    polygon(points=points, class='room', id=room.id)
+    - var textPos = room.textPosition;
+    text(x=textPos[0], y=textPos[1], class='room-name') #{room.name}
+
+  each tile in boardData.tiles
+    rect(x=tile[0], y=tile[1], class='tile',id=tile[0] + '-' + tile[1])
+
+  each startingTile in boardData.startingTiles
+    - var pos = startingTile.position;
+    rect(x=pos[0], y=pos[1], class='starting-tile',id=pos[0] + '-' + pos[1])
