@@ -48,20 +48,3 @@ describe('GET /api/game', () => {
       .expect(302, done);
   });
 });
-
-describe('GET /api/cards', () => {
-  it('should give the cards data', (done) => {
-    const app = createApp();
-
-    request(app)
-      .post('/login')
-      .send('username=bob')
-      .end((err, res) => {
-        request(app)
-          .get('/api/cards')
-          .set('Cookie', res.headers['set-cookie'])
-          .expect('content-type', /json/)
-          .expect(200, done);
-      });
-  });
-});

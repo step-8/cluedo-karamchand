@@ -12,11 +12,6 @@ const API = {
     return fetchJSON(request);
   },
 
-  getCards: () => {
-    const request = { url: '/api/cards', options: { method: 'GET' } };
-    return fetchJSON(request);
-  },
-
   rollDice: () => {
     const request = { url: '/game/roll-dice', options: { method: 'GET' } };
     return fetchRequest(request);
