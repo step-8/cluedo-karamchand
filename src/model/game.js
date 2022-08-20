@@ -1,5 +1,6 @@
 const { Cards } = require('./cards.js');
 const { Player } = require('./player.js');
+const { Suspicion } = require('./suspicion.js');
 
 class Game {
   #gameId;
@@ -14,7 +15,6 @@ class Game {
   #possibleMoves;
   #board;
   #suspicion;
-  #respondSuspicion;
 
   constructor(gameId, maxPlayers, characters, board) {
     this.#gameId = gameId;
@@ -29,7 +29,6 @@ class Game {
     this.#suspicion = null;
     this.#possibleMoves = [];
     this.#board = board;
-    this.#respondSuspicion = false;
   }
 
   get players() {
@@ -145,7 +144,6 @@ class Game {
     this.#enablePermissions();
     this.#accusation = null;
     this.#suspicion = null;
-    this.#respondSuspicion = false;
   }
 
   rollDice(diceRoller) {
@@ -200,10 +198,6 @@ class Game {
     return players.find(player => player.hasAnyOf(cards));
   }
 
-  stopSuspicionRes() {
-    this.#respondSuspicion = true;
-  }
-
   suspect(playerId, suspectedCards) {
     const player = this.currentPlayer;
 
@@ -218,12 +212,14 @@ class Game {
     const suspicionBreakerCharacter =
       suspicionBreaker ? suspicionBreaker.character : null;
 
-    this.#suspicion = {
-      suspectedBy: { ...player.profile },
-      suspectedCards: { ...suspectedCards },
+    const suspectedBy = player.profile.character;
+    const suspicion = new Suspicion(
+      suspectedBy,
+      suspectedCards,
       suspicionBreakerCharacter
-    };
+    );
 
+    this.#suspicion = suspicion;
     player.disable('suspect');
     return true;
   }
@@ -245,6 +241,9 @@ class Game {
     const moves = playerId === currentPlayerId ? this.#possibleMoves : [];
     const characters = this.#characters.map(character => character.info);
 
+    const suspicion = this.#suspicion ?
+      this.#suspicion.getSuspicion(you.character) : null;
+
     const state = {
       gameId: this.#gameId,
       you: { ...you.info, room },
@@ -254,13 +253,9 @@ class Game {
       diceValue: this.#diceValue,
       currentPlayer: this.currentPlayer.profile,
       accusation: this.#accusation,
-      suspicion: null,
+      suspicion,
       possibleMoves: [...moves]
     };
-
-    if (!this.#respondSuspicion) {
-      state.suspicion = this.#suspicion;
-    }
 
     return state;
   }

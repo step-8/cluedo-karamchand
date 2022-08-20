@@ -194,19 +194,46 @@ describe('Game', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('Should provide suspicion info, if current player suspect', () => {
-    const game = createGame(['bob', 'raj'], characters, board);
+  it('Should return false if current player is not allowed to suspect', () => {
+    const players = ['bob', 'raj', 'rahul'];
+    const game = createGame(players, characters, board);
+    game.start();
+    const cards = { character: 'plum', weapon: 'rope' };
+
+    assert.ok(!game.suspect(1, cards));
+  });
+
+  it('Should return true if current player is allowed to suspect', () => {
+    const players = ['bob', 'raj', 'rahul'];
+    const game = createGame(players, characters, board);
+    game.start();
+
+    game.move([4, 6]);
+    const cards = { character: 'plum', weapon: 'rope', room: 'kitchen' };
+
+    assert.ok(game.suspect(1, cards));
+  });
+
+  it('Should provide suspicion info, if current player suspects', () => {
+    const game = new Game(1, 2, characters, board);
+
+    game.addPlayer(1, 'bob');
+    game.addPlayer(2, 'raj');
     game.start();
     game.move([4, 6]);
     game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
 
     const { suspicion } = game.getState(1);
-    const { suspicionBreakerCharacter } = suspicion;
+    const { suspicionBreaker } = suspicion;
 
     const expected = {
-      suspectedBy: { name: 'bob', character: 'scarlett', position: [4, 6] },
-      suspectedCards: { character: 'green', weapon: 'rope', room: 'kitchen' },
-      suspicionBreakerCharacter
+      suspectedBy: 'scarlett',
+      suspectedElements: {
+        character: 'green', weapon: 'rope', room: 'kitchen'
+      },
+      suspicionBreaker,
+      ruledOut: false,
+      ruledOutWith: null
     };
 
     assert.deepStrictEqual(suspicion, expected);

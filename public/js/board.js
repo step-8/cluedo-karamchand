@@ -300,16 +300,17 @@
   };
 
   const suspicionMessage = () => {
-    const { suspectedCards } = gameState.suspicion;
+    const { suspectedElements: suspectedCards } = gameState.suspicion;
     const { character, room, weapon } = suspectedCards;
 
-    const suspectedBy =
-      gameState.isMyTurn() ? 'You' : gameState.currentPlayer.character;
+    const suspectedBy = gameState.isMyTurn() ?
+      'You' : gameState.currentPlayer.character;
+
     return `${capitalize(suspectedBy)} suspected ${capitalize(character)}, in the ${capitalize(room)}, with the ${capitalize(weapon)}`;
   };
 
   const showSuspicionBreaker = () => {
-    const { suspicionBreakerCharacter } = gameState.suspicion;
+    const { suspicionBreaker } = gameState.suspicion;
     const playerOrder = gameState.getTurnOrder();
 
     const turnOrderEle = document.querySelector('#turn-order');
@@ -317,7 +318,7 @@
     const turnOrderChildren = playerOrder.map(({ character }) => {
       const dom = ['div', {}, ['img', { src: `images/${character}.png` }]];
       const imgContainer = generateHTML(dom);
-      if (suspicionBreakerCharacter === character) {
+      if (suspicionBreaker === character) {
         imgContainer.id = 'suspicion-breaker';
       }
 
@@ -328,7 +329,7 @@
   };
 
   const showSuspicionResult = () => {
-    const { suspectedCards } = gameState.suspicion;
+    const { suspectedElements: suspectedCards } = gameState.suspicion;
     showSuspicionBreaker();
     showResultCards(suspectedCards, '#suspect-result-popup');
 
@@ -339,12 +340,16 @@
     popup.querySelector('#suspicion-msg').innerText = message;
   };
 
-  const suspicionResult = (poller) => {
-    setTimeout(() => {
-      closePopup();
-      poller.startPolling();
-    }, 10000);
+  const stopSuspicion = (poller) => {
+    closePopup();
+    poller.startPolling();
+  };
 
+  const suspicionResult = (poller) => {
+    if (gameState.isSuspicionRuledOut()) {
+      setTimeout(() => stopSuspicion(poller), 10000);
+      return;
+    }
     showSuspicionResult();
   };
 
