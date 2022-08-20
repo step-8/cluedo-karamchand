@@ -48,7 +48,7 @@ const API = {
 
   suspect: (suspectedCards) => {
     const request = {
-      url: '/game/suspect',
+      url: '/game/suspect/make',
       options: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
