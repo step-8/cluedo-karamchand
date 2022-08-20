@@ -4,16 +4,18 @@
   <title>Home</title>
   <script src="/js/home.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
-  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/login-home.css">
 </head>
 
-<body>
+<body class="cover-img">
+  <header class="header">
+    <h1 class="logo">CL<span class="red-text">U</span>EDO</h1>
+    <div class="username"></div>
+  </header>
   <main>
-
-    <div class="container">
+    <div class="container box-design">
       <form action="/host" method="post" id="host-form">
         <select name="maxPlayers">
-          <option value="3">Number of players</option>
           <option value="3">3</option>
           <option value="4">4</option>
           <option value="5">5</option>
@@ -25,7 +27,7 @@
       <div class="or">--OR--</div>
 
       <form action="/join" method="post" id="join-form">
-        <input type="text" name="room-id" id="" placeholder="Enter room id">
+        <input type="text" name="room-id" id="room-id" placeholder="Enter Room ID">
         <input type="submit" value="JOIN" id="join-button">
       </form>
 

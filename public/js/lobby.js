@@ -49,7 +49,7 @@ const main = () => {
   API.getGame()
     .then(gameData => {
       generateLobby(gameData);
-    })
+    });
 
   const poller = new Poller(() => updateLobby(poller), 500);
   poller.startPolling();

@@ -4,16 +4,20 @@
   <title>login</title>
   <script src="/js/login.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
-  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/css/login-home.css">
 </head>
 
-<body>
-  <main class="page-wrapper">
-    <div class="container">
+<body class="cover-img">
+  <header class="header">
+    <h1 class="logo">CL<span class="red-text">U</span>EDO</h1>
+  </header>
+  <main>
+    <div class="container box-design">
       <form action="/login" method="post">
-        <div><input type="text" name="username" id="username" placeholder="Enter name" class="username-field"></div>
-        <div><input type="submit" value="Play" class="play-button"></div>
+        <input type="text" name="username" id="username" placeholder="Enter Name">
+        <input type="submit" value="PLAY" class="play-button">
       </form>
+
       <div class="error-message"></div>
     </div>
   </main>

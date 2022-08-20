@@ -1,0 +1,71 @@
+.cover-img {
+  background-image: url('/images/cluedo-cover.jpeg');
+}
+
+.logo {
+  font-size: 4em;
+}
+
+.or {
+  font-size: 1.4em;
+  color: white;
+}
+
+.container {
+  width: 28%;
+  height: 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+form {
+  width: 50%;
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+input[type=text],
+input[type=submit],
+select {
+  width: 100%;
+  height: 50%;
+  font-size: 1.1em;
+  border: none;
+}
+
+input[type=text],
+select {
+  padding: 0.4em;
+  border-bottom: 1px solid white;
+  background-color: transparent;
+  outline: none;
+  color: white;
+}
+
+input[type=submit] {
+  border-radius: var(--border-radius);
+  background-color: var(--red);
+  color: white;
+}
+
+input[type=submit]:hover {
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+}
+
+.error-message {
+  height: 10%;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

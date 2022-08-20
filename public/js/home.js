@@ -3,12 +3,12 @@ const showErrorMessage = () => {
 
   const errorMessageElement = document.querySelector('.error-message');
   if (cookie === 'error=40') {
-    errorMessageElement.innerText = 'Please enter valid room-id';
+    errorMessageElement.innerText = 'Please enter valid room id';
     return;
   }
 
   if (cookie === 'error=50') {
-    errorMessageElement.innerText = 'Game already started...!';
+    errorMessageElement.innerText = 'Game already started!';
   }
 
 };
