@@ -1,6 +1,3 @@
-const isEqual = (array1, array2) =>
-  array1.every((element, index) => element === array2[index]);
-
 class Board {
   #tiles;
   #rooms;
@@ -18,7 +15,7 @@ class Board {
 
   getRoom(tile) {
     const room = this.#rooms.find(room => room.isInside(tile));
-    return room ? room.info.name : null;
+    return room ? room.info : null;
   }
 }
 

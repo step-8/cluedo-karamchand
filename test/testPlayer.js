@@ -128,4 +128,18 @@ describe('Player', () => {
 
       assert.notOk(player.hasAnyOf(cards));
     });
+
+  it('Should disable all the permissions of the player after accusation',
+    () => {
+      const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+      player.enableDice();
+      player.allowToAccuse();
+
+      const expected = {
+        rollDice: false, accuse: false, passTurn: false, suspect: false
+      };
+
+      player.accused();
+      assert.deepStrictEqual(player.info.permissions, expected);
+    });
 });

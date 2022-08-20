@@ -89,6 +89,9 @@ class Player {
   accused() {
     this.#hasAccused = true;
     this.#permissions.accuse = false;
+    this.disableDice();
+    this.disableSuspect();
+    this.disablePassTurn();
   }
 
   get profile() {

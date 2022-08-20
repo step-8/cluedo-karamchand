@@ -143,19 +143,6 @@
     });
   };
 
-  const accuse = () => {
-    const form = document.querySelector('#accused-cards');
-    const formData = new FormData(form);
-
-    const character = formData.get('characters');
-    const room = formData.get('rooms');
-    const weapon = formData.get('weapons');
-
-    const accusedCards = JSON.stringify({ character, room, weapon });
-    API.accuse(accusedCards)
-      .then(closePopup);
-  };
-
   const showCard = (event) => {
     const card = event.target.closest('.suit').querySelector('.card');
     const cardName = event.target.value;
@@ -191,7 +178,7 @@
     const newPosition = new URLSearchParams(`position=[${position}]`);
 
     API.moveCharacter(newPosition)
-      .then(removeHightlightedPath);
+      .then(removeHighlightedPath);
   };
 
   const highlightPosition = (position) => {
@@ -207,7 +194,7 @@
       highlightPosition(position));
   };
 
-  const diceRoll = () => {
+  const rollDice = () => {
     API.rollDice();
   };
 
@@ -216,16 +203,13 @@
     document.querySelector('#accuse-popup').style.visibility = 'visible';
   };
 
-  const highlightOptions = (optionElement) => {
-    optionElement.classList.add('highlight');
-  };
-
-  const disableOptions = (optionElement) => {
+  const disableOption = (optionElement) => {
+    console.log(optionElement);
     optionElement.classList.remove('highlight');
     optionElement.onclick = '';
   };
 
-  const removeHightlightedPath = () => {
+  const removeHighlightedPath = () => {
     const highlightedCells = document.querySelectorAll('.highlight-path');
     highlightedCells.forEach(node => {
       node.classList.remove('highlight-path');
@@ -234,53 +218,40 @@
   };
 
   const pass = () => {
-    removeHightlightedPath();
+    removeHighlightedPath();
     API.passTurn();
   };
 
   const showSuspectPopup = () => {
     document.querySelector('.popup-container').style.visibility = 'visible';
     const popup = document.querySelector('#suspect-popup');
-    const room = gameState.room;
+    const room = gameState.room.name;
     const container = document.querySelector('#selected-room');
 
     container.querySelector('img').src = `images/${room}.png`;
     popup.style.visibility = 'visible';
   };
 
+  const disableAllOptions = () => {
+    document.querySelectorAll('.options .btn').forEach(disableOption);
+  };
+
   const enableOptions = () => {
-    const diceBox = document.querySelector('#dice');
-    const passElement = document.querySelector('#pass');
-    const accuseButton = document.querySelector('#accuse');
-    const suspectButton = document.querySelector('#suspect');
+    const options = new Options();
+    options.add('#dice', gameState.canRollDice(), ({ target }) => {
+      rollDice();
+      disableOption(target.closest('#dice'));
+    });
 
-    if (gameState.canSuspect()) {
-      suspectButton.onclick = showSuspectPopup;
-      highlightOptions(suspectButton);
-    } else {
-      disableOptions(suspectButton);
-    }
+    options.add('#pass', gameState.canPassTurn(), () => {
+      pass();
+      disableAllOptions();
+    });
 
-    if (gameState.canRollDice()) {
-      diceBox.onclick = diceRoll;
-      highlightOptions(diceBox);
-    } else {
-      disableOptions(diceBox);
-    }
+    options.add('#suspect', gameState.canSuspect(), showSuspectPopup);
+    options.add('#accuse', gameState.canAccuse(), showAccusationPopup);
 
-    if (gameState.canPassTurn()) {
-      passElement.onclick = pass;
-      highlightOptions(passElement);
-    } else {
-      disableOptions(passElement);
-    }
-
-    if (gameState.canAccuse()) {
-      accuseButton.onclick = showAccusationPopup;
-      highlightOptions(accuseButton);
-    } else {
-      disableOptions(accuseButton);
-    }
+    options.enable();
   };
 
   const updateOptions = ([die1, die2]) => {
@@ -368,15 +339,6 @@
     showAccusationResult();
   };
 
-  const showAccusation = (poller) => () => {
-    if (!gameState.hasAnyoneAccused()) {
-      return;
-    }
-
-    accusationResult(poller);
-    poller.stopPolling();
-  };
-
   const suspicionMessage = () => {
     const { suspectedCards } = gameState.suspicion;
     const { character, room, weapon } = suspectedCards;
@@ -426,6 +388,15 @@
     showSuspicionResult();
   };
 
+  const showAccusation = (poller) => () => {
+    if (!gameState.hasAnyoneAccused()) {
+      return;
+    }
+
+    accusationResult(poller);
+    poller.stopPolling();
+  };
+
   const showSuspicion = (poller) => () => {
     if (!gameState.hasAnyoneSuspected()) {
       return;
@@ -435,42 +406,43 @@
     poller.stopPolling();
   };
 
-  const suspect = () => {
-    const form = document.querySelector('#suspected-cards');
+  const actOn = (action, cb) => {
+    const form = document.querySelector(`#${action}-cards`);
     const formData = new FormData(form);
 
     const character = formData.get('characters');
     const weapon = formData.get('weapons');
-    const room = gameState.room;
+    const room =
+      action === 'suspected' ? gameState.room.name : formData.get('rooms');
 
-    const suspectedCards = JSON.stringify({ character, room, weapon });
-    API.suspect(suspectedCards)
+    const cards = JSON.stringify({ character, room, weapon });
+    cb(cards)
       .then(closePopup);
   };
 
-  const setupSuspectPopup = () => {
-    document.querySelector('#suspect-btn').onclick = suspect;
-    document.querySelector('#suspect-cancel').onclick = closePopup;
-
-    const selects = document.querySelectorAll('#suspect-popup select');
-    selects.forEach(select => {
-      select.onchange = showCard;
-    });
+  const suspect = () => {
+    disableOption(document.querySelector('#suspect'));
+    actOn('suspected', API.suspect);
   };
 
-  const setupAccusePopup = () => {
-    document.querySelector('#accuse-btn').onclick = accuse;
-    document.querySelector('#accuse-cancel').onclick = closePopup;
+  const accuse = () => {
+    disableAllOptions();
+    actOn('accused', API.accuse);
+  };
 
-    const selects = document.querySelectorAll('#accuse-popup select');
+  const setupPopup = (action, cb) => {
+    document.querySelector(`#${action}-btn`).onclick = cb;
+    document.querySelector(`#${action}-cancel`).onclick = closePopup;
+
+    const selects = document.querySelectorAll(`#${action}-popup select`);
     selects.forEach(select => {
       select.onchange = showCard;
     });
   };
 
   const main = () => {
-    setupAccusePopup();
-    setupSuspectPopup();
+    setupPopup('suspect', suspect);
+    setupPopup('accuse', accuse);
 
     API.getBoardData()
       .then(boardData => generateBoard(boardData));
