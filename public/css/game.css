@@ -16,12 +16,13 @@ body {
   width: 1790px;
   height: 920px;
   margin: 0 auto;
-  background-color: #050c21;
+  background-image: radial-gradient(circle at center, #272ba1, #050c21);
 }
 
 .card {
   border-radius: var(--border-radius);
-  box-shadow: 1px 1px 10px lightgray;
+  border: 1px solid white;
+  box-shadow: 1px 1px 10px white;
   overflow: hidden;
 }
 
@@ -99,6 +100,7 @@ main {
   height: 80%;
   border-radius: 50%;
   overflow: hidden;
+  border: 1px solid white;
   box-shadow: 3px 3px 13px 0px white;
 }
 
@@ -116,7 +118,6 @@ main {
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .tile,
@@ -139,14 +140,13 @@ main {
 }
 
 .secret-passage {
-  fill: #b15321;
+  fill: transparent;
   stroke: dimgrey;
   stroke-width: 0.2%;
 }
 
 .room {
-  fill: #77310ced;
-  stroke: lightgrey;
+  stroke: var(--red);
   stroke-width: 0.2%;
 }
 

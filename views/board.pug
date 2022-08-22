@@ -1,15 +1,17 @@
 svg(width='830', height='830', viewBox='0 0 24 25')
   each room in boardData.rooms
-    g(id=room.id)  
+    defs 
+      pattern(id=room.name, height='100%', width='100%', patternContentUnits='objectBoundingBox')
+        - var href='/images/rooms/' + room.name + '.png';
+        image(height='1', width='1', preserveAspectRatio='none', href=href)
+    g(id=room.name + '-group')  
       - var points = '';  
       each pos in room.points
         - points += pos + ' ';
-      polygon(points=points, class='room')
-      - var textPos = room.textPosition;
-      text(x=textPos[0], y=textPos[1], class='room-name') #{room.name}
+      polygon(id=room.id, points=points, class='room', fill='url(#' + room.name + ')')
       if room.secretPassage 
         - var passage = room.secretPassage;
-        rect(x=passage[0], y=passage[1], class='secret-passage')
+        rect(id=passage[0] + '-' + passage[1] , x=passage[0], y=passage[1], class='secret-passage')
 
   each tile in boardData.tiles
     rect(x=tile[0], y=tile[1], class='tile',id=tile[0] + '-' + tile[1])
