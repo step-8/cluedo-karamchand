@@ -71,12 +71,12 @@
     currentPlayerEle.classList.add('highlight-profile');
   };
 
-  const highlightCurrentPlayer = (character) => {
+  const pulsate = (character) => {
     const charElement = document.getElementById(character);
     charElement.classList.add('current-player');
   };
 
-  const removeHighlight = (character) => {
+  const removePulsate = (character) => {
     const charElement = document.getElementById(character);
     charElement.classList.remove('current-player');
   };
@@ -121,9 +121,9 @@
   const createToken = (position, character, currentPlayer) => {
     const characterElement = document.querySelector(`#${character}`);
     if (character === currentPlayer.character) {
-      highlightCurrentPlayer(character);
+      pulsate(character);
     } else {
-      removeHighlight(character);
+      removePulsate(character);
     }
     characterElement.setAttribute('cx', position[0] + 0.5);
     characterElement.setAttribute('cy', position[1] + 0.5);
@@ -411,9 +411,20 @@
     });
   };
 
+  const removeHighlight = (htmlElement) => {
+    htmlElement.classList.remove('highlight');
+  };
+
+  const removeCardsHighlight = () => {
+    const suspicionPopup = document.querySelector('#suspect-result-popup');
+    const highlightedCards = suspicionPopup.querySelectorAll('.cards-combo .highlight');
+    highlightedCards.forEach(removeHighlight);
+  };
+
   const afterRuleOut = (gamePoller) => {
     setTimeout(() => {
       closePopup();
+      removeCardsHighlight();
       gamePoller.startPolling();
     }, 5000);
   };
