@@ -63,5 +63,6 @@ const validateCurrentPlayer = (req, res, next) => {
 };
 
 module.exports = {
-  injectGame, injectGameId, addPlayerToGame, isUserInGame, validateCurrentPlayer
+  injectGame, injectGameId, addPlayerToGame, isUserInGame,
+  validateCurrentPlayer
 };

@@ -3,9 +3,9 @@ class Player {
   #playerName;
   #characterName;
   #cards;
-  #permissions;
   #hasAccused;
   #position;
+  #permissions;
 
   constructor(playerId, playerName, characterName, position) {
     this.#playerId = playerId;
@@ -13,11 +13,7 @@ class Player {
     this.#characterName = characterName;
     this.#position = position;
     this.#cards = [];
-    this.#permissions =
-    {
-      rollDice: false, accuse: false, passTurn: false, suspect: false,
-      move: false
-    };
+    this.#permissions = [];
     this.#hasAccused = false;
   }
 
@@ -49,52 +45,24 @@ class Player {
     return cards.some(card => this.#cards.includes(card));
   }
 
-  enableDice() {
-    this.#permissions.rollDice = true;
+  isAllowed(action) {
+    return this.#permissions.includes(action);
   }
 
-  enablePassTurn() {
-    this.#permissions.passTurn = true;
+  enable(action) {
+    this.#permissions.push(action);
   }
 
-  isAllowedToAccuse() {
-    return !this.#hasAccused && this.#permissions.accuse;
-  }
-
-  isAllowedToSuspect() {
-    return this.#permissions.suspect;
-  }
-
-  allowToAccuse() {
-    this.#permissions.accuse = true;
-  }
-
-  enableSuspect() {
-    this.#permissions.suspect = true;
-  }
-
-  disableDice() {
-    this.#permissions.rollDice = false;
-  }
-
-  disablePassTurn() {
-    this.#permissions.passTurn = false;
-  }
-
-  disableAccuse() {
-    this.#permissions.accuse = false;
-  }
-
-  disableSuspect() {
-    this.#permissions.suspect = false;
+  disable(action) {
+    const index = this.#permissions.indexOf(action);
+    if (index > -1) {
+      this.#permissions.splice(index, 1);
+    }
   }
 
   accused() {
     this.#hasAccused = true;
-    this.#permissions.accuse = false;
-    this.disableDice();
-    this.disableSuspect();
-    this.disablePassTurn();
+    this.#permissions = [];
   }
 
   get profile() {
@@ -112,7 +80,7 @@ class Player {
       character: this.#characterName,
       position: this.#position,
       cards: [...this.#cards],
-      permissions: { ...this.#permissions }
+      permissions: [...this.#permissions]
     };
   }
 

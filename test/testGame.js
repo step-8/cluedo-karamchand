@@ -65,9 +65,7 @@ describe('Game', () => {
   });
 
   it('Should return the game state', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'james');
+    const game = createGame(['bob', 'raj'], characters, board);
 
     const charactersInfo = characters.map(character => character.info);
 
@@ -76,11 +74,7 @@ describe('Game', () => {
       diceValue: [1, 1],
       you: {
         playerId: 1, name: 'bob', character: 'scarlett', position: [1, 1],
-        permissions:
-        {
-          rollDice: false, passTurn: false, accuse: false, suspect: false,
-          move: false
-        },
+        permissions: [],
         cards: [],
         room: null
       },
@@ -93,7 +87,7 @@ describe('Game', () => {
       characters: charactersInfo,
       players: [
         { name: 'bob', character: 'scarlett', position: [1, 1] },
-        { name: 'james', character: 'mustard', position: [2, 2] }
+        { name: 'raj', character: 'mustard', position: [2, 2] }
       ],
       accusation: null,
       suspicion: null,
@@ -119,6 +113,7 @@ describe('Game', () => {
   it('should roll the dice', () => {
     const game = new Game(1, 1, characters, board);
     assert.ok(game.addPlayer(1, 'bob'));
+    game.start();
     game.rollDice(() => 2);
 
     const actual = game.getState(1).diceValue;
@@ -126,22 +121,17 @@ describe('Game', () => {
   });
 
   it('should pass the turn', () => {
-    const game = new Game(1, 2, characters, board);
+    const game = createGame(['bob', 'raj'], characters, board);
 
-    assert.ok(game.addPlayer(1, 'bob'));
-    assert.ok(game.addPlayer(2, 'bobby'));
     game.passTurn();
 
     const actual = game.getState(2).currentPlayer;
     assert.deepStrictEqual(actual,
-      { name: 'bobby', character: 'mustard', position: [2, 2] });
+      { name: 'raj', character: 'mustard', position: [2, 2] });
   });
 
   it('should pass the turn to first player after a round', () => {
-    const game = new Game(1, 2, characters, board);
-
-    assert.ok(game.addPlayer(1, 'bob'));
-    assert.ok(game.addPlayer(2, 'bobby'));
+    const game = createGame(['bob', 'raj'], characters, board);
     game.passTurn();
     game.passTurn();
 
@@ -150,38 +140,19 @@ describe('Game', () => {
       { name: 'bob', character: 'scarlett', position: [1, 1] });
   });
 
-  it('Should start the game and give permissions to the current player', () => {
-    const game = new Game(1, 1, characters, board);
-    assert.ok(game.addPlayer(1, 'bob'));
-    game.start();
+  it('Should start the game and give permissions to the current player',
+    () => {
+      const game = new Game(1, 1, characters, board);
+      assert.ok(game.addPlayer(1, 'bob'));
+      game.start();
 
-    const { permissions } = game.currentPlayer.info;
-    assert.ok(permissions.rollDice);
-    assert.ok(game.isStarted);
-  });
-
-  it('Should disable dice permission to the current player', () => {
-    const game = new Game(1, 1, characters, board);
-    assert.ok(game.addPlayer(1, 'bob'));
-    game.disableDice();
-
-    const { permissions } = game.currentPlayer.info;
-    assert.notOk(permissions.rollDice);
-  });
-
-  it('Should disable pass turn permission to the current player', () => {
-    const game = new Game(1, 1, characters, board);
-    assert.ok(game.addPlayer(1, 'bob'));
-    game.disablePass();
-
-    const { permissions } = game.currentPlayer.info;
-    assert.notOk(permissions.rollDice);
-  });
+      const { permissions } = game.currentPlayer.info;
+      assert.ok(permissions.includes('roll-dice'));
+      assert.ok(game.isStarted);
+    });
 
   it('Should move the current player\'s token', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
+    const game = createGame(['bob', 'raj'], characters, board);
     game.start();
     game.move([7, 16]);
     const currentPlayer = game.currentPlayer.info;
@@ -189,31 +160,17 @@ describe('Game', () => {
   });
 
   it('Should allow the current player to accuse', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
+    const game = createGame(['bob', 'raj'], characters, board);
     game.start();
-    assert.ok(game.accuse(1, {
-      character: 'green', weapon: 'rope', room: 'hall'
-    }));
-  });
-
-  it('Should not allow other players to accuse', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
-    game.start();
-    assert.notOk(game.accuse(2, {
+    assert.ok(game.accuse({
       character: 'green', weapon: 'rope', room: 'hall'
     }));
   });
 
   it('Should provide accusation info, if current player accuses', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
+    const game = createGame(['bob', 'raj'], characters, board);
     game.start();
-    game.accuse(1, { character: 'green', weapon: 'rope', room: 'hall' });
+    game.accuse({ character: 'green', weapon: 'rope', room: 'hall' });
 
     const { accusation } = game.getState(2);
     const { result, ...actual } = accusation;
@@ -227,9 +184,7 @@ describe('Game', () => {
   });
 
   it('Should inject the possible moves into game', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
+    const game = createGame(['bob', 'raj'], characters, board);
     game.start();
     game.injectPossibleMoves([[1, 2], [2, 2]]);
 
@@ -239,30 +194,8 @@ describe('Game', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('Should return false if current player is not allowed to suspect', () => {
-    const players = ['bob', 'raj', 'rahul'];
-    const game = createGame(players, characters, board);
-    game.start();
-    const cards = { character: 'plum', weapon: 'rope' };
-
-    assert.notOk(game.suspect(1, cards));
-  });
-
-  it('Should return true if current player is allowed to suspect', () => {
-    const players = ['bob', 'raj', 'rahul'];
-    const game = createGame(players, characters, board);
-    game.start();
-
-    game.move([4, 6]);
-    const cards = { character: 'plum', weapon: 'rope', room: 'kitchen' };
-
-    assert.ok(game.suspect(1, cards));
-  });
-
   it('Should provide suspicion info, if current player suspect', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
+    const game = createGame(['bob', 'raj'], characters, board);
     game.start();
     game.move([4, 6]);
     game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
@@ -280,9 +213,7 @@ describe('Game', () => {
   });
 
   it('should return true if given id is belongs to current player', () => {
-    const game = new Game(1, 2, characters, board);
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
+    const game = createGame(['bob', 'raj'], characters, board);
     game.start();
 
     assert.ok(game.isCurrentPlayer(1));
@@ -290,11 +221,24 @@ describe('Game', () => {
 
   it('should return false if given id does not belong to current player',
     () => {
-      const game = new Game(1, 2, characters, board);
-      game.addPlayer(1, 'bob');
-      game.addPlayer(2, 'raj');
+      const game = createGame(['bob', 'raj'], characters, board);
       game.start();
 
       assert.notOk(game.isCurrentPlayer(2));
+    });
+
+  it('should return true if current player has given permission', () => {
+    const game = createGame(['bob', 'raj'], characters, board);
+    game.start();
+
+    assert.ok(game.isAllowed('accuse'));
+  });
+
+  it('should return false if current player does not have given permission',
+    () => {
+      const game = createGame(['bob', 'raj'], characters, board);
+      game.start();
+
+      assert.notOk(game.isAllowed('suspect'));
     });
 });

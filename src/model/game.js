@@ -48,6 +48,18 @@ class Game {
     return this.#isStarted;
   }
 
+  #disable(action) {
+    this.currentPlayer.disable(action);
+  }
+
+  #enable(action) {
+    this.currentPlayer.enable(action);
+  }
+
+  isAllowed(action) {
+    return this.currentPlayer.isAllowed(action);
+  }
+
   #getPlayerRoom(player) {
     const character = this.#characters.find(character =>
       character.info.name === player.character);
@@ -59,43 +71,28 @@ class Game {
     return this.#maxPlayers === this.#players.length;
   }
 
-  #allowToAccuse() {
-    this.currentPlayer.allowToAccuse();
-  }
-
-  #disableAccuse() {
-    this.currentPlayer.disableAccuse();
-  }
-
   #isCurrentPlayerInsideRoom() {
     const characterPosition = this.#currentPlayerCharacter.position;
     return this.#board.isInsideRoom(characterPosition);
   }
 
-  #manageSuspectPermission() {
+  #manageSuspectPermission(action) {
     if (this.#isCurrentPlayerInsideRoom()) {
-      return this.currentPlayer.enableSuspect();
+      return this.currentPlayer.enable(action);
     }
 
-    this.currentPlayer.disableSuspect();
-  }
-
-  #disableSuspect() {
-    this.currentPlayer.disableSuspect();
+    this.currentPlayer.disable(action);
   }
 
   #enablePermissions() {
-    this.#enableDice();
-    this.#allowToAccuse();
-    this.#enablePass();
-    this.#manageSuspectPermission();
+    const actions = ['roll-dice', 'accuse', 'pass-turn'];
+    actions.forEach(action => this.#enable(action));
+    this.#manageSuspectPermission('suspect');
   }
 
   #disablePermissions() {
-    this.disableDice();
-    this.disablePass();
-    this.#disableAccuse();
-    this.#disableSuspect();
+    const actions = ['roll-dice', 'suspect', 'pass-turn', 'accuse'];
+    actions.forEach(action => this.#disable(action));
   }
 
   #distributeCards() {
@@ -128,14 +125,6 @@ class Game {
     return true;
   }
 
-  #enableDice() {
-    this.currentPlayer.enableDice();
-  }
-
-  #enablePass() {
-    this.currentPlayer.enablePassTurn();
-  }
-
   #changePlayer() {
     let index = this.#currentPlayerIndex;
     do {
@@ -158,17 +147,9 @@ class Game {
     this.#respondSuspicion = false;
   }
 
-  disableDice() {
-    this.currentPlayer.disableDice();
-  }
-
-  disablePass() {
-    this.currentPlayer.disablePassTurn();
-  }
-
   rollDice(diceRoller) {
     this.#diceValue = [diceRoller(), diceRoller()];
-    this.disableDice();
+    this.#disable('roll-dice');
   }
 
   #moveCharacter(characterName, position) {
@@ -180,7 +161,7 @@ class Game {
   move(newPosition) {
     this.currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
-    this.#manageSuspectPermission();
+    this.#manageSuspectPermission('suspect');
     this.#possibleMoves = [];
   }
 
@@ -189,12 +170,12 @@ class Game {
       cards[category] === this.#envelope[category]);
   }
 
-  accuse(playerId, accusedCards) {
+  accuse(accusedCards) {
     const player = this.currentPlayer;
-
-    if (!player.isYourId(playerId) || !player.isAllowedToAccuse()) {
+    if (!player.isAllowed('accuse')) {
       return false;
     }
+
     const result = this.#isAccusationCorrect(accusedCards);
     this.#accusation = {
       accuser: player.profile,
@@ -222,7 +203,7 @@ class Game {
   suspect(playerId, suspectedCards) {
     const player = this.currentPlayer;
 
-    if (!player.isYourId(playerId) || !player.isAllowedToSuspect()) {
+    if (!player.isYourId(playerId) || !player.isAllowed('suspect')) {
       return false;
     }
 
@@ -239,7 +220,7 @@ class Game {
       suspicionBreakerCharacter
     };
 
-    player.disableSuspect();
+    player.disable('suspect');
     return true;
   }
 

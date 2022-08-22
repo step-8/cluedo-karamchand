@@ -166,7 +166,6 @@
   };
 
   const disableOption = (optionElement) => {
-    console.log(optionElement);
     optionElement.classList.remove('highlight');
     optionElement.onclick = '';
   };

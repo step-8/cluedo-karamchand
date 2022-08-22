@@ -15,9 +15,9 @@ const rollDice = (cellPositions) => (req, res) => {
 };
 
 const handleAccusation = (req, res) => {
-  const { session, body, game } = req;
+  const { body, game } = req;
   const { ...accusedCards } = body;
-  game.accuse(session.userId, accusedCards);
+  game.accuse(accusedCards);
   res.sendStatus(201);
 };
 

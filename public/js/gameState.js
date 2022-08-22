@@ -16,26 +16,25 @@ class GameState {
     if (areObjectsEqual(this.#data, newData)) {
       return;
     }
-
     this.#data = newData;
     this.#myPermissions = this.#data.you.permissions;
     this.#notifyObservers();
   }
 
   canRollDice() {
-    return this.#myPermissions.rollDice;
+    return this.#myPermissions.includes('roll-dice');
   }
 
   canPassTurn() {
-    return this.#myPermissions.passTurn;
+    return this.#myPermissions.includes('pass-turn');
   }
 
   canAccuse() {
-    return this.#myPermissions.accuse;
+    return this.#myPermissions.includes('accuse');
   }
 
   canSuspect() {
-    return this.#myPermissions.suspect;
+    return this.#myPermissions.includes('suspect');
   }
 
   isMyTurn() {
