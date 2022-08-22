@@ -120,7 +120,8 @@ main {
 }
 
 .tile,
-.starting-tile {
+.starting-tile,
+.secret-passage {
   width: 1;
   height: 1;
 }
@@ -133,6 +134,12 @@ main {
 
 .starting-tile {
   fill: #5f2e14;
+  stroke: dimgrey;
+  stroke-width: 0.2%;
+}
+
+.secret-passage {
+  fill: #b15321;
   stroke: dimgrey;
   stroke-width: 0.2%;
 }

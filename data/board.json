@@ -769,10 +769,14 @@
   ],
   "rooms": [
     {
-      "name": "Kitchen",
+      "name": "kitchen",
       "textPosition": [
         2,
         4
+      ],
+      "secretPassage": [
+        5,
+        0
       ],
       "id": "4-6",
       "points": [
@@ -803,7 +807,7 @@
       ]
     },
     {
-      "name": "Ballroom",
+      "name": "ballroom",
       "textPosition": [
         10,
         5
@@ -845,10 +849,14 @@
       ]
     },
     {
-      "name": "Conservatory",
+      "name": "conservatory",
       "textPosition": [
         18.4,
         3
+      ],
+      "secretPassage": [
+        23,
+        4
       ],
       "id": "19-5",
       "points": [
@@ -869,8 +877,16 @@
           6
         ],
         [
-          24,
+          23,
           6
+        ],
+        [
+          23,
+          5
+        ],
+        [
+          24,
+          5
         ],
         [
           24,
@@ -879,7 +895,7 @@
       ]
     },
     {
-      "name": "Dining",
+      "name": "dining",
       "textPosition": [
         2,
         13
@@ -913,7 +929,7 @@
       ]
     },
     {
-      "name": "Billiard",
+      "name": "billiard",
       "textPosition": [
         19,
         11
@@ -939,7 +955,7 @@
       ]
     },
     {
-      "name": "Library",
+      "name": "library",
       "textPosition": [
         19,
         17
@@ -993,10 +1009,14 @@
       ]
     },
     {
-      "name": "Study",
+      "name": "study",
       "textPosition": [
         19,
         23
+      ],
+      "secretPassage": [
+        23,
+        21
       ],
       "id": "17-21",
       "points": [
@@ -1027,7 +1047,7 @@
       ]
     },
     {
-      "name": "Hall",
+      "name": "hall",
       "textPosition": [
         11,
         22
@@ -1053,10 +1073,14 @@
       ]
     },
     {
-      "name": "Lounge",
+      "name": "lounge",
       "textPosition": [
         2,
         22
+      ],
+      "secretPassage": [
+        0,
+        19
       ],
       "id": "6-19",
       "points": [
@@ -1087,7 +1111,7 @@
       ]
     },
     {
-      "name": "Cluedo",
+      "name": "cluedo",
       "textPosition": [
         11,
         13
