@@ -36,4 +36,18 @@ const handleSuspect = (req, res) => {
   res.sendStatus(201);
 };
 
-module.exports = { rollDice, handleAccusation, passTurn, handleSuspect };
+const ruleOutSuspicion = (req, res) => {
+  const { game, session, body } = req;
+  const { rulingOutCard } = body;
+
+  game.ruleOutSuspicion(session.userId, rulingOutCard);
+  res.sendStatus(201);
+};
+
+module.exports = {
+  rollDice,
+  handleAccusation,
+  passTurn,
+  handleSuspect,
+  ruleOutSuspicion
+};

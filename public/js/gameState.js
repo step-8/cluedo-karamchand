@@ -50,7 +50,15 @@ class GameState {
   }
 
   isSuspicionRuledOut() {
-    return this.hasAnyoneAccused() && this.suspicion.ruledOut;
+    return this.hasAnyoneSuspected() && this.suspicion.ruledOut;
+  }
+
+  amISuspicionBreaker() {
+    return this.suspicion.suspicionBreaker === this.you.character;
+  }
+
+  didISuspect() {
+    return this.suspicion.suspectedBy === this.you.character;
   }
 
   get you() {

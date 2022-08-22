@@ -57,5 +57,18 @@ const API = {
     };
 
     return fetchRequest(request);
+  },
+
+  ruleOut: (rulingOutCard) => {
+    const request = {
+      url: '/game/suspect/rule-out',
+      options: {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: rulingOutCard
+      }
+    };
+
+    return fetchRequest(request);
   }
 };

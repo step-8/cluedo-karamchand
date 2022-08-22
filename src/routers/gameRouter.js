@@ -26,6 +26,7 @@ const createGameRouter = (games, cards, cellPositions, boardData) => {
 
   const suspectRouter = createSuspectRouter();
   gameRouter.use('/suspect', suspectRouter);
+
   return gameRouter;
 };
 

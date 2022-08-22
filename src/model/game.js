@@ -39,6 +39,10 @@ class Game {
     return this.#players[this.#currentPlayerIndex];
   }
 
+  #getPlayerBy(playerId) {
+    return this.#players.find(player => player.isYourId(playerId));
+  }
+
   get #currentPlayerCharacter() {
     return this.#characters[this.#currentPlayerIndex];
   }
@@ -222,6 +226,11 @@ class Game {
     this.#suspicion = suspicion;
     player.disable('suspect');
     return true;
+  }
+
+  ruleOutSuspicion(playerId, rulingOutCard) {
+    const ruledOutBy = this.#getPlayerBy(playerId).character;
+    return this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
   }
 
   injectPossibleMoves(possibleMoves) {

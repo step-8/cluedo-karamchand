@@ -248,7 +248,9 @@
     categories.forEach((category, index) => {
       const imgDom = ['img', { src: `images/${cards[category]}.png` }];
       const img = generateHTML(imgDom);
-      cardsElements[index].replaceChildren(img);
+      const cardElement = cardsElements[index];
+      cardElement.id = cards[category];
+      cardElement.replaceChildren(img);
     });
   };
 
@@ -328,7 +330,7 @@
     turnOrderEle.replaceChildren(...turnOrderChildren);
   };
 
-  const showSuspicionResult = () => {
+  const showSuspicionResultPopup = () => {
     const { suspectedElements: suspectedCards } = gameState.suspicion;
     showSuspicionBreaker();
     showResultCards(suspectedCards, '#suspect-result-popup');
@@ -340,17 +342,87 @@
     popup.querySelector('#suspicion-msg').innerText = message;
   };
 
-  const stopSuspicion = (poller) => {
-    closePopup();
-    poller.startPolling();
+  const disallowRuleOut = () => {
+    const suspicionPopup = document.querySelector('#suspect-result-popup');
+    const cardsElements = suspicionPopup.querySelectorAll('.card');
+
+    cardsElements.forEach(cardElement => {
+      cardElement.removeEventListener('click', ruleOut);
+      cardElement.classList.remove('highlight');
+    });
   };
 
-  const suspicionResult = (poller) => {
-    if (gameState.isSuspicionRuledOut()) {
-      setTimeout(() => stopSuspicion(poller), 10000);
+  const ruleOut = ({ target }) => {
+    const rulingOutCard = target.closest('.card').id;
+
+    API.ruleOut(JSON.stringify({ rulingOutCard }))
+      .then(disallowRuleOut);
+  };
+
+  const allowRuleOut = () => {
+    const { suspectedElements: suspectedCards } = gameState.suspicion;
+
+    const rulingOutCards = Object.values(suspectedCards).filter(suspectedCard =>
+      gameState.you.cards.includes(suspectedCard));
+
+    const suspicionPopup = document.querySelector('#suspect-result-popup');
+    rulingOutCards.forEach(rulingOutCard => {
+      const cardElement = suspicionPopup.querySelector(`#${rulingOutCard}`);
+      cardElement.classList.add('highlight');
+      cardElement.addEventListener('click', ruleOut, { once: true });
+    });
+  };
+
+  const afterRuleOut = (gamePoller) => {
+    setTimeout(() => {
+      closePopup();
+      gamePoller.startPolling();
+    }, 5000);
+  };
+
+  const updateSuspicionPopup = (suspicion) => {
+    const suspicionPopup = document.querySelector('#suspect-result-popup');
+
+    if (!gameState.didISuspect()) {
       return;
     }
-    showSuspicionResult();
+
+    const { ruledOutWith } = suspicion;
+    const ruledOutCardEle = suspicionPopup.querySelector(`#${ruledOutWith}`);
+    ruledOutCardEle.classList.add('highlight');
+  };
+
+  const endSuspicion = (gamePoller, suspicionPoller) =>
+    API.getGame()
+      .then(({ suspicion }) => {
+        if (!suspicion.ruledOut) {
+          return;
+        }
+
+        suspicionPoller.stopPolling();
+        updateSuspicionPopup(suspicion);
+        afterRuleOut(gamePoller, suspicionPoller);
+      });
+
+  const handleRuleOut = (gamePoller) => {
+    if (gameState.amISuspicionBreaker()) {
+      allowRuleOut();
+    }
+
+    const suspicionPoller = new Poller(() =>
+      endSuspicion(gamePoller, suspicionPoller), 1000);
+    suspicionPoller.startPolling();
+  };
+
+  const hanldeSuspicion = (poller) => () => {
+    if (!gameState.hasAnyoneSuspected() || gameState.isSuspicionRuledOut()) {
+      return;
+    }
+
+    poller.stopPolling();
+
+    showSuspicionResultPopup();
+    handleRuleOut(poller);
   };
 
   const showAccusation = (poller) => () => {
@@ -362,23 +434,14 @@
     poller.stopPolling();
   };
 
-  const showSuspicion = (poller) => () => {
-    if (!gameState.hasAnyoneSuspected()) {
-      return;
-    }
-
-    suspicionResult(poller);
-    poller.stopPolling();
-  };
-
   const actOn = (action, cb) => {
     const form = document.querySelector(`#${action}-cards`);
     const formData = new FormData(form);
 
     const character = formData.get('characters');
     const weapon = formData.get('weapons');
-    const room =
-      action === 'suspected' ? gameState.room.name : formData.get('rooms');
+    const room = action === 'suspected' ?
+      gameState.room.name : formData.get('rooms');
 
     const cards = JSON.stringify({ character, room, weapon });
     cb(cards)
@@ -428,7 +491,7 @@
     gameState.addObserver(updateDice);
     gameState.addObserver(showAccusation(poller));
     gameState.addObserver(highlightTurn);
-    gameState.addObserver(showSuspicion(poller));
+    gameState.addObserver(hanldeSuspicion(poller));
 
     poller.startPolling();
   };

@@ -35,6 +35,7 @@ class Option {
     if (!this.#isAllowed) {
       return;
     }
+
     const button = document.querySelector(this.#btnId);
     highlightOption(button);
     button.onclick = this.#callBack;
