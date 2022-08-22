@@ -16,6 +16,9 @@ const createGameRouter = (games, cards, cellPositions, boardData) => {
   gameRouter.use(validateUser);
   gameRouter.use(injectGame(games));
 
+  const suspectRouter = createSuspectRouter();
+  gameRouter.use('/suspect', suspectRouter);
+
   gameRouter.get('/', boardHandler(boardData, cards));
   gameRouter.post('/leave', leaveGame);
   gameRouter.use(validatePlayerAction);
@@ -24,8 +27,6 @@ const createGameRouter = (games, cards, cellPositions, boardData) => {
   gameRouter.post('/accuse', handleAccusation);
   gameRouter.post('/move', moveCharacter);
 
-  const suspectRouter = createSuspectRouter();
-  gameRouter.use('/suspect', suspectRouter);
 
   return gameRouter;
 };

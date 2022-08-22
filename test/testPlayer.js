@@ -58,12 +58,12 @@ describe('Player', () => {
       assert.notOk(player.hasAnyOf(cards));
     });
 
-  it('Should disable all the permissions of the player after accusation',
+  it('Should only give pass turn permission after accusation',
     () => {
       const player = new Player(1, 'ram', 'scarlett', [1, 1]);
       player.enable('accuse');
 
-      const expected = [];
+      const expected = ['pass-turn'];
 
       player.accused();
       assert.deepStrictEqual(player.info.permissions, expected);

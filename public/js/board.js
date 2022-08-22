@@ -288,6 +288,7 @@
     setTimeout(() => {
       if (gameState.isMyTurn()) {
         pass();
+        disableAllOptions();
       }
 
       closePopup();
@@ -366,6 +367,7 @@
       gameState.you.cards.includes(suspectedCard));
 
     const suspicionPopup = document.querySelector('#suspect-result-popup');
+
     rulingOutCards.forEach(rulingOutCard => {
       const cardElement = suspicionPopup.querySelector(`#${rulingOutCard}`);
       cardElement.classList.add('highlight');

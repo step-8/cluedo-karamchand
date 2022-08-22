@@ -62,7 +62,7 @@ class Player {
 
   accused() {
     this.#hasAccused = true;
-    this.#permissions = [];
+    this.#permissions = ['pass-turn'];
   }
 
   get profile() {
