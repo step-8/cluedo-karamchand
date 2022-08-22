@@ -136,6 +136,11 @@
   };
 
   const moveCharacter = (position) => {
+    const secretPassage = getSecretPassageEle();
+    if (secretPassage.length > 0) {
+      disableOptions(secretPassage);
+    }
+
     const newPosition = new URLSearchParams(`position=[${position}]`);
 
     API.moveCharacter(newPosition)
@@ -192,8 +197,14 @@
     popup.style.visibility = 'visible';
   };
 
+  const disableOptions = (options) => {
+    options.forEach(disableOption);
+  };
+
   const disableAllOptions = () => {
-    document.querySelectorAll('.options .btn').forEach(disableOption);
+    const options = document.querySelectorAll('.options .btn');
+    const secretPassage = document.querySelectorAll('g > .highlight');
+    disableOptions([...options, ...secretPassage]);
   };
 
   const moveThroughSecretPassage = () => {
@@ -441,7 +452,7 @@
     suspicionPoller.startPolling();
   };
 
-  const hanldeSuspicion = (poller) => () => {
+  const handleSuspicion = (poller) => () => {
     if (!gameState.hasAnyoneSuspected() || gameState.isSuspicionRuledOut()) {
       return;
     }
@@ -475,8 +486,15 @@
       .then(closePopup);
   };
 
+  const getSecretPassageEle = () => {
+    return document.querySelectorAll('g > .highlight');
+  };
+
   const suspect = () => {
-    disableOption(document.querySelector('#suspect'));
+    const suspect = document.querySelector('#suspect');
+    const rollDice = document.querySelector('#dice');
+    const secretPassage = getSecretPassageEle();
+    disableOptions([suspect, rollDice, ...secretPassage]);
     actOn('suspected', API.suspect);
   };
 
@@ -518,7 +536,7 @@
     gameState.addObserver(updateDice);
     gameState.addObserver(showAccusation(poller));
     gameState.addObserver(highlightTurn);
-    gameState.addObserver(hanldeSuspicion(poller));
+    gameState.addObserver(handleSuspicion(poller));
 
     poller.startPolling();
   };

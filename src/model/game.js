@@ -177,8 +177,10 @@ class Game {
   move(newPosition) {
     this.currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
+
     this.#manageSuspectPermission('suspect');
     this.#disable('move');
+    this.#disable('secret-passage');
 
     this.#possibleMoves = [];
   }
@@ -187,9 +189,7 @@ class Game {
     const player = this.currentPlayer;
     const room = this.#getPlayerRoom(player);
     this.move(room.secretPassage);
-
     this.#disable('roll-dice');
-    this.#disable('secret-passage');
   }
 
   #isAccusationCorrect(cards) {
@@ -246,6 +246,8 @@ class Game {
 
     this.#suspicion = suspicion;
     player.disable('suspect');
+    player.disable('secret-passage');
+    player.disable('roll-dice');
     return true;
   }
 
