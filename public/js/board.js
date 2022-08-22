@@ -196,6 +196,27 @@
     document.querySelectorAll('.options .btn').forEach(disableOption);
   };
 
+  const moveThroughSecretPassage = () => {
+    API.useSecretPassage();
+  };
+
+  const allowSecretPassage = options => {
+    const { position, secretPassage } = gameState.room;
+
+    const from = `[id='${position.join('-')}'] .secret-passage`;
+    const destination = `[id='${secretPassage.join('-')}'] .room`;
+
+    options.add('secret-passage', from, true, () => {
+      moveThroughSecretPassage();
+      disableOption(document.querySelector(from));
+      disableOption(document.querySelector('#dice'));
+      disableOption(document.querySelector(destination));
+    });
+
+    options.add('secret-passage', destination, true, x => x);
+
+  };
+
   const enableOptions = () => {
     const options = new Options();
     options.add('rollDice', '#dice', gameState.canRollDice(), ({ target }) => {
@@ -210,6 +231,10 @@
 
     options.add('suspect', '#suspect', gameState.canSuspect(), showSuspectPopup);
     options.add('accuse', '#accuse', gameState.canAccuse(), showAccusationPopup);
+
+    if (gameState.canUseSecretPassage()) {
+      allowSecretPassage(options);
+    }
 
     options.enable();
   };

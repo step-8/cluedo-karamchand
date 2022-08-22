@@ -419,3 +419,8 @@ article {
     r: 0.5;
   }
 }
+
+g>.highlight {
+  stroke: aliceblue;
+  stroke-width: 0.007em;
+}

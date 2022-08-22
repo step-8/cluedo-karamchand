@@ -44,10 +44,17 @@ const ruleOutSuspicion = (req, res) => {
   res.sendStatus(201);
 };
 
+const useSecretPassage = (req, res) => {
+  const { game } = req;
+  game.useSecretPassage();
+  res.sendStatus(201);
+};
+
 module.exports = {
   rollDice,
   handleAccusation,
   passTurn,
   handleSuspect,
-  ruleOutSuspicion
+  ruleOutSuspicion,
+  useSecretPassage
 };

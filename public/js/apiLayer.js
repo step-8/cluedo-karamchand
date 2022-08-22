@@ -70,5 +70,13 @@ const API = {
     };
 
     return fetchRequest(request);
+  },
+
+  useSecretPassage: () => {
+    const request = {
+      url: '/game/secret-passage', options: { method: 'POST' }
+    };
+
+    return fetchRequest(request);
   }
 };

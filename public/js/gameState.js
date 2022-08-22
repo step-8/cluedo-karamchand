@@ -37,8 +37,12 @@ class GameState {
     return this.#myPermissions.includes('suspect');
   }
 
+  canUseSecretPassage() {
+    return this.#myPermissions.includes('secret-passage');
+  }
+
   isMyTurn() {
-    return this.#data.you.character === this.#data.currentPlayer.character;
+    return this.you.character === this.#data.currentPlayer.character;
   }
 
   hasAnyoneAccused() {
@@ -90,11 +94,16 @@ class GameState {
   }
 
   get room() {
-    return this.#data.you.room;
+    return this.you.room;
   }
 
   get characters() {
     return this.#data.characters;
+  }
+
+  get character() {
+    return this.#data.characters.find(character =>
+      character.name === this.you.character);
   }
 
   getTurnOrder() {

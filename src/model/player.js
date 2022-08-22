@@ -13,7 +13,7 @@ class Player {
     this.#characterName = characterName;
     this.#position = position;
     this.#cards = [];
-    this.#permissions = [];
+    this.#permissions = new Set();
     this.#hasAccused = false;
   }
 
@@ -46,18 +46,15 @@ class Player {
   }
 
   isAllowed(action) {
-    return this.#permissions.includes(action);
+    return this.#permissions.has(action);
   }
 
   enable(action) {
-    this.#permissions.push(action);
+    this.#permissions.add(action);
   }
 
   disable(action) {
-    const index = this.#permissions.indexOf(action);
-    if (index > -1) {
-      this.#permissions.splice(index, 1);
-    }
+    this.#permissions.delete(action);
   }
 
   accused() {

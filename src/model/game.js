@@ -88,14 +88,26 @@ class Game {
     this.currentPlayer.disable(action);
   }
 
+  #manageSecretPassagePermission() {
+    const room = this.#getPlayerRoom(this.currentPlayer);
+    if (room && room.secretPassage) {
+      this.#enable('secret-passage');
+      this.#enable('move');
+    }
+  }
+
   #enablePermissions() {
     const actions = ['roll-dice', 'accuse', 'pass-turn'];
     actions.forEach(action => this.#enable(action));
     this.#manageSuspectPermission('suspect');
+    this.#manageSecretPassagePermission();
+
   }
 
   #disablePermissions() {
-    const actions = ['roll-dice', 'suspect', 'pass-turn', 'accuse'];
+    const actions = [
+      'roll-dice', 'suspect', 'pass-turn', 'accuse', 'move', 'secret-passage'
+    ];
     actions.forEach(action => this.#disable(action));
   }
 
@@ -169,6 +181,15 @@ class Game {
     this.#disable('move');
 
     this.#possibleMoves = [];
+  }
+
+  useSecretPassage() {
+    const player = this.currentPlayer;
+    const room = this.#getPlayerRoom(player);
+    this.move(room.secretPassage);
+
+    this.#disable('roll-dice');
+    this.#disable('secret-passage');
   }
 
   #isAccusationCorrect(cards) {
