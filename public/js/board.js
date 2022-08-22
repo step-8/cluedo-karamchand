@@ -145,7 +145,6 @@
   const highlightPosition = (position) => {
     const id = `${position[0]}-${position[1]}`;
     const targetElement = document.getElementById(id);
-    console.log(targetElement);
     targetElement.classList.add('highlight-path');
     targetElement.onclick = () =>
       moveCharacter(position);

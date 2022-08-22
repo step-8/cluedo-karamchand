@@ -56,8 +56,9 @@ class Game {
     this.currentPlayer.enable(action);
   }
 
-  isAllowed(action) {
-    return this.currentPlayer.isAllowed(action);
+  isAllowed(playerId, action) {
+    const player = this.#findPlayer(playerId);
+    return player.isAllowed(action);
   }
 
   #getPlayerRoom(player) {
@@ -150,6 +151,7 @@ class Game {
   rollDice(diceRoller) {
     this.#diceValue = [diceRoller(), diceRoller()];
     this.#disable('roll-dice');
+    this.#enable('move');
   }
 
   #moveCharacter(characterName, position) {
@@ -162,6 +164,8 @@ class Game {
     this.currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
     this.#manageSuspectPermission('suspect');
+    this.#disable('move');
+
     this.#possibleMoves = [];
   }
 
@@ -228,9 +232,13 @@ class Game {
     this.#possibleMoves = possibleMoves;
   }
 
+  #findPlayer(playerId) {
+    return this.#players.find(player => player.isYourId(playerId));
+  }
+
   getState(playerId) {
     const playerState = this.#players.map(player => player.profile);
-    const you = this.#players.find(player => player.isYourId(playerId));
+    const you = this.#findPlayer(playerId);
     const room = this.#getPlayerRoom(you);
 
     const currentPlayerId = this.currentPlayer.info.playerId;

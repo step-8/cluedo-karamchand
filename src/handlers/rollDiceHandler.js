@@ -71,7 +71,7 @@ const moveCharacter = (req, res) => {
   const { game } = req;
   const { position } = req.body;
   game.move(JSON.parse(position));
-  res.end('ok');
+  res.sendStatus(201);
 };
 
 module.exports = { findPossibleMoves, moveCharacter };

@@ -33,6 +33,13 @@ const joinGame = (app, username, gameId) => {
     });
 };
 
+const gameReq = (app, cookie) => {
+  return request(app)
+    .get('/game')
+    .set('Cookie', cookie)
+    .then(() => cookie);
+};
+
 const loginAllAsJoinees = (app, players, gameId) => {
   return Promise.all(players.map(player => joinGame(app, player, gameId)));
 };
@@ -46,12 +53,39 @@ describe('POST /game/accuse', () => {
         return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
           .then(() => hostCookie);
       })
+      .then(hostCookie => gameReq(app, hostCookie))
       .then((hostCookie) => {
         request(app)
           .post('/game/accuse')
           .set('Cookie', hostCookie)
           .send({ character: 'green', weapon: 'rope', room: 'hall' })
           .expect(201, done);
+      });
+  });
+});
+
+const rollDiceReq = (app, cookie) => {
+  return request(app)
+    .get('/game/roll-dice')
+    .set('Cookie', cookie)
+    .then(() => cookie);
+};
+
+describe('GET /game/roll-dice', () => {
+  const app = createApp();
+
+  it('Should roll dice', (done) => {
+    loginAsHost(app, 'vikram')
+      .then(({ hostCookie, gameId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
+          .then(() => hostCookie);
+      })
+      .then(hostCookie => gameReq(app, hostCookie))
+      .then((hostCookie) => {
+        request(app)
+          .get('/game/roll-dice')
+          .set('Cookie', hostCookie)
+          .expect(200, done);
       });
   });
 });
@@ -65,12 +99,14 @@ describe('POST /game/move', () => {
         return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
           .then(() => hostCookie);
       })
+      .then(hostCookie => gameReq(app, hostCookie))
+      .then(hostCookie => rollDiceReq(app, hostCookie))
       .then((hostCookie) => {
         request(app)
           .post('/game/move')
           .set('Cookie', hostCookie)
           .send('position=[7, 24]')
-          .expect(200, done);
+          .expect(201, done);
       });
   });
 });
@@ -89,7 +125,7 @@ describe('POST /game/accuse', () => {
             .post('/game/accuse')
             .set('Cookie', res[1].headers['set-cookie'])
             .send({ character: 'green', weapon: 'rope', room: 'hall' })
-            .expect(405, done);
+            .expect(403, done);
         });
     });
 });

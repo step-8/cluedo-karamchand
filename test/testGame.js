@@ -231,7 +231,7 @@ describe('Game', () => {
     const game = createGame(['bob', 'raj'], characters, board);
     game.start();
 
-    assert.ok(game.isAllowed('accuse'));
+    assert.ok(game.isAllowed(1, 'accuse'));
   });
 
   it('should return false if current player does not have given permission',
@@ -239,6 +239,6 @@ describe('Game', () => {
       const game = createGame(['bob', 'raj'], characters, board);
       game.start();
 
-      assert.notOk(game.isAllowed('suspect'));
+      assert.notOk(game.isAllowed(1, 'suspect'));
     });
 });
