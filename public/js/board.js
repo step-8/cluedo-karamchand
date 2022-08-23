@@ -425,17 +425,18 @@
 
     rulingOutCards.forEach(rulingOutCard => {
       const cardElement = suspicionPopup.querySelector(`#${rulingOutCard}`);
-      cardElement.classList.add('highlight');
+      cardElement.classList.add('highlight-btn');
       cardElement.addEventListener('click', ruleOut, { once: true });
     });
   };
 
-  const removeHighlight = (htmlElement) =>
-    htmlElement.classList.remove('highlight');
+  const removeHighlight = (htmlElement) => {
+    htmlElement.classList.remove('highlight-btn');
+  };
 
   const removeCardsHighlight = () => {
     const suspicionPopup = document.querySelector('#suspect-result-popup');
-    const highlightedCards = suspicionPopup.querySelectorAll('.cards-combo .highlight');
+    const highlightedCards = suspicionPopup.querySelectorAll('.cards-combo .highlight-btn');
     highlightedCards.forEach(removeHighlight);
   };
 
@@ -456,7 +457,7 @@
 
     const { ruledOutWith } = suspicion;
     const ruledOutCardEle = suspicionPopup.querySelector(`#${ruledOutWith}`);
-    ruledOutCardEle.classList.add('highlight');
+    ruledOutCardEle.classList.add('highlight-btn');
   };
 
   const endSuspicion = (gamePoller, suspicionPoller) =>

@@ -21,3 +21,11 @@ svg(width='830', height='830', viewBox='0 0 24 25')
   each startingTile in boardData.startingTiles
     - var pos = startingTile.position;
     rect(x=pos[0], y=pos[1], class='starting-tile',id=pos[0] + '-' + pos[1])
+
+  filter(id='inset-shadow')
+    feOffset(dx='0', dy='0')
+    feGaussianBlur(stdDeviation='1', result='offset-blur')
+    feComposite(operator='out', in='SourceGraphic', in2='offset-blur', result='inverse')
+    feFlood(flood-color='white', flood-opacity='0.5', result='color')
+    feComposite(operator='in', in='color', in2='inverse', result='shadow')
+    feComposite(operator='over', in='shadow', in2='SourceGraphic')

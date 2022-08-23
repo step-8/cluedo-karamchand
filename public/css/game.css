@@ -128,7 +128,7 @@ main {
 }
 
 .tile {
-  fill: #efb958;
+  fill: #deab53;
   stroke: brown;
   stroke-width: 0.05%;
 }
@@ -391,16 +391,21 @@ article {
   box-shadow: 0px 0px 15px 2px var(--red);
 }
 
-.highlight {
+.highlight-btn {
   cursor: pointer;
   opacity: 1;
   box-shadow: 0px 0px 15px 2px var(--red);
 }
 
 .highlight-path {
-  stroke: brown;
-  fill: #ffe4b4;
   cursor: pointer;
+  animation: blink 1.5s linear infinite;
+  animation-direction: alternate;
+  stroke: white;
+  stroke-width: 0.1;
+  height: 0.95;
+  width: 0.95;
+  filter: url('#inset-shadow');
 }
 
 .current-player {
@@ -408,6 +413,16 @@ article {
   stroke-width: 0.1;
   animation: pulsar 1.5s linear infinite;
   animation-direction: alternate;
+}
+
+@keyframes blink {
+  from {
+    opacity: 0.9;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes pulsar {

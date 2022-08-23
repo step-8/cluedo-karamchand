@@ -1,5 +1,5 @@
 const highlightOption = (optionElement) => {
-  optionElement.classList.add('highlight');
+  optionElement.classList.add('highlight-btn');
 };
 
 class Options {
