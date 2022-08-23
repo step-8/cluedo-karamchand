@@ -39,10 +39,6 @@ class Game {
     return this.#players[this.#currentPlayerIndex];
   }
 
-  #getPlayerBy(playerId) {
-    return this.#players.find(player => player.isYourId(playerId));
-  }
-
   get #currentPlayerCharacter() {
     return this.#characters[this.#currentPlayerIndex];
   }
@@ -171,7 +167,13 @@ class Game {
   #moveCharacter(characterName, position) {
     const character = this.#characters.find(character =>
       character.name === characterName);
+
     character.position = position;
+
+    const player = this.#players.find(player =>
+      player.character === character.name);
+
+    player && (player.position = position);
   }
 
   move(newPosition) {
@@ -252,7 +254,7 @@ class Game {
   }
 
   ruleOutSuspicion(playerId, rulingOutCard) {
-    const ruledOutBy = this.#getPlayerBy(playerId).character;
+    const ruledOutBy = this.#findPlayer(playerId).character;
     return this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
   }
 
