@@ -28,25 +28,6 @@ describe('POST /game/accuse', () => {
   });
 });
 
-describe('GET /game/roll-dice', () => {
-  const app = createApp();
-
-  it('Should roll dice', (done) => {
-    loginAsHost(app, 'vikram')
-      .then(({ hostCookie, gameId }) => {
-        return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
-          .then(() => hostCookie);
-      })
-      .then(hostCookie => gameReq(app, hostCookie))
-      .then((hostCookie) => {
-        request(app)
-          .get('/game/roll-dice')
-          .set('Cookie', hostCookie)
-          .expect(200, done);
-      });
-  });
-});
-
 const rollDiceReq = (app, cookie) => {
   return request(app)
     .get('/game/roll-dice')
