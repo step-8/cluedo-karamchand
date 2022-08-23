@@ -117,7 +117,7 @@
   };
 
   const createTokenInRoom = (characterElement, room) => {
-    const playerGroupEle = room.closest(`g`).querySelector('g');
+    const playerGroupEle = room.closest('g').querySelector('g');
     const positions = [[0, 0], [1, 1], [0, 1], [1, 2], [0, 2], [-1, 2]];
     const index = playerGroupEle.children.length;
 
@@ -126,9 +126,9 @@
     }
 
     characterElement.remove();
-    playerGroupEle.append(characterElement)
     characterElement.setAttribute('cx', positions[index][0]);
     characterElement.setAttribute('cy', positions[index][1]);
+    playerGroupEle.append(characterElement);
   };
 
   const createToken = (position, character, currentPlayer) => {
@@ -145,8 +145,10 @@
       return;
     }
 
+    characterElement.remove();
     characterElement.setAttribute('cx', position[0] + 0.5);
     characterElement.setAttribute('cy', position[1] + 0.5);
+    document.querySelector('svg').append(characterElement);
   };
 
   const showTokens = () => {
@@ -240,6 +242,7 @@
       disableOption(document.querySelector(from));
       disableOption(document.querySelector('#dice'));
       disableOption(document.querySelector(destination));
+      removeHighlightedPath();
     });
 
     options.add('secret-passage', destination, true, x => x);

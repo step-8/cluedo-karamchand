@@ -192,6 +192,7 @@ class Game {
     const room = this.#getPlayerRoom(player);
     this.move(room.secretPassage);
     this.#disable('roll-dice');
+    this.#possibleMoves = [];
   }
 
   #isAccusationCorrect(cards) {
