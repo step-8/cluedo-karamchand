@@ -5,28 +5,6 @@
   const setAttributes = (attributes, element) =>
     Object.entries(attributes).forEach(attSet => createAttr(attSet, element));
 
-  const createElementTree = ([tag, attributes, ...content]) => {
-    const newContent = content.map(
-      subTag => Array.isArray(subTag) ? createElementTree(subTag) : subTag);
-
-    const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
-    setAttributes(attributes, element);
-    newContent.forEach(innerContent => element.append(innerContent));
-
-    return element;
-  };
-
-  const createTokenDom = (characterName, position) => {
-    const token = ['circle',
-      {
-        id: characterName,
-        cx: position[0] + 0.5,
-        cy: position[1] + 0.5,
-        class: 'token'
-      }];
-    return token;
-  };
-
   const includeTokens = (characters) => {
     const board = document.querySelector('.board>svg');
 
@@ -36,6 +14,17 @@
     });
 
     board.append(...playerTokens);
+  };
+
+  const createElementTree = ([tag, attributes, ...content]) => {
+    const newContent = content.map(
+      subTag => Array.isArray(subTag) ? createElementTree(subTag) : subTag);
+
+    const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    setAttributes(attributes, element);
+    newContent.forEach(innerContent => element.append(innerContent));
+
+    return element;
   };
 
   const generatePlayersDom = (players, you) => {
@@ -116,6 +105,32 @@
     dice[1].innerText = diceValue[1];
   };
 
+  const createTokenDom = (characterName, position) => {
+    const token = ['circle',
+      {
+        id: characterName,
+        cx: position[0] + 0.5,
+        cy: position[1] + 0.5,
+        class: 'token'
+      }];
+    return token;
+  };
+
+  const createTokenInRoom = (characterElement, room) => {
+    const playerGroupEle = room.closest(`g`).querySelector('g');
+    const positions = [[0, 0], [1, 1], [0, 1], [1, 2], [0, 2], [-1, 2]];
+    const index = playerGroupEle.children.length;
+
+    if (playerGroupEle.contains(characterElement)) {
+      return;
+    }
+
+    characterElement.remove();
+    playerGroupEle.append(characterElement)
+    characterElement.setAttribute('cx', positions[index][0]);
+    characterElement.setAttribute('cy', positions[index][1]);
+  };
+
   const createToken = (position, character, currentPlayer) => {
     const characterElement = document.querySelector(`#${character}`);
     if (character === currentPlayer.character) {
@@ -123,6 +138,13 @@
     } else {
       removePulsate(character);
     }
+
+    const positionEle = document.getElementById(position.join('-'));
+    if (positionEle.classList.contains('room')) {
+      createTokenInRoom(characterElement, positionEle);
+      return;
+    }
+
     characterElement.setAttribute('cx', position[0] + 0.5);
     characterElement.setAttribute('cy', position[1] + 0.5);
   };
@@ -535,6 +557,8 @@
 
     gameState.addObserver(enableOptions);
     gameState.addObserver(highlightPossiblePositions);
+    gameState.addObserver(highlightPossiblePositions);
+    // gameState.addObserver(updateCurrentPlayerToken);
     gameState.addObserver(showTokens);
     gameState.addObserver(updateDice);
     gameState.addObserver(showAccusation(poller));

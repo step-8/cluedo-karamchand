@@ -770,9 +770,9 @@
   "rooms": [
     {
       "name": "kitchen",
-      "textPosition": [
-        2,
-        4
+      "playerGroup": [
+        3,
+        2
       ],
       "secretPassage": [
         5,
@@ -808,9 +808,9 @@
     },
     {
       "name": "ballroom",
-      "textPosition": [
-        10,
-        5
+      "playerGroup": [
+        12,
+        2
       ],
       "id": "9-7",
       "points": [
@@ -850,9 +850,9 @@
     },
     {
       "name": "conservatory",
-      "textPosition": [
-        18.4,
-        3
+      "playerGroup": [
+        21,
+        2
       ],
       "secretPassage": [
         22,
@@ -896,9 +896,9 @@
     },
     {
       "name": "dining",
-      "textPosition": [
-        2,
-        13
+      "playerGroup": [
+        4,
+        11
       ],
       "id": "6-15",
       "points": [
@@ -930,9 +930,9 @@
     },
     {
       "name": "billiard",
-      "textPosition": [
-        19,
-        11
+      "playerGroup": [
+        21,
+        9
       ],
       "id": "18-9",
       "points": [
@@ -956,8 +956,8 @@
     },
     {
       "name": "library",
-      "textPosition": [
-        19,
+      "playerGroup": [
+        21,
         17
       ],
       "id": "17-16",
@@ -1010,9 +1010,9 @@
     },
     {
       "name": "study",
-      "textPosition": [
-        19,
-        23
+      "playerGroup": [
+        21,
+        22
       ],
       "secretPassage": [
         23,
@@ -1048,9 +1048,9 @@
     },
     {
       "name": "hall",
-      "textPosition": [
-        11,
-        22
+      "playerGroup": [
+        12,
+        20
       ],
       "id": "12-18",
       "points": [
@@ -1074,9 +1074,9 @@
     },
     {
       "name": "lounge",
-      "textPosition": [
+      "playerGroup": [
         2,
-        22
+        21
       ],
       "secretPassage": [
         0,
@@ -1112,7 +1112,7 @@
     },
     {
       "name": "cluedo",
-      "textPosition": [
+      "playerGroup": [
         11,
         13
       ],
