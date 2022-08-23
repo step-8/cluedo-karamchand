@@ -1,11 +1,9 @@
 (function () {
-  const createAttr = ([attribute, value], element) => {
+  const createAttr = ([attribute, value], element) =>
     element.setAttribute(attribute, value);
-  };
 
-  const setAttributes = (attributes, element) => {
+  const setAttributes = (attributes, element) =>
     Object.entries(attributes).forEach(attSet => createAttr(attSet, element));
-  };
 
   const createElementTree = ([tag, attributes, ...content]) => {
     const newContent = content.map(
@@ -130,9 +128,8 @@
   };
 
   const showTokens = () => {
-    gameState.characters.forEach(({ position, name }) => {
-      createToken(position, name, gameState.currentPlayer);
-    });
+    gameState.characters.forEach(({ position, name }) =>
+      createToken(position, name, gameState.currentPlayer));
   };
 
   const moveCharacter = (position) => {
@@ -144,7 +141,10 @@
     const newPosition = new URLSearchParams(`position=[${position}]`);
 
     API.moveCharacter(newPosition)
-      .then(removeHighlightedPath);
+      .then(() => {
+        disableAllOptions();
+        removeHighlightedPath();
+      });
   };
 
   const highlightPosition = (position) => {
@@ -170,7 +170,7 @@
   };
 
   const disableOption = (optionElement) => {
-    optionElement.classList.remove('highlight');
+    removeHighlight(optionElement);
     optionElement.onclick = '';
   };
 
@@ -197,9 +197,7 @@
     popup.style.visibility = 'visible';
   };
 
-  const disableOptions = (options) => {
-    options.forEach(disableOption);
-  };
+  const disableOptions = (options) => options.forEach(disableOption);
 
   const disableAllOptions = () => {
     const options = document.querySelectorAll('.options .btn');
@@ -207,9 +205,7 @@
     disableOptions([...options, ...secretPassage]);
   };
 
-  const moveThroughSecretPassage = () => {
-    API.useSecretPassage();
-  };
+  const moveThroughSecretPassage = () => API.useSecretPassage();
 
   const allowSecretPassage = options => {
     const { name, secretPassage } = gameState.room;
@@ -225,7 +221,6 @@
     });
 
     options.add('secret-passage', destination, true, x => x);
-
   };
 
   const enableOptions = () => {
@@ -241,6 +236,7 @@
     });
 
     options.add('suspect', '#suspect', gameState.canSuspect(), showSuspectPopup);
+
     options.add('accuse', '#accuse', gameState.canAccuse(), showAccusationPopup);
 
     if (gameState.canUseSecretPassage()) {
@@ -332,6 +328,7 @@
       if (gameState.accusation.result) {
         showGameOver();
       }
+
       poller.startPolling();
     }, 10000);
 
@@ -385,7 +382,7 @@
 
     cardsElements.forEach(cardElement => {
       cardElement.removeEventListener('click', ruleOut);
-      cardElement.classList.remove('highlight');
+      removeHighlight(cardElement);
     });
   };
 
@@ -411,9 +408,8 @@
     });
   };
 
-  const removeHighlight = (htmlElement) => {
+  const removeHighlight = (htmlElement) =>
     htmlElement.classList.remove('highlight');
-  };
 
   const removeCardsHighlight = () => {
     const suspicionPopup = document.querySelector('#suspect-result-popup');
@@ -497,15 +493,11 @@
       .then(closePopup);
   };
 
-  const getSecretPassageEle = () => {
-    return document.querySelectorAll('g > .highlight');
-  };
+  const getSecretPassageEle = () =>
+    document.querySelectorAll('g > .highlight');
 
   const suspect = () => {
-    const suspect = document.querySelector('#suspect');
-    const rollDice = document.querySelector('#dice');
-    const secretPassage = getSecretPassageEle();
-    disableOptions([suspect, rollDice, ...secretPassage]);
+    disableAllOptions();
     actOn('suspected', API.suspect);
   };
 
