@@ -212,10 +212,10 @@
   };
 
   const allowSecretPassage = options => {
-    const { position, secretPassage } = gameState.room;
+    const { name, secretPassage } = gameState.room;
 
-    const from = `[id='${position.join('-')}'] .secret-passage`;
-    const destination = `[id='${secretPassage.join('-')}'] .room`;
+    const from = `#${name}-group .secret-passage`;
+    const destination = `[id='${secretPassage.join('-')}']`;
 
     options.add('secret-passage', from, true, () => {
       moveThroughSecretPassage();
