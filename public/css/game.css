@@ -399,29 +399,37 @@ article {
 
 .highlight-path {
   cursor: pointer;
-  animation: blink 1.5s linear infinite;
+  animation: blink-tile 1.5s ease-out infinite;
   animation-direction: alternate;
-  stroke: white;
-  stroke-width: 0.1;
-  height: 0.95;
-  width: 0.95;
-  filter: url('#inset-shadow');
+}
+
+.highlight-room {
+  cursor: pointer;
+  fill: rgba(255, 255, 255, 0.6);
+  animation: blink-room 1.5s ease-out infinite;
+  animation-direction: alternate;
 }
 
 .current-player {
   stroke: cyan;
   stroke-width: 0.1;
-  animation: pulsar 1.5s linear infinite;
+  animation: pulsar 1.5s ease-out infinite;
   animation-direction: alternate;
 }
 
-@keyframes blink {
+@keyframes blink-tile {
+  to {
+    fill: #f6dfb8;
+  }
+}
+
+@keyframes blink-room {
   from {
-    opacity: 0.9;
+    opacity: 0;
   }
 
   to {
-    opacity: 1;
+    opacity: 0.8;
   }
 }
 

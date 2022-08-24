@@ -174,14 +174,15 @@
   const highlightPosition = (position) => {
     const id = `${position[0]}-${position[1]}`;
     const targetElement = document.getElementById(id);
-    targetElement.classList.add('highlight-path');
-    targetElement.onclick = () =>
-      moveCharacter(position);
+
+    const isRoom = targetElement.classList.contains('room');
+    const className = isRoom ? 'highlight-room' : 'highlight-path';
+    targetElement.classList.add(className);
+    targetElement.onclick = () => moveCharacter(position);
   };
 
   const highlightPossiblePositions = () => {
-    gameState.possibleMoves.forEach(position =>
-      highlightPosition(position));
+    gameState.possibleMoves.forEach(position => highlightPosition(position));
   };
 
   const rollDice = () => {
@@ -198,12 +199,21 @@
     optionElement.onclick = '';
   };
 
+  const removeHighlightedRooms = () => {
+    const highlightedCells = document.querySelectorAll('.highlight-room');
+    highlightedCells.forEach(node => {
+      node.classList.remove('highlight-room');
+      node.onclick = '';
+    });
+  };
+
   const removeHighlightedPath = () => {
     const highlightedCells = document.querySelectorAll('.highlight-path');
     highlightedCells.forEach(node => {
       node.classList.remove('highlight-path');
       node.onclick = '';
     });
+    removeHighlightedRooms();
   };
 
   const pass = () => {
