@@ -446,9 +446,10 @@
 
   const allowRuleOut = () => {
     const { suspectedElements: suspectedCards } = gameState.suspicion;
+    const { cards: myCards } = gameState.you;
 
     const rulingOutCards = Object.values(suspectedCards).filter(suspectedCard =>
-      gameState.you.cards.includes(suspectedCard));
+      myCards.includes(suspectedCard));
 
     const suspicionPopup = document.querySelector('#suspect-result-popup');
 
@@ -508,6 +509,7 @@
 
     const suspicionPoller = new Poller(() =>
       endSuspicion(gamePoller, suspicionPoller), 1000);
+
     suspicionPoller.startPolling();
   };
 
