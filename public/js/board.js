@@ -118,16 +118,14 @@
 
   const createTokenInRoom = (characterElement, room) => {
     const playerGroupEle = room.closest('g').querySelector('g');
-    const positions = [[0, 0], [1, 1], [0, 1], [1, 2], [0, 2], [-1, 2]];
-    const index = playerGroupEle.children.length;
 
     if (playerGroupEle.contains(characterElement)) {
       return;
     }
 
     characterElement.remove();
-    characterElement.setAttribute('cx', positions[index][0]);
-    characterElement.setAttribute('cy', positions[index][1]);
+    characterElement.setAttribute('cx', 0);
+    characterElement.setAttribute('cy', 0);
     playerGroupEle.append(characterElement);
   };
 
@@ -140,6 +138,7 @@
     }
 
     const positionEle = document.getElementById(position.join('-'));
+
     if (positionEle.classList.contains('room')) {
       createTokenInRoom(characterElement, positionEle);
       return;
@@ -151,9 +150,26 @@
     document.querySelector('svg').append(characterElement);
   };
 
+  const arrangeTokens = () => {
+    const groups = document.querySelectorAll('.room ~ g');
+
+    for (const group of groups) {
+      const positions = [[0, 0], [0.5, 1], [-1, 1], [0.2, 2], [2, 0.3], [2, 1.3]];
+      let index = 0;
+
+      for (const child of group.children) {
+        child.setAttribute('cx', positions[index][0]);
+        child.setAttribute('cy', positions[index][1]);
+        index++;
+      }
+    }
+  };
+
   const showTokens = () => {
     gameState.characters.forEach(({ position, name }) =>
       createToken(position, name, gameState.currentPlayer));
+
+    arrangeTokens();
   };
 
   const moveCharacter = (position) => {
@@ -572,7 +588,6 @@
     gameState.addObserver(enableOptions);
     gameState.addObserver(highlightPossiblePositions);
     gameState.addObserver(highlightPossiblePositions);
-    // gameState.addObserver(updateCurrentPlayerToken);
     gameState.addObserver(showTokens);
     gameState.addObserver(updateDice);
     gameState.addObserver(showAccusation(poller));

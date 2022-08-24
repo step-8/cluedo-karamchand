@@ -931,8 +931,8 @@
     {
       "name": "billiard",
       "playerGroup": [
-        21,
-        9
+        20,
+        10
       ],
       "id": "18-9",
       "points": [
@@ -957,8 +957,8 @@
     {
       "name": "library",
       "playerGroup": [
-        21,
-        17
+        19,
+        16
       ],
       "id": "17-16",
       "points": [
@@ -1011,7 +1011,7 @@
     {
       "name": "study",
       "playerGroup": [
-        21,
+        20,
         22
       ],
       "secretPassage": [
@@ -1049,7 +1049,7 @@
     {
       "name": "hall",
       "playerGroup": [
-        12,
+        11,
         20
       ],
       "id": "12-18",
