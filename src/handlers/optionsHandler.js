@@ -27,23 +27,6 @@ const passTurn = (req, res) => {
   res.json(game.getState(req.session.userId));
 };
 
-const handleSuspect = (req, res) => {
-  const { session, body, game } = req;
-  const { ...suspectedCards } = body;
-
-  game.suspect(session.userId, suspectedCards);
-
-  res.sendStatus(201);
-};
-
-const ruleOutSuspicion = (req, res) => {
-  const { game, session, body } = req;
-  const { rulingOutCard } = body;
-
-  game.ruleOutSuspicion(session.userId, rulingOutCard);
-  res.sendStatus(201);
-};
-
 const useSecretPassage = (req, res) => {
   const { game } = req;
   game.useSecretPassage();
@@ -54,7 +37,5 @@ module.exports = {
   rollDice,
   handleAccusation,
   passTurn,
-  handleSuspect,
-  ruleOutSuspicion,
   useSecretPassage
 };

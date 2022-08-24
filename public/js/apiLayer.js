@@ -72,6 +72,14 @@ const API = {
     return fetchRequest(request);
   },
 
+  acknowledgeSuspicion: () => {
+    const request = {
+      url: '/game/suspect/acknowledge', options: { method: 'POST' }
+    };
+
+    return fetchRequest(request);
+  },
+
   useSecretPassage: () => {
     const request = {
       url: '/game/secret-passage', options: { method: 'POST' }

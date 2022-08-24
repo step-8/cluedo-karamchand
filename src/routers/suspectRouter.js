@@ -1,14 +1,16 @@
 const express = require('express');
 const {
+  acknowledgeSuspicion,
   handleSuspect,
   ruleOutSuspicion
-} = require('../handlers/optionsHandler.js');
+} = require('../handlers/suspectHandler.js');
 
 const createSuspectRouter = () => {
   const suspectRouter = express.Router();
 
   suspectRouter.post('/make', handleSuspect);
   suspectRouter.post('/rule-out', ruleOutSuspicion);
+  suspectRouter.post('/acknowledge', acknowledgeSuspicion);
 
   return suspectRouter;
 };

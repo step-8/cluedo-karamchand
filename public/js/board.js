@@ -415,14 +415,24 @@
     turnOrderEle.replaceChildren(...turnOrderChildren);
   };
 
+  const suspicionResultMessage = ({ suspicionBreaker }) => {
+    const breaker = suspicionBreaker ? capitalize(suspicionBreaker) : 'No one';
+    return breaker + ' can rule out the suspicion';
+  };
+
   const showSuspicionResultPopup = () => {
     const { suspectedElements: suspectedCards } = gameState.suspicion;
     showSuspicionBreaker();
     showResultCards(suspectedCards, '#suspect-result-popup');
 
     document.querySelector('.popup-container').style.visibility = 'visible';
+
     const popup = document.querySelector('#suspect-result-popup');
     popup.style.visibility = 'visible';
+
+    const resultMessage = suspicionResultMessage(gameState.suspicion);
+    popup.querySelector('h2').innerText = resultMessage;
+
     const message = suspicionMessage();
     popup.querySelector('#suspicion-msg').innerText = message;
   };
@@ -480,12 +490,12 @@
 
   const updateSuspicionPopup = (suspicion) => {
     const suspicionPopup = document.querySelector('#suspect-result-popup');
+    const { ruledOutWith } = suspicion;
 
-    if (!gameState.didISuspect()) {
+    if (!gameState.didISuspect() || !ruledOutWith) {
       return;
     }
 
-    const { ruledOutWith } = suspicion;
     const ruledOutCardEle = suspicionPopup.querySelector(`#${ruledOutWith}`);
     ruledOutCardEle.classList.add('highlight-btn');
   };
@@ -493,13 +503,14 @@
   const endSuspicion = (gamePoller, suspicionPoller) =>
     API.getGame()
       .then(({ suspicion }) => {
-        if (!suspicion.ruledOut) {
+        if (!suspicion.ruledOut && suspicion.suspicionBreaker) {
           return;
         }
 
         suspicionPoller.stopPolling();
+        API.acknowledgeSuspicion();
         updateSuspicionPopup(suspicion);
-        afterRuleOut(gamePoller, suspicionPoller);
+        afterRuleOut(gamePoller);
       });
 
   const handleRuleOut = (gamePoller) => {
@@ -514,7 +525,7 @@
   };
 
   const handleSuspicion = (poller) => () => {
-    if (!gameState.hasAnyoneSuspected() || gameState.isSuspicionRuledOut()) {
+    if (!gameState.hasAnyoneSuspected()) {
       return;
     }
 

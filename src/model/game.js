@@ -1,3 +1,4 @@
+const { AwaitingAcklowledgement } = require('./acknowledgement.js');
 const { Cards } = require('./cards.js');
 const { Player } = require('./player.js');
 const { Suspicion } = require('./suspicion.js');
@@ -16,6 +17,7 @@ class Game {
   #possibleMoves;
   #board;
   #suspicion;
+  #acknowledgement;
 
   constructor(gameId, maxPlayers, characters, board) {
     this.#gameId = gameId;
@@ -265,12 +267,27 @@ class Game {
     player.disable('secret-passage');
     player.disable('roll-dice');
     player.blockRoom = roomName;
+
+    this.#acknowledgement = new AwaitingAcklowledgement(this.#players);
     return true;
   }
 
   ruleOutSuspicion(playerId, rulingOutCard) {
     const ruledOutBy = this.#findPlayer(playerId).character;
     return this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
+  }
+
+  acknowledgeSuspicion(playerId) {
+    if (!this.#suspicion) {
+      return;
+    }
+
+    const player = this.#findPlayer(playerId);
+    this.#acknowledgement.acknowledgeFrom(player);
+
+    if (this.#acknowledgement.hasEveryoneAcknowledged()) {
+      this.#suspicion = null;
+    }
   }
 
   injectPossibleMoves(possibleMoves) {

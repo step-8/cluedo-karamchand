@@ -215,11 +215,8 @@ describe('Game', () => {
   });
 
   it('Should provide suspicion info, if current player suspects', () => {
-    const game = new Game(1, 2, characters, board);
-
-    game.addPlayer(1, 'bob');
-    game.addPlayer(2, 'raj');
-    game.start();
+    const players = ['bob', 'raj'];
+    const game = createGame(players, characters, board);
     game.move([4, 6]);
     game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
 
@@ -237,6 +234,18 @@ describe('Game', () => {
     };
 
     assert.deepStrictEqual(suspicion, expected);
+  });
+
+  it('Should not provide suspicion info if the suspcion round is over', () => {
+    const players = ['bob', 'raj'];
+    const game = createGame(players, characters, board);
+    game.move([4, 6]);
+    game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
+    game.acknowledgeSuspicion(1);
+    game.acknowledgeSuspicion(2);
+
+    const { suspicion } = game.getState(1);
+    assert.deepStrictEqual(suspicion, null);
   });
 
   it('should return true if given id is belongs to current player', () => {
