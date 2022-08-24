@@ -16,7 +16,7 @@ const homePageLib = require('./handlers/homePage.js');
 const { serveHomePage, serveLobby, redirectToLobby } = homePageLib;
 const { hostGame } = require('./handlers/hostGameHandler.js');
 
-const { createLoginRouter } = require('./routers/loginRouter.js');
+const { createAuthRouter } = require('./routers/authRouter.js');
 const { createApiRouter } = require('./routers/apiRouter.js');
 const { createGameRouter } = require('./routers/gameRouter.js');
 
@@ -37,11 +37,12 @@ const createApp = () => {
     keys: [process.env.SESSION_KEYS]
   }));
 
-  const loginRouter = createLoginRouter();
+  const authRouter = createAuthRouter();
   const gameRouter = createGameRouter(games, cards, cellPositions, boardData);
   const apiRouter = createApiRouter(games);
 
-  app.use('/login', loginRouter);
+  app.use(authRouter);
+
   app.use('/game', gameRouter);
   app.use('/api', apiRouter);
 

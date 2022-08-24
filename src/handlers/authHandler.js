@@ -24,4 +24,11 @@ const handleLogin = (req, res) => {
   res.redirect('/');
 };
 
-module.exports = { serveLogin, handleLogin };
+const logout = (req, res) => {
+  if (req.session.isPopulated) {
+    req.session = null;
+  }
+  res.redirect('/login');
+};
+
+module.exports = { serveLogin, handleLogin, logout };

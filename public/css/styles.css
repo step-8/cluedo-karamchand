@@ -56,3 +56,18 @@ main {
   background-color: rgba(0, 0, 0, 0.6);
   box-shadow: var(--box-shadow);
 }
+
+.logout {
+  color: white;
+  font-size: 1.3em;
+  border-left: 1px solid rgba(255, 255, 255, 0.689);
+  padding-left: 0.5em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user-profile {
+  display: flex;
+  column-gap: 0.8em;
+  align-items: center;
+}

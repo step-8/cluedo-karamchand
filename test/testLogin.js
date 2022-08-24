@@ -53,3 +53,29 @@ describe('POST /login', () => {
       .expect(302, done);
   });
 });
+
+describe('GET /logout', () => {
+  it('Should redirect to login page when not logged in but trying to logout', (done) => {
+    const app = createApp();
+
+    request(app)
+      .get('/logout')
+      .expect('location', '/login')
+      .expect(302, done);
+  });
+
+  it('should redirect to /login after logout', (done) => {
+    const app = createApp();
+
+    request(app)
+      .post('/login')
+      .send('username=sam')
+      .end((err, res) => {
+        request(app)
+          .get('/logout')
+          .set('Cookie', res.headers['set-cookie'])
+          .expect('location', /login/)
+          .expect(302, done);
+      });
+  });
+});

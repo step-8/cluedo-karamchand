@@ -3,11 +3,14 @@ html
     title Home 
     link(rel='stylesheet', href='css/styles.css')
     link(rel='stylesheet', href='css/login-home.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css')
     script(src='js/home.js')
   body(class='cover-img')
     header(class='header')
       h1(class='logo') CL<span class='red-text'>U</span>EDO
-      div(class='username') Hey #{username}!
+      div(class='user-profile')
+        div(class='username') Hey #{username} !
+        a(class='logout fas fa-sign-out-alt' href='/logout')
     main
       div(class='container box-design')
         form(action='/host', method='post', id='host-form')
