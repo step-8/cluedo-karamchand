@@ -4,6 +4,7 @@ const validateUser = (req, res, next) => {
     next();
     return;
   }
+
   res.redirect('/login');
 };
 
