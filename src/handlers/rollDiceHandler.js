@@ -1,6 +1,4 @@
-const isEqual = (array1, array2) => {
-  return array1.every((element, index) => element === array2[index]);
-};
+const { isEqual } = require('../utils.js');
 
 const isCellPresent = (cells, expectedCell) => {
   return cells.some(cell => isEqual(cell, expectedCell));

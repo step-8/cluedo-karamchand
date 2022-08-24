@@ -6,6 +6,7 @@ class Player {
   #hasAccused;
   #position;
   #permissions;
+  #blockedRoom;
 
   constructor(playerId, playerName, characterName, position) {
     this.#playerId = playerId;
@@ -15,6 +16,7 @@ class Player {
     this.#cards = [];
     this.#permissions = new Set();
     this.#hasAccused = false;
+    this.#blockedRoom = null;
   }
 
   get id() {
@@ -33,6 +35,14 @@ class Player {
     return this.#hasAccused;
   }
 
+  set blockRoom(room) {
+    this.#blockedRoom = room;
+  }
+
+  unblock() {
+    this.#blockedRoom = null;
+  }
+
   addCards(cards) {
     this.#cards = cards;
   }
@@ -47,6 +57,10 @@ class Player {
 
   isAllowed(action) {
     return this.#permissions.has(action);
+  }
+
+  canSuspectHere(room) {
+    return this.#blockedRoom !== room;
   }
 
   enable(action) {

@@ -1,6 +1,7 @@
 const { Cards } = require('./cards.js');
 const { Player } = require('./player.js');
 const { Suspicion } = require('./suspicion.js');
+const { isEqual } = require('../utils.js');
 
 class Game {
   #gameId;
@@ -76,12 +77,16 @@ class Game {
     return this.#board.isInsideRoom(characterPosition);
   }
 
-  #manageSuspectPermission(action) {
-    if (this.#isCurrentPlayerInsideRoom()) {
-      return this.currentPlayer.enable(action);
+  #manageSuspectPermission() {
+    const player = this.currentPlayer;
+    const room = this.#getPlayerRoom(player);
+    const roomName = room && room.name;
+
+    if (this.#isCurrentPlayerInsideRoom() && player.canSuspectHere(roomName)) {
+      return player.enable('suspect');
     }
 
-    this.currentPlayer.disable(action);
+    player.disable('suspect');
   }
 
   #manageSecretPassagePermission() {
@@ -177,6 +182,12 @@ class Game {
   }
 
   move(newPosition) {
+    const prevPosition = this.#currentPlayerCharacter.position;
+
+    if (!isEqual(prevPosition, newPosition)) {
+      this.currentPlayer.unblock();
+    }
+
     this.currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
 
@@ -228,6 +239,8 @@ class Game {
 
   suspect(playerId, suspectedCards) {
     const player = this.currentPlayer;
+    const room = this.#getPlayerRoom(player);
+    const roomName = room && room.name;
 
     if (!player.isYourId(playerId) || !player.isAllowed('suspect')) {
       return false;
@@ -251,6 +264,7 @@ class Game {
     player.disable('suspect');
     player.disable('secret-passage');
     player.disable('roll-dice');
+    player.blockRoom = roomName;
     return true;
   }
 

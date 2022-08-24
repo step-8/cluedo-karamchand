@@ -101,4 +101,25 @@ describe('Player', () => {
     assert.notInclude(info.permissions, 'accuse');
   });
 
+  it('should return true when player has suspect permission', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+
+    assert.ok(player.canSuspectHere('kitchen'));
+  });
+
+  it('should return false when player does not have suspect permission', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+    player.blockRoom = 'kitchen';
+
+    assert.notOk(player.canSuspectHere('kitchen'));
+  });
+
+  it('should unblock the room', () => {
+    const player = new Player(1, 'ram', 'scarlett', [1, 1]);
+    player.blockRoom = 'kitchen';
+    player.unblock();
+
+    assert.ok(player.canSuspectHere('kitchen'));
+  });
+
 });
