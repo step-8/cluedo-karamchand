@@ -2,6 +2,7 @@ const { Game } = require('../model/game.js');
 const { Player } = require('../model/player.js');
 const { Character } = require('../model/character.js');
 const { Board } = require('../model/board.js');
+const { Room } = require('../model/room.js');
 
 const randomInt = (number) => Math.floor(Math.random() * number);
 
@@ -46,7 +47,7 @@ const distributeCards = (cards, playersCount) => {
 
 const createPlayers = (playersInfo, cards) => {
   return playersInfo.map(({ id, name, character }, index) =>
-    new Player(id, name, character, cards[index])); //change the contract of player entity
+    new Player(id, name, character, cards[index]));
 };
 
 const createCharacters = (charactersInfo) => {
@@ -72,11 +73,12 @@ const createGame = (id, playersCount, playersInfo, gameDetails, cards) => {
 
 const initGame = (games, lobbies, gameDetails, cards) => (req, res, next) => {
   const { roomId } = req.session;
-  if (!roomId) {
+  const lobby = lobbies[roomId];
+
+  if (!(roomId && lobby)) {
     return res.redirect('/');
   }
 
-  const lobby = lobbies[roomId];
   if (!lobby.isFull()) {
     return res.redirect(`/lobby/${roomId}`);
   }
@@ -88,6 +90,8 @@ const initGame = (games, lobbies, gameDetails, cards) => (req, res, next) => {
   const { id, players } = lobby.getStats();
   const playersCount = players.length;
   const game = createGame(id, playersCount, players, gameDetails, cards);
+  game.start();
+
   games[id] = game;
   next();
 };

@@ -41,7 +41,7 @@ class Lobby {
       return { id, name, character };
     });
 
-    return { id: this.#id, players };
+    return { id: this.#id, maxPlayers: this.#maxPlayers, players };
   }
 }
 

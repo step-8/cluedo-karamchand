@@ -5,16 +5,14 @@ require('dotenv').config();
 
 const boardData = require('../data/board.json');
 const cards = require('../data/cards.json');
-const cellPositions = require('../data/gameDetails.json');
+const gameDetails = require('../data/gameDetails.json');
 
-const gameMiddlewareLib = require('./middleware/gameMiddleware.js');
 const { validateUser } = require('./middleware/validateUser.js');
-const { injectGame, injectGameId,
-  addPlayerToGame, isUserInGame } = gameMiddlewareLib;
+const { injectLobby, isUserInGame, isUserInLobby } = require('./middleware/gameMiddleware.js');
 
 const homePageLib = require('./handlers/homePage.js');
-const { serveHomePage, serveLobby, redirectToLobby } = homePageLib;
-const { hostGame } = require('./handlers/hostGameHandler.js');
+const { serveHomePage, serveLobby } = homePageLib;
+const { hostGame, joinGame } = require('./handlers/hostAndJoinGame.js');
 
 const { createAuthRouter } = require('./routers/authRouter.js');
 const { createApiRouter } = require('./routers/apiRouter.js');
@@ -22,6 +20,7 @@ const { createGameRouter } = require('./routers/gameRouter.js');
 
 const createApp = () => {
   const games = {};
+  const lobbies = {};
   const app = express();
 
   const MODE = process.env.ENV;
@@ -38,19 +37,20 @@ const createApp = () => {
   }));
 
   const authRouter = createAuthRouter();
-  const gameRouter = createGameRouter(games, cards, cellPositions, boardData);
-  const apiRouter = createApiRouter(games);
+  const gameRouter =
+    createGameRouter(games, lobbies, cards, gameDetails, boardData);
+  const apiRouter = createApiRouter(games, lobbies);
 
   app.use(authRouter);
 
   app.use('/game', gameRouter);
   app.use('/api', apiRouter);
 
-  app.get('/', validateUser, isUserInGame(games), serveHomePage);
-  app.post('/host', validateUser, hostGame(games, cellPositions));
-  app.post('/join', validateUser, injectGameId(games), injectGame(games),
-    addPlayerToGame, redirectToLobby);
-  app.get('/lobby/:gameId', validateUser, serveLobby);
+  app.get('/',
+    validateUser, isUserInGame(games), isUserInLobby(lobbies), serveHomePage);
+  app.post('/host', validateUser, hostGame(lobbies, cards.characters));
+  app.post('/join', validateUser, injectLobby(lobbies), joinGame);
+  app.get('/lobby/:roomId', validateUser, serveLobby);
 
   app.use(express.static('public'));
   return app;

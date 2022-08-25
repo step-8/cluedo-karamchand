@@ -8,6 +8,7 @@ const gameReq = (app, cookie) => {
     .set('Cookie', cookie)
     .then(() => cookie);
 };
+
 describe('POST /game/accuse', () => {
   const app = createApp();
 

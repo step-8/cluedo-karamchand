@@ -1,33 +1,35 @@
 const request = require('supertest');
 const { createApp } = require('../src/app.js');
+const { loginAsHost } = require('./testFixture.js');
 
-describe('GET /lobby/:gameId', () => {
+describe('GET /lobby/:roomId', () => {
   it('Should redirect to login if not logged in', (done) => {
     const app = createApp();
-
     request(app)
       .get('/lobby/ABCED')
       .expect('location', '/login')
       .expect(302, done);
   });
 
-  let gameId;
+  let roomId;
+  let cookie;
   const app = createApp();
 
-  before((done) => {
-    request(app)
-      .post('/login')
-      .send('username=bob')
-      .end((err, res) => {
-        request(app)
-          .post('/host')
-          .send('maxPlayers=3')
-          .set('Cookie', res.headers['set-cookie'])
-          .end((err, res) => {
-            gameId = res.headers.location.split('/').pop();
-            done();
-          });
+  beforeEach((done) => {
+    loginAsHost(app, 'bob')
+      .then(({ gameId, hostCookie }) => {
+        cookie = hostCookie;
+        roomId = gameId;
+        done();
       });
+  });
+
+  it('Should serve lobby if room id is valid', (done) => {
+    request(app)
+      .get(`/lobby/${roomId}`)
+      .set('Cookie', cookie)
+      .expect('content-type', /html/)
+      .expect(/Lobby/, done)
   });
 
   it('Should redirect to home if not hosted/joined the game', (done) => {
@@ -36,7 +38,7 @@ describe('GET /lobby/:gameId', () => {
       .send('username=james')
       .end((err, res) => {
         request(app)
-          .get(`/lobby/${gameId}`)
+          .get(`/lobby/${roomId}`)
           .set('Cookie', res.headers['set-cookie'])
           .expect('location', '/')
           .expect(302, done);
@@ -45,7 +47,7 @@ describe('GET /lobby/:gameId', () => {
 
   it('Should redirect to respective lobby if requested with different id',
     (done) => {
-      let myGameId;
+      let myRoomId;
 
       request(app)
         .post('/login')
@@ -56,11 +58,11 @@ describe('GET /lobby/:gameId', () => {
             .send('maxPlayers=3')
             .set('Cookie', res.headers['set-cookie'])
             .end((err, res) => {
-              myGameId = res.headers.location.split('/').pop();
+              myRoomId = res.headers.location.split('/').pop();
               request(app)
-                .get(`/lobby/${gameId}`)
+                .get(`/lobby/${roomId}`)
                 .set('Cookie', res.headers['set-cookie'])
-                .expect('location', `/lobby/${myGameId}`)
+                .expect('location', `/lobby/${myRoomId}`)
                 .expect(302, done);
             });
         });

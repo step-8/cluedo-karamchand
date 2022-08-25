@@ -3,25 +3,18 @@ const serveHomePage = (req, res) => {
   res.render('home', { username });
 };
 
-const redirectToLobby = (req, res) => {
-  const { gameId } = req.session;
-  res.redirect(`/lobby/${gameId}`);
-};
-
 const serveLobby = (req, res) => {
-  const { gameId } = req.session;
+  const { roomId } = req.session;
 
-  if (!gameId) {
-    res.redirect('/');
-    return;
+  if (!roomId) {
+    return res.redirect('/');
   }
 
-  if (gameId !== req.params.gameId) {
-    res.redirect(`/lobby/${gameId}`);
-    return;
+  if (roomId !== req.params.roomId) {
+    return res.redirect(`/lobby/${roomId}`);
   }
 
   res.sendFile('lobby.html', { root: 'private' });
 };
 
-module.exports = { serveHomePage, serveLobby, redirectToLobby };
+module.exports = { serveHomePage, serveLobby };

@@ -1,6 +1,11 @@
 const { assert } = require('chai');
 const { Board } = require('../src/model/board.js');
-const { createRooms } = require('../src/handlers/hostGameHandler.js');
+const { Room } = require('../src/model/room.js');
+
+const createRooms = (roomsDetails) => {
+  return roomsDetails.map(({ name, position, entryPoint, secretPassage }) =>
+    new Room(name, position, entryPoint, secretPassage));
+};
 
 const cellPositions = [[]];
 

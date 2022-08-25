@@ -1,44 +1,44 @@
 const { AwaitingAcklowledgement } = require('./acknowledgement.js');
-const { Cards } = require('./cards.js');
-const { Player } = require('./player.js');
-const { Suspicion } = require('./suspicion.js');
 const { isEqual } = require('../utils.js');
+const { Suspicion } = require('./suspicion.js');
 
 class Game {
   #gameId;
-  #maxPlayers;
   #players;
   #characters;
-  #currentPlayerIndex;
   #envelope;
+  #board;
+
+  #numberOfPlayers;
+  #currentPlayerIndex;
   #diceValue;
   #isStarted;
-  #accusation;
   #possibleMoves;
-  #board;
+  #accusation;
   #suspicion;
   #acknowledgement;
 
-  constructor(gameId, maxPlayers, characters, board) {
+  constructor(gameId, players, characters, envelope, board) {
     this.#gameId = gameId;
-    this.#maxPlayers = maxPlayers;
-    this.#players = [];
-    this.#currentPlayerIndex = 0;
+    this.#players = players;
     this.#characters = characters;
-    this.#envelope = {};
+    this.#envelope = envelope;
+    this.#board = board;
+
+    this.#numberOfPlayers = players.length;
+    this.#currentPlayerIndex = 0;
     this.#diceValue = [1, 1];
     this.#isStarted = false;
+    this.#possibleMoves = [];
     this.#accusation = null;
     this.#suspicion = null;
-    this.#possibleMoves = [];
-    this.#board = board;
   }
 
   get players() {
     return this.#players;
   }
 
-  get currentPlayer() {
+  get #currentPlayer() {
     return this.#players[this.#currentPlayerIndex];
   }
 
@@ -51,11 +51,11 @@ class Game {
   }
 
   #disable(action) {
-    this.currentPlayer.disable(action);
+    this.#currentPlayer.disable(action);
   }
 
   #enable(action) {
-    this.currentPlayer.enable(action);
+    this.#currentPlayer.enable(action);
   }
 
   isAllowed(playerId, action) {
@@ -70,17 +70,13 @@ class Game {
     return this.#board.getRoom(character.position);
   }
 
-  isReady() {
-    return this.#maxPlayers === this.#players.length;
-  }
-
   #isCurrentPlayerInsideRoom() {
     const characterPosition = this.#currentPlayerCharacter.position;
     return this.#board.isInsideRoom(characterPosition);
   }
 
   #manageSuspectPermission() {
-    const player = this.currentPlayer;
+    const player = this.#currentPlayer;
     const room = this.#getPlayerRoom(player);
     const roomName = room && room.name;
 
@@ -92,7 +88,7 @@ class Game {
   }
 
   #manageSecretPassagePermission() {
-    const room = this.#getPlayerRoom(this.currentPlayer);
+    const room = this.#getPlayerRoom(this.#currentPlayer);
     if (room && room.secretPassage) {
       this.#enable('secret-passage');
       this.#enable('move');
@@ -104,7 +100,6 @@ class Game {
     actions.forEach(action => this.#enable(action));
     this.#manageSuspectPermission('suspect');
     this.#manageSecretPassagePermission();
-
   }
 
   #disablePermissions() {
@@ -114,46 +109,21 @@ class Game {
     actions.forEach(action => this.#disable(action));
   }
 
-  #distributeCards() {
-    const cards = new Cards();
-    cards.distribute(this.#maxPlayers);
-    const { envelope, sets } = cards.info;
-
-    this.#envelope = envelope;
-
-    this.#players.forEach((player, index) =>
-      player.addCards(sets[index]));
-  }
-
   start() {
     this.#isStarted = true;
-    this.#distributeCards();
     this.#enablePermissions();
-  }
-
-  addPlayer(playerId, playerName) {
-    if (this.isReady()) {
-      return false;
-    }
-
-    const { name: characterName, position } =
-      this.#characters[this.#players.length].info;
-
-    const player = new Player(playerId, playerName, characterName, position);
-    this.#players.push(player);
-    return true;
   }
 
   #changePlayer() {
     let index = this.#currentPlayerIndex;
     do {
       index++;
-      this.#currentPlayerIndex = index % this.#maxPlayers;
-    } while (this.currentPlayer.hasAccused);
+      this.#currentPlayerIndex = index % this.#numberOfPlayers;
+    } while (this.#currentPlayer.hasAccused);
   }
 
   isCurrentPlayer(playerId) {
-    return this.currentPlayer.isYourId(playerId);
+    return this.#currentPlayer.isYourId(playerId);
   }
 
   passTurn() {
@@ -187,10 +157,10 @@ class Game {
     const prevPosition = this.#currentPlayerCharacter.position;
 
     if (!isEqual(prevPosition, newPosition)) {
-      this.currentPlayer.unblock();
+      this.#currentPlayer.unblock();
     }
 
-    this.currentPlayer.position = newPosition;
+    // this.#currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
 
     this.#manageSuspectPermission('suspect');
@@ -201,7 +171,7 @@ class Game {
   }
 
   useSecretPassage() {
-    const player = this.currentPlayer;
+    const player = this.#currentPlayer;
     const room = this.#getPlayerRoom(player);
     this.move(room.secretPassage);
     this.#disable('roll-dice');
@@ -214,7 +184,7 @@ class Game {
   }
 
   accuse(accusedCards) {
-    const player = this.currentPlayer;
+    const player = this.#currentPlayer;
     if (!player.isAllowed('accuse')) {
       return false;
     }
@@ -240,7 +210,7 @@ class Game {
   }
 
   suspect(playerId, suspectedCards) {
-    const player = this.currentPlayer;
+    const player = this.#currentPlayer;
     const room = this.#getPlayerRoom(player);
     const roomName = room && room.name;
 
@@ -303,7 +273,7 @@ class Game {
     const you = this.#findPlayer(playerId);
     const room = this.#getPlayerRoom(you);
 
-    const currentPlayerId = this.currentPlayer.info.playerId;
+    const { playerId: currentPlayerId } = this.#currentPlayer.info;
     const moves = playerId === currentPlayerId ? this.#possibleMoves : [];
     const characters = this.#characters.map(character => character.info);
 
@@ -313,11 +283,11 @@ class Game {
     const state = {
       gameId: this.#gameId,
       you: { ...you.info, room },
-      maxPlayers: this.#maxPlayers,
+      maxPlayers: this.#numberOfPlayers,
       characters,
       players: playerState,
       diceValue: this.#diceValue,
-      currentPlayer: this.currentPlayer.profile,
+      currentPlayer: this.#currentPlayer.profile,
       accusation: this.#accusation,
       suspicion,
       possibleMoves: [...moves]
@@ -328,14 +298,15 @@ class Game {
 
   equals(otherGame) {
     const areGamesEqual = otherGame instanceof Game &&
-      otherGame.#gameId === this.#gameId &&
-      otherGame.#maxPlayers === this.#maxPlayers;
+      otherGame.#gameId === this.#gameId;
 
-    const arePlayersEqual = otherGame.#players.every((player, index) => {
-      return player.equals(this.#players[index]);
-    });
+    const arePlayersEqual = otherGame.#players.every((player, index) =>
+      player.equals(this.#players[index]));
 
-    return areGamesEqual && arePlayersEqual;
+    const areCharactersEqual = otherGame.#characters.every((character, index) =>
+      character.equals(this.#characters[index]));
+
+    return areGamesEqual && arePlayersEqual && areCharactersEqual;
   }
 }
 

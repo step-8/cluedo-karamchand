@@ -13,7 +13,6 @@ describe('GET /game', () => {
 
   it('Should redirect to homepage if not joined/hosted a game', (done) => {
     const app = createApp();
-
     request(app)
       .post('/login')
       .send('username=bob')

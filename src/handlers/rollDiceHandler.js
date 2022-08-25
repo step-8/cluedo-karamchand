@@ -38,7 +38,6 @@ const findAdjacentCells = (cells, [x, y]) => {
   const left = [x - 1, y];
   const right = [x + 1, y];
   const adjacentCells = [top, bottom, left, right];
-
   return adjacentCells.filter(cell =>
     isValidAdjacentCell(cell, [x, y], cells));
 };

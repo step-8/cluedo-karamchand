@@ -1,69 +1,58 @@
-const addPlayerToGame = (req, res, next) => {
-  const { game, session } = req;
-
-  if (game.isReady()) {
-    res.cookie('error', '50', { maxAge: 3000 });
-    res.redirect('/');
-    return;
+const injectLobby = (lobbies) => (req, res, next) => {
+  const id = req.body['room-id'];
+  const lobby = lobbies[id];
+  if (!lobby) {
+    res.cookie('error', '40', { maxAge: 3000 });
+    return res.redirect('/');
   }
 
-  const { userId, username } = session;
-  game.addPlayer(userId, username);
+  req.session.roomId = id;
+  req.lobby = lobby;
   next();
 };
 
-const injectGame = games => (req, res, next) => {
-  const game = games[req.session.gameId];
-  if (game) {
-    req.game = game;
-    next();
-    return;
+const injectGame = (games) => (req, res, next) => {
+  const game = games[req.session.roomId];
+  if (!game) {
+    res.cookie('error', '40', { maxAge: 3000 });
+    return res.redirect('/');
   }
-  res.cookie('error', '40', { maxAge: 3000 });
-  res.redirect('/');
+
+  req.game = game;
+  next();
 };
 
-const injectGameId = games => (req, res, next) => {
-  const id = req.body['room-id'];
-  const game = games[id];
-  if (game) {
-    req.session.gameId = id;
-    next();
-    return;
-  }
+const isUserInGame = (games) => (req, res, next) => {
+  const { roomId } = req.session;
 
-  res.cookie('error', '40', { maxAge: 3000 });
-  res.redirect('/');
+  const game = games[roomId];
+  if (game) {
+    return res.redirect('/game');
+  }
+  next();
 };
 
-const isUserInGame = games => (req, res, next) => {
-  const id = req.session.gameId;
-  const game = games[id];
-  if (game && game.isReady()) {
-    res.redirect('/game');
-    return;
-  }
+const isUserInLobby = (lobbies) => (req, res, next) => {
+  const { roomId } = req.session;
 
-  if (game && !game.isReady()) {
-    res.redirect(`/lobby/${id}`);
-    return;
+  const lobby = lobbies[roomId];
+  if (lobby && !lobby.isFull()) {
+    return res.redirect(`/lobby/${roomId}`);
   }
-
   next();
 };
 
 const validatePlayerAction = (req, res, next) => {
   const { game, session, url } = req;
+
   const action = url.slice(1);
-  if (game.isAllowed(session.userId, action)) {
-    next();
-    return;
+  if (!game.isAllowed(session.userId, action)) {
+    return res.sendStatus(403);
   }
 
-  res.sendStatus(403);
+  next();
 };
 
 module.exports = {
-  injectGame, injectGameId, addPlayerToGame, isUserInGame,
-  validatePlayerAction
+  injectLobby, injectGame, isUserInGame, isUserInLobby, validatePlayerAction
 };

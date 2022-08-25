@@ -15,7 +15,7 @@ describe('Lobby', () => {
 
   it('Should provide lobby stats', () => {
     const lobby = new Lobby(1, 2, characters);
-    const expected = { id: 1, players: [] };
+    const expected = { id: 1, maxPlayers: 2, players: [] };
 
     assert.deepStrictEqual(lobby.getStats(), expected);
   });
@@ -23,7 +23,7 @@ describe('Lobby', () => {
   it('Should add player to the lobby', () => {
     const lobby = new Lobby(1, 2, characters);
     const expected = {
-      id: 1, players: [{ id: 1, name: 'abc', character: 'scarlett' }]
+      id: 1, maxPlayers: 2, players: [{ id: 1, name: 'abc', character: 'scarlett' }]
     };
 
     assert.isOk(lobby.addPlayer(1, 'abc'));

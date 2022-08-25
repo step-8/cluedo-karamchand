@@ -3,17 +3,15 @@ class Player {
   #playerName;
   #characterName;
   #cards;
-  #hasAccused;
-  #position;
   #permissions;
+  #hasAccused;
   #blockedRoom;
 
-  constructor(playerId, playerName, characterName, position) {
+  constructor(playerId, playerName, characterName, cards) {
     this.#playerId = playerId;
     this.#playerName = playerName;
     this.#characterName = characterName;
-    this.#position = position;
-    this.#cards = [];
+    this.#cards = cards;
     this.#permissions = new Set();
     this.#hasAccused = false;
     this.#blockedRoom = null;
@@ -27,10 +25,6 @@ class Player {
     return this.#characterName;
   }
 
-  set position(newPosition) {
-    this.#position = newPosition;
-  }
-
   get hasAccused() {
     return this.#hasAccused;
   }
@@ -41,10 +35,6 @@ class Player {
 
   unblock() {
     this.#blockedRoom = null;
-  }
-
-  addCards(cards) {
-    this.#cards = cards;
   }
 
   isYourId(id) {
@@ -80,8 +70,7 @@ class Player {
   get profile() {
     return {
       name: this.#playerName,
-      character: this.#characterName,
-      position: this.#position
+      character: this.#characterName
     };
   }
 
@@ -90,7 +79,6 @@ class Player {
       playerId: this.#playerId,
       name: this.#playerName,
       character: this.#characterName,
-      position: this.#position,
       cards: [...this.#cards],
       permissions: [...this.#permissions]
     };

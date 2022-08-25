@@ -23,13 +23,13 @@ const addPlayers = ({ players, maxPlayers, you }, poller) => {
   }
 };
 
-const generateLobby = (game) => {
-  const username = game.you.name;
+const generateLobby = (lobby) => {
+  const username = lobby.you.name;
   document.querySelector('.username').innerText = `Hey ${username}!`;
 
-  const roomId = 'Room ID: ' + game.gameId;
+  const roomId = 'Room ID: ' + lobby.id;
   document.querySelector('.room-id').replaceChildren(roomId);
-  addPlayers(game);
+  addPlayers(lobby);
 };
 
 const updateStatus = ({ players, maxPlayers }) => {
@@ -39,17 +39,15 @@ const updateStatus = ({ players, maxPlayers }) => {
   statusEle.innerText = `Waiting for ${restOfPlayers} ${msg}...`;
 };
 
-const updateLobby = (poller) => API.getGame()
-  .then(gameData => {
-    addPlayers(gameData, poller);
-    updateStatus(gameData);
+const updateLobby = (poller) => API.getLobby()
+  .then(lobbyStats => {
+    addPlayers(lobbyStats, poller);
+    updateStatus(lobbyStats);
   });
 
 const main = () => {
-  API.getGame()
-    .then(gameData => {
-      generateLobby(gameData);
-    });
+  API.getLobby()
+    .then(lobbyStats => generateLobby(lobbyStats));
 
   const poller = new Poller(() => updateLobby(poller), 500);
   poller.startPolling();

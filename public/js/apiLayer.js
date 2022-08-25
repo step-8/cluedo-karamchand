@@ -12,6 +12,11 @@ const API = {
     return fetchJSON(request);
   },
 
+  getLobby: () => {
+    const request = { url: '/api/lobby', options: { method: 'GET' } };
+    return fetchJSON(request);
+  },
+
   rollDice: () => {
     const request = { url: '/game/roll-dice', options: { method: 'GET' } };
     return fetchRequest(request);
