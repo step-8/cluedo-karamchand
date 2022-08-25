@@ -1,4 +1,4 @@
-const { AwaitingAcklowledgement } = require('./acknowledgement.js');
+const { AwaitingAcknowledgement } = require('./acknowledgement.js');
 const { isEqual } = require('../utils.js');
 const { Suspicion } = require('./suspicion.js');
 
@@ -232,7 +232,7 @@ class Game {
     player.disable('roll-dice');
     player.blockRoom = roomName;
 
-    this.#acknowledgement = new AwaitingAcklowledgement(this.#players);
+    this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
     return true;
   }
 

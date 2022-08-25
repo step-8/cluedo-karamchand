@@ -1,4 +1,4 @@
-class AwaitingAcklowledgement {
+class AwaitingAcknowledgement {
   #players;
 
   constructor(players) {
@@ -14,4 +14,4 @@ class AwaitingAcklowledgement {
   }
 }
 
-module.exports = { AwaitingAcklowledgement };
+module.exports = { AwaitingAcknowledgement };
