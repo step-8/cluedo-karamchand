@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { createApp } = require('../src/app.js');
+const { loginAsHost, loginAllAsJoinees } = require('./testFixture.js');
 
 describe('GET /game', () => {
   it('Should redirect to login page if user is not logged in', (done) => {
@@ -25,27 +26,19 @@ describe('GET /game', () => {
       });
   });
 
-  let gameId;
+  let roomId, cookie;
   const app = createApp();
 
   beforeEach((done) => {
-
-    request(app)
-      .post('/login')
-      .send('username=bob')
-      .end((err, res) => {
-        request(app)
-          .post('/host')
-          .send('maxPlayers=3')
-          .set('Cookie', res.headers['set-cookie'])
-          .end((err, res) => {
-            gameId = res.headers.location.split('/').pop();
-            done();
-          });
+    loginAsHost(app, 'bob')
+      .then((headers) => {
+        roomId = headers.roomId;
+        cookie = headers.hostCookie;
+        done();
       });
   });
 
-  it('Should restrict access to game if game is not ready', (done) => {
+  it('Should not serve game page if game is not ready', (done) => {
     request(app)
       .post('/login')
       .send('username=bob')
@@ -64,34 +57,15 @@ describe('GET /game', () => {
       });
   });
 
-  it('Should show board if all players joined', (done) => {
-    request(app)
-      .post('/login')
-      .send('username=bob')
-      .end((err, res) => {
+  it('Should serve game page if all players joined', (done) => {
+    loginAllAsJoinees(app, ['ram', 'shyam'], roomId)
+      .then(() => {
         request(app)
-          .post('/join')
-          .send(`room-id=${gameId}`)
-          .set('Cookie', res.headers['set-cookie'])
-          .expect(302)
-          .end(() => {
-            request(app)
-              .post('/login')
-              .send('username=abc')
-              .end((err, res) => {
-                request(app)
-                  .post('/join')
-                  .send(`room-id=${gameId}`)
-                  .set('Cookie', res.headers['set-cookie'])
-                  .end((err, res) => {
-                    request(app)
-                      .get('/game')
-                      .set('Cookie', res.headers['set-cookie'])
-                      .expect(/html/)
-                      .expect(200, done);
-                  });
-              });
-          });
+          .get('/game')
+          .set('Cookie', cookie)
+          .expect('content-type', /html/)
+          .expect(/<title>CLUEDO<\/title>/)
+          .expect(200, done);
       });
   });
 });

@@ -17,4 +17,10 @@ const serveLobby = (req, res) => {
   res.sendFile('lobby.html', { root: 'private' });
 };
 
-module.exports = { serveHomePage, serveLobby };
+const serveGamePage = (boardData, cards) => (req, res) => {
+  const { username } = req.session;
+
+  res.render('game', { username, cards, boardData });
+};
+
+module.exports = { serveHomePage, serveLobby, serveGamePage };

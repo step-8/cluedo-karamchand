@@ -14,8 +14,8 @@ describe('POST /game/accuse', () => {
 
   it('Should handle accuse', (done) => {
     loginAsHost(app, 'vikram')
-      .then(({ hostCookie, gameId }) => {
-        return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
+      .then(({ hostCookie, roomId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], roomId)
           .then(() => hostCookie);
       })
       .then(hostCookie => gameReq(app, hostCookie))
@@ -41,8 +41,8 @@ describe('GET /game/roll-dice', () => {
 
   it('Should roll dice', (done) => {
     loginAsHost(app, 'vikram')
-      .then(({ hostCookie, gameId }) => {
-        return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
+      .then(({ hostCookie, roomId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], roomId)
           .then(() => hostCookie);
       })
       .then(hostCookie => gameReq(app, hostCookie))
@@ -60,8 +60,8 @@ describe('POST /game/move', () => {
 
   it('Should move the character', (done) => {
     loginAsHost(app, 'vikram')
-      .then(({ hostCookie, gameId }) => {
-        return loginAllAsJoinees(app, ['james', 'rathod'], gameId)
+      .then(({ hostCookie, roomId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], roomId)
           .then(() => hostCookie);
       })
       .then(hostCookie => gameReq(app, hostCookie))
@@ -82,8 +82,8 @@ describe('POST /game/accuse', () => {
   it('Should not allow user to accuse if user is not current player',
     (done) => {
       loginAsHost(app, 'vikram')
-        .then(({ hostCookie, gameId }) => {
-          return loginAllAsJoinees(app, ['james', 'rathod'], gameId);
+        .then(({ roomId }) => {
+          return loginAllAsJoinees(app, ['james', 'rathod'], roomId);
         })
         .then((res) => {
           request(app)
@@ -100,8 +100,8 @@ describe('POST /game/leave', () => {
 
   it('Should leave the game', (done) => {
     loginAsHost(app, 'James')
-      .then(({ hostCookie, gameId }) => {
-        return loginAllAsJoinees(app, ['John', 'Arthur'], gameId)
+      .then(({ hostCookie, roomId }) => {
+        return loginAllAsJoinees(app, ['John', 'Arthur'], roomId)
           .then(() => hostCookie);
       })
       .then((hostCookie) => {

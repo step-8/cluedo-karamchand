@@ -11,8 +11,7 @@ const { validateUser } = require('./middleware/validateUser.js');
 const { injectLobby, isUserInGame, isUserInLobby } =
   require('./middleware/gameMiddleware.js');
 
-const homePageLib = require('./handlers/homePage.js');
-const { serveHomePage, serveLobby } = homePageLib;
+const { serveHomePage, serveLobby } = require('./handlers/servePages.js');
 const { hostGame, joinGame } = require('./handlers/hostAndJoinGame.js');
 
 const { createAuthRouter } = require('./routers/authRouter.js');

@@ -6,7 +6,7 @@ const { initGame } = require('../middleware/initGame.js');
 const { injectGame, validatePlayerAction } =
   require('../middleware/gameMiddleware.js');
 
-const { boardHandler } = require('../handlers/boardHandler.js');
+const { serveGamePage } = require('../handlers/servePages.js');
 const { rollDice, useSecretPassage, moveCharacter,
   handleAccusation, passTurn } = require('../handlers/actionHandler.js');
 const { leaveGame } = require('../handlers/leaveGame.js');
@@ -21,7 +21,7 @@ const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
   const suspectRouter = createSuspectRouter();
   gameRouter.use('/suspect', suspectRouter);
 
-  gameRouter.get('/', boardHandler(boardData, cards));
+  gameRouter.get('/', serveGamePage(boardData, cards));
   gameRouter.post('/leave', leaveGame);
   gameRouter.use(validatePlayerAction);
   gameRouter.get('/roll-dice', rollDice(gameDetails));

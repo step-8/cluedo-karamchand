@@ -1,4 +1,4 @@
-const { isEqual } = require('../utils.js');
+const { isEqual } = require('../utils/isEqual.js');
 
 class Room {
   #name;

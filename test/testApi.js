@@ -9,9 +9,9 @@ describe('GET /api/game', () => {
 
   beforeEach((done) => {
     loginAsHost(app, 'bob')
-      .then(({ gameId, hostCookie }) => {
-        roomId = gameId;
-        cookie = hostCookie;
+      .then((headers) => {
+        roomId = headers.roomId;
+        cookie = headers.hostCookie;
         done();
       });
   });
@@ -61,8 +61,8 @@ describe('GET /api/lobby', () => {
 
   it('Should serve the lobby stats', (done) => {
     loginAsHost(app, 'bob')
-      .then(({ hostCookie, gameId }) => {
-        const expectedRoomId = new RegExp(`${gameId}`, 'g');
+      .then(({ hostCookie, roomId }) => {
+        const expectedRoomId = new RegExp(`${roomId}`, 'g');
 
         request(app)
           .get('/api/lobby')

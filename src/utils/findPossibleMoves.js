@@ -1,4 +1,4 @@
-const { isEqual } = require('../../utils.js');
+const { isEqual } = require('./isEqual.js');
 
 const isCellPresent = (cells, expectedCell) => {
   return cells.some(cell => isEqual(cell, expectedCell));

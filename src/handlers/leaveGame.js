@@ -1,5 +1,6 @@
 const leaveGame = (req, res) => {
-  req.session.gameId = null;
+  delete req.session.roomId;
   res.redirect('/');
 };
-exports.leaveGame = leaveGame;
+
+module.exports = { leaveGame };

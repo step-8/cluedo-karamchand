@@ -1,4 +1,4 @@
-const { findPossibleMoves } = require('./utils/findPossibleMoves.js');
+const { findPossibleMoves } = require('../utils/findPossibleMoves.js');
 
 const diceRoller = () => Math.ceil(Math.random() * 6);
 

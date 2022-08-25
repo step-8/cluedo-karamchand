@@ -1,5 +1,5 @@
+const { isEqual } = require('../utils/isEqual.js');
 const { AwaitingAcknowledgement } = require('./acknowledgement.js');
-const { isEqual } = require('../utils.js');
 const { Suspicion } = require('./suspicion.js');
 
 class Game {

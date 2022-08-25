@@ -29,9 +29,9 @@ describe('GET /', () => {
 
   beforeEach((done) => {
     loginAsHost(app, 'bob')
-      .then(({ gameId, hostCookie }) => {
-        roomId = gameId;
-        cookie = hostCookie;
+      .then((headers) => {
+        roomId = headers.roomId;
+        cookie = headers.hostCookie;
         done();
       });
   });

@@ -16,24 +16,24 @@ const loginAsHost = (app, username) => {
         .then((res) => {
           return {
             hostCookie: res.headers['set-cookie'],
-            gameId: res.headers.location.split('/').pop()
+            roomId: res.headers.location.split('/').pop()
           };
         });
     });
 };
 
-const joinGame = (app, username, gameId) => {
+const joinGame = (app, username, roomId) => {
   return login(app, username)
     .then(res => {
       return request(app)
         .post('/join')
         .set('Cookie', res.headers['set-cookie'])
-        .send(`room-id=${gameId}`);
+        .send(`room-id=${roomId}`);
     });
 };
 
-const loginAllAsJoinees = (app, players, gameId) => {
-  return Promise.all(players.map(player => joinGame(app, player, gameId)));
+const loginAllAsJoinees = (app, players, roomId) => {
+  return Promise.all(players.map(player => joinGame(app, player, roomId)));
 };
 
 module.exports = { loginAllAsJoinees, loginAsHost };

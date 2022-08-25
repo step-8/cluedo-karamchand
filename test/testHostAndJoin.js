@@ -9,8 +9,8 @@ describe('POST /join', () => {
 
   beforeEach((done) => {
     loginAsHost(app, 'bob')
-      .then(({ gameId }) => {
-        roomId = gameId;
+      .then((headers) => {
+        roomId = headers.roomId;
         done();
       });
   });
