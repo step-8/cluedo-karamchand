@@ -49,6 +49,14 @@ body {
   color: white;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
+.fade {
+  opacity: 0.5;
+}
+
 /* Game Page */
 .header {
   width: 100%;
@@ -351,6 +359,16 @@ article {
 #suspect-result-popup .card {
   width: 23%;
   height: 95%;
+  position: relative;
+}
+
+#suspect-result-popup .mark {
+  position: absolute;
+  top: 22%;
+  left: 7%;
+  color: var(--red);
+  font-size: 7em;
+  opacity: 0.8;
 }
 
 #game-over-popup {

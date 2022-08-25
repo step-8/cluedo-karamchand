@@ -333,7 +333,7 @@
       const img = generateHTML(imgDom);
       const cardElement = cardsElements[index];
       cardElement.id = cards[category];
-      cardElement.replaceChildren(img);
+      cardElement.prepend(img);
     });
   };
 
@@ -447,8 +447,32 @@
     });
   };
 
+  const unMarkRuledOutCard = () => {
+    const imageEle = document.querySelector('#suspect-result-popup .fade');
+
+    if (!imageEle) {
+      return;
+    }
+
+    const cardElement = imageEle.closest('.card');
+    const markEle = cardElement.querySelector('.mark');
+
+    imageEle.classList.remove('fade');
+    markEle.classList.add('hidden');
+  };
+
+  const markRuledOutCard = (cardElement) => {
+    const markEle = cardElement.querySelector('.mark');
+    const imageEle = cardElement.querySelector('img');
+
+    imageEle.classList.add('fade');
+    markEle.classList.remove('hidden');
+  };
+
   const ruleOut = ({ target }) => {
-    const rulingOutCard = target.closest('.card').id;
+    const rulingOutCardEle = target.closest('.card');
+    const rulingOutCard = rulingOutCardEle.id;
+    markRuledOutCard(rulingOutCardEle);
 
     API.ruleOut(JSON.stringify({ rulingOutCard }))
       .then(disallowRuleOut);
@@ -484,6 +508,7 @@
     setTimeout(() => {
       closePopup();
       removeCardsHighlight();
+      unMarkRuledOutCard();
       gamePoller.startPolling();
     }, 5000);
   };
@@ -497,7 +522,8 @@
     }
 
     const ruledOutCardEle = suspicionPopup.querySelector(`#${ruledOutWith}`);
-    ruledOutCardEle.classList.add('highlight-btn');
+    // ruledOutCardEle.classList.add('highlight-btn');
+    markRuledOutCard(ruledOutCardEle);
   };
 
   const endSuspicion = (gamePoller, suspicionPoller) =>
