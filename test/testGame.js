@@ -4,6 +4,7 @@ const { Player } = require('../src/model/player.js');
 const { Character } = require('../src/model/character.js');
 const { Board } = require('../src/model/board.js');
 const { Room } = require('../src/model/room.js');
+const { GeneralPlayerVisitor } = require('../src/model/visitors.js');
 
 const createRooms = (roomsDetails) => {
   return roomsDetails.map(({ name, position, entryPoint, secretPassage }) =>
@@ -52,8 +53,12 @@ describe('Game', () => {
     assert.ok(game1.equals(game2));
   });
 
-  it('Should return the game state', () => {
+  it('Should accept a visitor', () => {
+    const visitor = new GeneralPlayerVisitor();
     const game = new Game(1, players, characters, envelope, board);
+
+    game.start();
+    game.accept(visitor, 1);
 
     const charactersInfo = characters.map(character => character.info);
     const playersInfo = players.map(player => player.profile);
@@ -62,8 +67,8 @@ describe('Game', () => {
       gameId: 1,
       diceValue: [1, 1],
       you: {
-        playerId: 1, name: 'bob', character: 'scarlett',
-        permissions: [],
+        name: 'bob', character: 'scarlett',
+        permissions: ['roll-dice', 'accuse', 'pass-turn'],
         cards: ['green'],
         room: null
       },
@@ -74,11 +79,9 @@ describe('Game', () => {
       characters: charactersInfo,
       players: playersInfo,
       accusation: null,
-      suspicion: null,
-      possibleMoves: []
     };
 
-    assert.deepStrictEqual(game.getState(1), expected);
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
   it('Should roll the dice', () => {

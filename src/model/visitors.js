@@ -36,8 +36,6 @@ class CurrentPlayerVisitor {
     const currentPlayerInfo = {
       name: currentPlayer.name,
       character: currentPlayer.character,
-      cards: currentPlayer.cards,
-      permissions: currentPlayer.permissions
     };
 
     this.data.currentPlayer = currentPlayerInfo;

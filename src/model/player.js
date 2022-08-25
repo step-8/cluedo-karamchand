@@ -29,6 +29,18 @@ class Player {
     return this.#hasAccused;
   }
 
+  get name() {
+    return this.#playerName;
+  }
+
+  get cards() {
+    return [...this.#cards];
+  }
+
+  get permissions() {
+    return [...this.#permissions];
+  }
+
   set blockRoom(room) {
     this.#blockedRoom = room;
   }
@@ -82,6 +94,10 @@ class Player {
       cards: [...this.#cards],
       permissions: [...this.#permissions]
     };
+  }
+
+  accept(visitor) {
+    visitor.visitPlayer(this);
   }
 
   equals(otherPlayer) {

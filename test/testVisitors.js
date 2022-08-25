@@ -66,7 +66,7 @@ describe('CurrentPlayerVisitor', () => {
     const visitor = new CurrentPlayerVisitor();
     visitor.visitGame(mockedGame);
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
   it('should give JSON data of characters', () => {
@@ -85,7 +85,7 @@ describe('CurrentPlayerVisitor', () => {
       ]
     };
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
   it('should give JSON data of players', () => {
@@ -105,7 +105,7 @@ describe('CurrentPlayerVisitor', () => {
       ]
     };
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
   it('should give data of currentPlayer', () => {
@@ -123,12 +123,10 @@ describe('CurrentPlayerVisitor', () => {
       currentPlayer: {
         name: 'James',
         character: 'Scarlett',
-        cards: ['Hall'],
-        permissions: ['roll-dice']
       }
     };
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
   it('should give JSON data of suspicion', () => {
@@ -156,7 +154,7 @@ describe('CurrentPlayerVisitor', () => {
       }
     };
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
   it('should give JSON data of requester', () => {
@@ -179,7 +177,7 @@ describe('CurrentPlayerVisitor', () => {
       }
     };
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 });
 
@@ -200,7 +198,7 @@ describe('GeneralPlayerVisitor', () => {
     const visitor = new GeneralPlayerVisitor();
     visitor.visitGame(mockedGame);
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
   it('should give JSON data of suspicion for other players', () => {
@@ -227,7 +225,7 @@ describe('GeneralPlayerVisitor', () => {
       }
     };
 
-    assert.deepStrictEqual(expected, visitor.getJSON());
+    assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
 });

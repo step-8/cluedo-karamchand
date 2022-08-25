@@ -21,9 +21,29 @@ class Suspicion {
         this.#suspectedElements[element] === otherSuspicion.#suspectedElements[element]);
   }
 
+  get suspectedBy() {
+    return this.#suspectedBy;
+  }
+
+  get suspectedElements() {
+    return { ...this.#suspectedElements };
+  }
+
+  get suspicionBreaker() {
+    return this.#suspicionBreaker;
+  }
+
+  get ruledOutWith() {
+    return this.#ruledOutWith;
+  }
+
   #isAllowedToRuleOut(ruledOutBy, evidence) {
     return ruledOutBy === this.#suspicionBreaker &&
       Object.values(this.#suspectedElements).includes(evidence);
+  }
+
+  isRuledOut() {
+    return this.#ruledOut;
   }
 
   ruleOut(ruledOutBy, evidence) {
@@ -33,6 +53,10 @@ class Suspicion {
     }
 
     return this.#ruledOut;
+  }
+
+  accept(visitor) {
+    visitor.visitSuspicion(this);
   }
 
   getSuspicion(requester) {

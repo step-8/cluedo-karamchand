@@ -28,6 +28,10 @@ class Character {
     };
   }
 
+  accept(visitor) {
+    visitor.visitCharacter(this);
+  }
+
   equals(anotherCharacter) {
     return anotherCharacter instanceof Character &&
       anotherCharacter.#name === this.#name &&

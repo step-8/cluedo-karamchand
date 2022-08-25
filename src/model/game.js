@@ -50,6 +50,18 @@ class Game {
     return this.#isStarted;
   }
 
+  get accusation() {
+    return this.#accusation ? { ...this.#accusation } : null;
+  }
+
+  get gameId() {
+    return this.#gameId;
+  }
+
+  get diceValue() {
+    return this.#diceValue;
+  }
+
   #disable(action) {
     this.#currentPlayer.disable(action);
   }
@@ -144,7 +156,6 @@ class Game {
   #moveCharacter(characterName, position) {
     const character = this.#characters.find(character =>
       character.name === characterName);
-
     character.position = position;
   }
 
@@ -260,6 +271,19 @@ class Game {
 
   #findPlayer(playerId) {
     return this.#players.find(player => player.isYourId(playerId));
+  }
+
+  accept(visitor, playerId) {
+    visitor.visitGame(this);
+    visitor.visitCurrentPlayer(this.#currentPlayer);
+    this.#players.forEach(player => player.accept(visitor));
+    this.#characters.forEach(character => character.accept(visitor));
+
+    const you = this.#findPlayer(playerId);
+    const roomInfo = this.#getPlayerRoom(you);
+    visitor.visitYou(you, roomInfo);
+
+    this.#suspicion && this.#suspicion.accept(visitor);
   }
 
   getState(playerId) {
