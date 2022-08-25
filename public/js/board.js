@@ -513,16 +513,23 @@
     }, 5000);
   };
 
+  const suspicionRuledOutMessage = suspicionBreaker =>
+    capitalize(suspicionBreaker) + ' ruled out the suspicion';
+
   const updateSuspicionPopup = (suspicion) => {
     const suspicionPopup = document.querySelector('#suspect-result-popup');
-    const { ruledOutWith } = suspicion;
+    const { suspicionBreaker, ruledOutWith } = suspicion;
+
+    if (suspicionBreaker) {
+      const headerElement = suspicionPopup.querySelector('h2');
+      headerElement.innerText = suspicionRuledOutMessage(suspicionBreaker);
+    }
 
     if (!gameState.didISuspect() || !ruledOutWith) {
       return;
     }
 
     const ruledOutCardEle = suspicionPopup.querySelector(`#${ruledOutWith}`);
-    // ruledOutCardEle.classList.add('highlight-btn');
     markRuledOutCard(ruledOutCardEle);
   };
 
