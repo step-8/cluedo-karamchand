@@ -3,14 +3,22 @@ const { assert } = require('chai');
 const { createApp } = require('../src/app.js');
 const { loginAllAsJoinees, loginAsHost } = require('./testFixture.js');
 
+const startGame = (app, cookie) => {
+  return request(app)
+    .get('/game')
+    .set('Cookie', cookie)
+    .then(() => cookie);
+};
+
 describe('POST /join', () => {
-  let roomId;
+  let roomId, cookie;
   const app = createApp();
 
   beforeEach((done) => {
     loginAsHost(app, 'bob')
       .then((headers) => {
         roomId = headers.roomId;
+        cookie = headers.hostCookie;
         done();
       });
   });
@@ -49,22 +57,48 @@ describe('POST /join', () => {
   });
 
   it('Should send error if lobby is full', (done) => {
-    loginAllAsJoinees(app, ['bob', 'buddy'], roomId);
-
-    request(app)
-      .post('/login')
-      .send('username=ab')
-      .end((err, res) => {
+    loginAllAsJoinees(app, ['bob', 'buddy'], roomId)
+      .then(() => {
         request(app)
-          .post('/join')
-          .send(`room-id=${roomId}`)
-          .set('Cookie', res.headers['set-cookie'])
-          .expect('location', '/')
-          .expect(302)
+          .post('/login')
+          .send('username=ab')
           .end((err, res) => {
-            const cookie = res.headers['set-cookie'][0].split(';')[0];
-            assert.strictEqual(cookie, 'error=50');
-            done();
+            request(app)
+              .post('/join')
+              .send(`room-id=${roomId}`)
+              .set('Cookie', res.headers['set-cookie'])
+              .expect('location', '/')
+              .expect(302)
+              .end((err, res) => {
+                const cookie = res.headers['set-cookie'][0].split(';')[0];
+                assert.strictEqual(cookie, 'error=50');
+                done();
+              });
+          });
+      });
+  });
+
+  it('Should send error if game has already started', (done) => {
+    loginAllAsJoinees(app, ['bob', 'buddy'], roomId)
+      .then(() => {
+        startGame(app, cookie)
+          .then((cookie) => {
+            request(app)
+              .post('/login')
+              .send('username=ab')
+              .end((err, res) => {
+                request(app)
+                  .post('/join')
+                  .send(`room-id=${roomId}`)
+                  .set('Cookie', res.headers['set-cookie'])
+                  .expect('location', '/')
+                  .expect(302)
+                  .end((err, res) => {
+                    const cookie = res.headers['set-cookie'][0].split(';')[0];
+                    assert.strictEqual(cookie, 'error=50');
+                    done();
+                  });
+              });
           });
       });
   });

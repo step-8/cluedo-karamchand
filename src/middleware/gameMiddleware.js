@@ -6,7 +6,6 @@ const injectLobby = (lobbies) => (req, res, next) => {
     return res.redirect('/');
   }
 
-  req.session.roomId = id;
   req.lobby = lobby;
   next();
 };

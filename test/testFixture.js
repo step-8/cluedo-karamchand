@@ -36,4 +36,4 @@ const loginAllAsJoinees = (app, players, roomId) => {
   return Promise.all(players.map(player => joinGame(app, player, roomId)));
 };
 
-module.exports = { loginAllAsJoinees, loginAsHost };
+module.exports = { loginAllAsJoinees, loginAsHost, joinGame };

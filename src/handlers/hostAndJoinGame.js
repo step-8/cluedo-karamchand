@@ -28,7 +28,8 @@ const hostGame = (lobbies, characters) => (req, res) => {
 };
 
 const joinGame = (req, res) => {
-  const { lobby, session: { userId, username, roomId } } = req;
+  const { lobby, session: { userId, username } } = req;
+  const roomId = req.body['room-id'];
 
   if (lobby.isFull()) {
     res.cookie('error', '50', { maxAge: 3000 });
@@ -36,6 +37,8 @@ const joinGame = (req, res) => {
   }
 
   lobby.addPlayer(userId, username);
+  req.session.roomId = roomId;
+
   res.redirect(`/lobby/${roomId}`);
 };
 
