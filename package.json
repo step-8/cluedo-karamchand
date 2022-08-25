@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/step-8/cluedo-karamchand#readme",
   "dependencies": {
+    "compression": "^1.7.4",
     "cookie-session": "^2.0.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",

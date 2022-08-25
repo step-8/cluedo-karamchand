@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const morgan = require('morgan');
 const cookieSession = require('cookie-session');
 require('dotenv').config();
@@ -52,7 +53,7 @@ const createApp = () => {
   app.post('/join', validateUser, injectLobby(lobbies), joinGame);
   app.get('/lobby/:roomId', validateUser, serveLobby);
 
-  app.use(express.static('public'));
+  app.use(compression(), express.static('public'));
   return app;
 };
 
