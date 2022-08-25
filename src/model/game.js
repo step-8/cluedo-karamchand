@@ -146,11 +146,6 @@ class Game {
       character.name === characterName);
 
     character.position = position;
-
-    const player = this.#players.find(player =>
-      player.character === character.name);
-
-    player && (player.position = position);
   }
 
   move(newPosition) {
@@ -160,7 +155,6 @@ class Game {
       this.#currentPlayer.unblock();
     }
 
-    // this.#currentPlayer.position = newPosition;
     this.#currentPlayerCharacter.position = newPosition;
 
     this.#manageSuspectPermission('suspect');
