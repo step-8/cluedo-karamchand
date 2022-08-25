@@ -277,7 +277,6 @@ class Game {
     const state = {
       gameId: this.#gameId,
       you: { ...you.info, room },
-      maxPlayers: this.#numberOfPlayers,
       characters,
       players: playerState,
       diceValue: this.#diceValue,

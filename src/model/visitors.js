@@ -1,27 +1,19 @@
 class CurrentPlayerVisitor {
-  #playerId;
-  #data;
+  data;
   #characters;
   #players;
 
-  constructor(playerId) {
-    this.#playerId = playerId;
-    this.#data = {};
+  constructor() {
+    this.data = {};
     this.#characters = [];
     this.#players = [];
   }
 
-  equals(otherVisitor) {
-    return otherVisitor instanceof CurrentPlayerVisitor &&
-      this.#playerId === otherVisitor.#playerId;
-  }
-
   visitGame(game) {
-    this.#data.gameId = game.gameId;
-    this.#data.maxPlayers = game.maxPlayers;
-    this.#data.diceValue = game.diceValue;
-    this.#data.accusation = game.accusation;
-    this.#data.possibleMoves = game.possibleMoves;
+    this.data.gameId = game.gameId;
+    this.data.diceValue = game.diceValue;
+    this.data.accusation = game.accusation;
+    this.data.possibleMoves = game.possibleMoves;
   }
 
   visitCharacter(character) {
@@ -48,7 +40,7 @@ class CurrentPlayerVisitor {
       permissions: currentPlayer.permissions
     };
 
-    this.#data.currentPlayer = currentPlayerInfo;
+    this.data.currentPlayer = currentPlayerInfo;
   }
 
   visitSuspicion(suspicion) {
@@ -60,7 +52,7 @@ class CurrentPlayerVisitor {
       ruledOut: suspicion.isRuledOut()
     };
 
-    this.#data.suspicion = suspicionInfo;
+    this.data.suspicion = suspicionInfo;
   }
 
   visitYou(you, roomInfo) {
@@ -72,15 +64,39 @@ class CurrentPlayerVisitor {
       room: roomInfo
     };
 
-    this.#data.you = yourInfo;
+    this.data.you = yourInfo;
   }
 
   getJSON() {
-    this.#data.characters = this.#characters;
-    this.#data.players = this.#players;
+    this.data.characters = this.#characters;
+    this.data.players = this.#players;
 
-    return this.#data;
+    return this.data;
   }
 }
 
-module.exports = { CurrentPlayerVisitor };
+class GeneralPlayerVisitor extends CurrentPlayerVisitor {
+  constructor() {
+    super();
+  }
+
+  visitGame(game) {
+    this.data.gameId = game.gameId;
+    this.data.diceValue = game.diceValue;
+    this.data.accusation = game.accusation;
+  }
+
+  visitSuspicion(suspicion) {
+    const suspicionInfo = {
+      suspectedBy: suspicion.suspectedBy,
+      suspectedElements: suspicion.suspectedElements,
+      suspicionBreaker: suspicion.suspicionBreaker,
+      ruledOut: suspicion.isRuledOut()
+    };
+
+    this.data.suspicion = suspicionInfo;
+  }
+
+}
+
+module.exports = { CurrentPlayerVisitor, GeneralPlayerVisitor };

@@ -67,7 +67,6 @@ describe('Game', () => {
         cards: ['green'],
         room: null
       },
-      maxPlayers: 2,
       currentPlayer: {
         name: 'bob',
         character: 'scarlett'

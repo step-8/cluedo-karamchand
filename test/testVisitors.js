@@ -1,26 +1,29 @@
 const { assert } = require('chai');
-const { CurrentPlayerVisitor } = require('../src/model/visitors.js');
+const {
+  CurrentPlayerVisitor,
+  GeneralPlayerVisitor
+} = require('../src/model/visitors.js');
 
-const mockedGame = {
-  gameId: 1,
-  maxPlayers: 2,
-  diceValue: [4, 5],
-  accusation: { character: 'Scarlett', weapon: 'Rope', room: 'Hall' },
-  possibleMoves: [1, 2]
+const mockGame = (gameId, players, characters, envelope, board) => {
+  const mockedGame = {
+    gameId,
+    diceValue: [4, 5],
+    accusation: { character: 'Scarlett', weapon: 'Rope', room: 'Hall' },
+    possibleMoves: [1, 2]
+  };
+
+  return mockedGame;
 };
 
 const mockCharacter = (name, position) => {
   return { name, position };
 };
 
-const mockPlayer = (id, name, characterName) => {
+const mockPlayer = (id, name, characterName, cards) => {
   return {
     name,
     character: characterName,
-    cards: [],
-    addCard: function (card) {
-      this.cards.push(card);
-    },
+    cards,
     permissions: [],
     enable: function (action) {
       this.permissions.push(action);
@@ -45,21 +48,9 @@ const mockSuspicion = (suspectedBy, suspectedElements, suspicionBreaker) => {
 };
 
 describe('CurrentPlayerVisitor', () => {
-  it('should equate currentPlayerVisitor', () => {
-    const visitor1 = new CurrentPlayerVisitor(1);
-    const visitor2 = new CurrentPlayerVisitor(1);
-
-    assert.ok(visitor1.equals(visitor2));
-
-    const visitor3 = new CurrentPlayerVisitor(3);
-
-    assert.notOk(visitor1.equals(visitor3));
-  });
-
   it('should give game state', () => {
     const expected = {
       gameId: 1,
-      maxPlayers: 2,
       diceValue: [4, 5],
       accusation: { character: 'Scarlett', weapon: 'Rope', room: 'Hall' },
       possibleMoves: [1, 2],
@@ -67,7 +58,12 @@ describe('CurrentPlayerVisitor', () => {
       characters: []
     };
 
-    const visitor = new CurrentPlayerVisitor(1);
+    const players = [];
+    const characters = [];
+    const envelope = {};
+
+    const mockedGame = mockGame(1, players, characters, envelope);
+    const visitor = new CurrentPlayerVisitor();
     visitor.visitGame(mockedGame);
 
     assert.deepStrictEqual(expected, visitor.getJSON());
@@ -77,7 +73,7 @@ describe('CurrentPlayerVisitor', () => {
     const mockedCharacter1 = mockCharacter('Scarlett', [1, 5]);
     const mockedCharacter2 = mockCharacter('Mustard', [3, 9]);
 
-    const visitor = new CurrentPlayerVisitor(1);
+    const visitor = new CurrentPlayerVisitor();
     visitor.visitCharacter(mockedCharacter1);
     visitor.visitCharacter(mockedCharacter2);
 
@@ -93,10 +89,11 @@ describe('CurrentPlayerVisitor', () => {
   });
 
   it('should give JSON data of players', () => {
-    const mockedPlayer1 = mockPlayer(1, 'James', 'Scarlett');
-    const mockedPlayer2 = mockPlayer(2, 'John', 'Mustard');
+    const cards = [];
+    const mockedPlayer1 = mockPlayer(1, 'James', 'Scarlett', cards);
+    const mockedPlayer2 = mockPlayer(2, 'John', 'Mustard', cards);
 
-    const visitor = new CurrentPlayerVisitor(1);
+    const visitor = new CurrentPlayerVisitor();
     visitor.visitPlayer(mockedPlayer1);
     visitor.visitPlayer(mockedPlayer2);
 
@@ -112,11 +109,12 @@ describe('CurrentPlayerVisitor', () => {
   });
 
   it('should give data of currentPlayer', () => {
-    const currentPlayer = mockPlayer(1, 'James', 'Scarlett');
-    currentPlayer.addCard('hall');
+    const cards = ['Hall'];
+
+    const currentPlayer = mockPlayer(1, 'James', 'Scarlett', cards);
     currentPlayer.enable('roll-dice');
 
-    const visitor = new CurrentPlayerVisitor(1);
+    const visitor = new CurrentPlayerVisitor();
     visitor.visitCurrentPlayer(currentPlayer);
 
     const expected = {
@@ -125,7 +123,7 @@ describe('CurrentPlayerVisitor', () => {
       currentPlayer: {
         name: 'James',
         character: 'Scarlett',
-        cards: ['hall'],
+        cards: ['Hall'],
         permissions: ['roll-dice']
       }
     };
@@ -143,7 +141,7 @@ describe('CurrentPlayerVisitor', () => {
     const suspcion = mockSuspicion('Scarlett', suspectedElements, 'White');
     suspcion.ruleOut('White', 'Rope');
 
-    const visitor = new CurrentPlayerVisitor(1);
+    const visitor = new CurrentPlayerVisitor();
     visitor.visitSuspicion(suspcion);
 
     const expected = {
@@ -162,11 +160,11 @@ describe('CurrentPlayerVisitor', () => {
   });
 
   it('should give JSON data of requester', () => {
-    const player = mockPlayer(1, 'James', 'Scarlett');
-    player.addCard('Rope');
+    const cards = ['Rope'];
+    const player = mockPlayer(1, 'James', 'Scarlett', cards);
     player.enable('accuse');
 
-    const visitor = new CurrentPlayerVisitor(1);
+    const visitor = new CurrentPlayerVisitor();
     visitor.visitYou(player, null);
 
     const expected = {
@@ -183,4 +181,53 @@ describe('CurrentPlayerVisitor', () => {
 
     assert.deepStrictEqual(expected, visitor.getJSON());
   });
+});
+
+describe('GeneralPlayerVisitor', () => {
+  it('should give game state for other players ', () => {
+    const expected = {
+      gameId: 1,
+      diceValue: [4, 5],
+      accusation: { character: 'Scarlett', weapon: 'Rope', room: 'Hall' },
+      players: [],
+      characters: []
+    };
+    const players = [];
+    const characters = [];
+    const envelope = {};
+
+    const mockedGame = mockGame(1, players, characters, envelope);
+    const visitor = new GeneralPlayerVisitor();
+    visitor.visitGame(mockedGame);
+
+    assert.deepStrictEqual(expected, visitor.getJSON());
+  });
+
+  it('should give JSON data of suspicion for other players', () => {
+    const suspectedElements = {
+      character: 'Mustard',
+      weapon: 'Rope',
+      room: 'Hall'
+    };
+
+    const suspcion = mockSuspicion('Scarlett', suspectedElements, 'White');
+    suspcion.ruleOut('White', 'Rope');
+    const visitor = new GeneralPlayerVisitor();
+
+    visitor.visitSuspicion(suspcion);
+
+    const expected = {
+      characters: [],
+      players: [],
+      suspicion: {
+        suspectedBy: 'Scarlett',
+        suspectedElements,
+        suspicionBreaker: 'White',
+        ruledOut: false
+      }
+    };
+
+    assert.deepStrictEqual(expected, visitor.getJSON());
+  });
+
 });
