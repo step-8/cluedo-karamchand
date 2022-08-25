@@ -6,10 +6,9 @@ const { initGame } = require('../middleware/initGame.js');
 const { injectGame, validatePlayerAction } =
   require('../middleware/gameMiddleware.js');
 
-const { boardHandler } = require('../handlers/boardHandler');
-const { rollDice, handleAccusation, passTurn, useSecretPassage } =
-  require('../handlers/optionsHandler');
-const { moveCharacter } = require('../handlers/rollDiceHandler.js');
+const { boardHandler } = require('../handlers/boardHandler.js');
+const { rollDice, useSecretPassage, moveCharacter,
+  handleAccusation, passTurn } = require('../handlers/actionHandler.js');
 const { leaveGame } = require('../handlers/leaveGame.js');
 
 const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {

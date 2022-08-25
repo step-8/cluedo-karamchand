@@ -8,7 +8,8 @@ const cards = require('../data/cards.json');
 const gameDetails = require('../data/gameDetails.json');
 
 const { validateUser } = require('./middleware/validateUser.js');
-const { injectLobby, isUserInGame, isUserInLobby } = require('./middleware/gameMiddleware.js');
+const { injectLobby, isUserInGame, isUserInLobby } =
+  require('./middleware/gameMiddleware.js');
 
 const homePageLib = require('./handlers/homePage.js');
 const { serveHomePage, serveLobby } = homePageLib;

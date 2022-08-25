@@ -1,4 +1,4 @@
-const { findPossibleMoves } = require('../src/handlers/rollDiceHandler.js');
+const { findPossibleMoves } = require('../src/handlers/utils/findPossibleMoves.js');
 const assert = require('assert');
 const cellPositions = require('../data/gameDetails.json');
 

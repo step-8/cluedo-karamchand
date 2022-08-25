@@ -1,4 +1,4 @@
-const { findPossibleMoves } = require('./rollDiceHandler.js');
+const { findPossibleMoves } = require('./utils/findPossibleMoves.js');
 
 const diceRoller = () => Math.ceil(Math.random() * 6);
 
@@ -39,9 +39,17 @@ const useSecretPassage = (req, res) => {
   res.sendStatus(201);
 };
 
+const moveCharacter = (req, res) => {
+  const { game } = req;
+  const { position } = req.body;
+  game.move(JSON.parse(position));
+  res.sendStatus(201);
+};
+
 module.exports = {
   rollDice,
   handleAccusation,
   passTurn,
-  useSecretPassage
+  useSecretPassage,
+  moveCharacter
 };

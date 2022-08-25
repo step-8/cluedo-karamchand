@@ -101,7 +101,7 @@
       ],
       "rules": {
         "handle-callback-err": "off",
-        "max-len": "warn",
+        "max-len": "off",
         "no-magic-numbers": "off",
         "max-statements": "off",
         "no-unused-vars": "off"
@@ -149,7 +149,7 @@
     },
     {
       "files": [
-        "rollDiceHandler.js"
+        "findPossibleMoves.js"
       ],
       "rules": {
         "id-length": "off"

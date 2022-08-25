@@ -1,4 +1,4 @@
-const { isEqual } = require('../utils.js');
+const { isEqual } = require('../../utils.js');
 
 const isCellPresent = (cells, expectedCell) => {
   return cells.some(cell => isEqual(cell, expectedCell));
@@ -64,11 +64,4 @@ const findPossibleMoves = (cells, moves, currentPos, possibleRooms = []) => {
   return removeDuplicates([...possibleMoves, ...possibleRooms]);
 };
 
-const moveCharacter = (req, res) => {
-  const { game } = req;
-  const { position } = req.body;
-  game.move(JSON.parse(position));
-  res.sendStatus(201);
-};
-
-module.exports = { findPossibleMoves, moveCharacter };
+module.exports = { findPossibleMoves };
