@@ -1,5 +1,17 @@
+const {
+  CurrentPlayerVisitor,
+  GeneralPlayerVisitor
+} = require('../model/visitors.js');
+
 const serveGameApi = (req, res) => {
-  res.json(req.game.getState(req.session.userId));
+  const { game, session } = req;
+  const { userId: playerId } = session;
+
+  const visitor = game.isCurrentPlayer(playerId) ?
+    new CurrentPlayerVisitor() : new GeneralPlayerVisitor();
+
+  game.accept(visitor, playerId);
+  res.json(visitor.getJSON());
 };
 
 const serveLobbyApi = (lobbies) => (req, res) => {

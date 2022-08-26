@@ -47,6 +47,10 @@ const mockSuspicion = (suspectedBy, suspectedElements, suspicionBreaker) => {
   };
 };
 
+const mockLogger = (logs) => {
+  return { logs };
+};
+
 describe('CurrentPlayerVisitor', () => {
   it('should give game state', () => {
     const expected = {
@@ -228,4 +232,26 @@ describe('GeneralPlayerVisitor', () => {
     assert.deepStrictEqual(visitor.getJSON(), expected);
   });
 
+  it('should give JSON data of logs', () => {
+    const logs = [
+      { actor: 'Scarlett', action: 'roll-dice', result: [4, 5] }
+    ];
+
+    const mockedLogger = mockLogger(logs);
+    const visitor = new CurrentPlayerVisitor();
+
+    visitor.visitLogger(mockedLogger);
+
+    const expected = {
+      characters: [],
+      players: [],
+      logs: [
+        {
+          actor: 'Scarlett', action: 'roll-dice', result: [4, 5]
+        }
+      ]
+    };
+
+    assert.deepStrictEqual(visitor.getJSON(), expected);
+  });
 });

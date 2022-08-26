@@ -65,6 +65,10 @@ class CurrentPlayerVisitor {
     this.data.you = yourInfo;
   }
 
+  visitLogger(logger) {
+    this.data.logs = logger.logs;
+  }
+
   getJSON() {
     this.data.characters = this.#characters;
     this.data.players = this.#players;

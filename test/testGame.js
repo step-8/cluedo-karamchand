@@ -76,6 +76,7 @@ describe('Game', () => {
         name: 'bob',
         character: 'scarlett'
       },
+      logs: [],
       characters: charactersInfo,
       players: playersInfo,
       accusation: null,

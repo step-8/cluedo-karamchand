@@ -69,7 +69,7 @@ describe('GET /api/lobby', () => {
           .set('Cookie', hostCookie)
           .expect('content-type', /json/)
           .expect(expectedRoomId)
-          .expect(200, done)
+          .expect(200, done);
       });
   });
 
@@ -77,7 +77,7 @@ describe('GET /api/lobby', () => {
     request(app)
       .get('/api/lobby')
       .expect('location', '/login')
-      .expect(302, done)
+      .expect(302, done);
   });
 
   it('Should serve 403 if not hosted/joined', (done) => {

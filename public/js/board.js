@@ -190,6 +190,10 @@
   };
 
   const highlightPossiblePositions = () => {
+    if (!gameState.isMyTurn()) {
+      return;
+    }
+
     gameState.possibleMoves.forEach(position => highlightPosition(position));
   };
 
@@ -555,7 +559,7 @@
   };
 
   const handleSuspicion = (poller) => () => {
-    if (!gameState.hasAnyoneSuspected()) {
+    if (!gameState.suspicion) {
       return;
     }
 

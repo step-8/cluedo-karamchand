@@ -1,5 +1,6 @@
 const { isEqual } = require('../utils/isEqual.js');
 const { AwaitingAcknowledgement } = require('./acknowledgement.js');
+const { Logger } = require('./logger.js');
 const { Suspicion } = require('./suspicion.js');
 
 class Game {
@@ -17,6 +18,7 @@ class Game {
   #accusation;
   #suspicion;
   #acknowledgement;
+  #logger;
 
   constructor(gameId, players, characters, envelope, board) {
     this.#gameId = gameId;
@@ -32,6 +34,7 @@ class Game {
     this.#possibleMoves = [];
     this.#accusation = null;
     this.#suspicion = null;
+    this.#logger = new Logger();
   }
 
   get players() {
@@ -60,6 +63,10 @@ class Game {
 
   get diceValue() {
     return this.#diceValue;
+  }
+
+  get possibleMoves() {
+    return [...this.#possibleMoves];
   }
 
   #disable(action) {
@@ -151,6 +158,9 @@ class Game {
     this.#diceValue = [diceRoller(), diceRoller()];
     this.#disable('roll-dice');
     this.#enable('move');
+
+    const currentPlayerCharacter = this.#currentPlayerCharacter.name;
+    this.#logger.logRollDice(currentPlayerCharacter, this.#diceValue);
   }
 
   #moveCharacter(characterName, position) {
@@ -201,6 +211,10 @@ class Game {
       result
     };
     player.accused();
+
+    const currentPlayerCharacter = this.#currentPlayerCharacter.name;
+    this.#logger.logAccusation(currentPlayerCharacter, accusedCards, result);
+
     return true;
   }
 
@@ -243,12 +257,17 @@ class Game {
     player.disable('roll-dice');
     player.blockRoom = roomName;
 
+    const currentPlayerCharacter = this.#currentPlayerCharacter.name;
+    this.#logger.logSuspicion(currentPlayerCharacter, suspectedCards);
+
     this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
     return true;
   }
 
   ruleOutSuspicion(playerId, rulingOutCard) {
     const ruledOutBy = this.#findPlayer(playerId).character;
+
+    this.#logger.logRuleOut(ruledOutBy);
     return this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
   }
 
@@ -282,6 +301,7 @@ class Game {
     const you = this.#findPlayer(playerId);
     const roomInfo = this.#getPlayerRoom(you);
     visitor.visitYou(you, roomInfo);
+    visitor.visitLogger(this.#logger);
 
     this.#suspicion && this.#suspicion.accept(visitor);
   }

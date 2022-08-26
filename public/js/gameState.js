@@ -49,10 +49,6 @@ class GameState {
     return this.#data.accusation !== null;
   }
 
-  hasAnyoneSuspected() {
-    return this.#data.suspicion !== null;
-  }
-
   isSuspicionRuledOut() {
     return this.hasAnyoneSuspected() && this.suspicion.ruledOut;
   }
