@@ -109,6 +109,50 @@ describe('POST /join', () => {
       .expect(/login/)
       .expect(302, done);
   });
+
+  it('Should not allow to join same game if joinee is part of that game',
+    (done) => {
+      const app = createApp();
+      loginAsHost(app, 'bob')
+        .then(({ roomId }) => {
+          joinGame(app, 'ram', roomId)
+            .then(({ headers }) => {
+              request(app)
+                .post('/join')
+                .send(`room-id=${roomId}`)
+                .set('Cookie', headers['set-cookie'])
+                .expect('location', `/lobby/${roomId}`)
+                .expect(302)
+                .end(() => {
+                  request(app)
+                    .get('/api/lobby')
+                    .set('Cookie', headers['set-cookie'])
+                    .end((err, res) => {
+                      const players = JSON.parse(res.text).players;
+                      assert.strictEqual(players.length, 2);
+                      done();
+                    });
+                });
+            });
+        });
+    });
+
+  it('Should not allow to join a game if joinee is already part of a game',
+    (done) => {
+      const app = createApp();
+      loginAsHost(app, 'bob')
+        .then(({ roomId: myRoomId }) => {
+          joinGame(app, 'ram', myRoomId)
+            .then(({ headers }) => {
+              request(app)
+                .post('/join')
+                .send(`room-id=${roomId}`) //another room id
+                .set('Cookie', headers['set-cookie'])
+                .expect('location', `/lobby/${myRoomId}`)
+                .expect(302, done);
+            });
+        });
+    });
 });
 
 describe('POST /host', () => {

@@ -49,9 +49,14 @@ const createApp = () => {
 
   app.get('/',
     validateUser, isUserInGame(games), isUserInLobby(lobbies), serveHomePage);
+
   app.post('/host',
-    validateUser, isUserInGame(games), isUserInLobby(lobbies), hostGame(lobbies, cards.characters));
-  app.post('/join', validateUser, injectLobby(lobbies), joinGame);
+    validateUser, isUserInGame(games),
+    isUserInLobby(lobbies), hostGame(lobbies, cards.characters));
+  app.post('/join',
+    validateUser, isUserInGame(games),
+    isUserInLobby(lobbies), injectLobby(lobbies), joinGame);
+
   app.get('/lobby/:roomId', validateUser, serveLobby);
 
   app.use(compression(), express.static('public'));
