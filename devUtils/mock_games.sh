@@ -22,7 +22,7 @@ function login(){
 function host(){
   local numberOfPlayers=${1};
   local session=`login`;
-  curl -vvv localhost:${PORT}/host -d 'maxPlayers='${numberOfPlayers} -H "cookie:${session}" &> /tmp/response;
+  curl -vvv localhost:${PORT}/lobby/host -d 'maxPlayers='${numberOfPlayers} -H "cookie:${session}" &> /tmp/response;
 
   if [[ $? -ne 0 ]]; then
     echo 'Server is not running';
@@ -39,7 +39,7 @@ function addGuests(){
   for (( j=0; j < ${numberOfGuests} ; j++ ))
   do
     local session=`login`;
-    curl -vvv localhost:${PORT}/join -d "room-id=${gameId}" -H "cookie: ${session}" &> /dev/null;
+    curl -vvv localhost:${PORT}/lobby/join -d "room-id=${gameId}" -H "cookie: ${session}" &> /dev/null;
   done
   return 0;
 }

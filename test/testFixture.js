@@ -10,7 +10,7 @@ const loginAsHost = (app, username) => {
   return login(app, username)
     .then(res => {
       return request(app)
-        .post('/host')
+        .post('/lobby/host')
         .send('maxPlayers=3')
         .set('Cookie', res.headers['set-cookie'])
         .then((res) => {
@@ -26,7 +26,7 @@ const joinGame = (app, username, roomId) => {
   return login(app, username)
     .then(res => {
       return request(app)
-        .post('/join')
+        .post('/lobby/join')
         .set('Cookie', res.headers['set-cookie'])
         .send(`room-id=${roomId}`);
     });

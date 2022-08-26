@@ -13,7 +13,7 @@ html
         a(class='logout fas fa-sign-out-alt' href='/logout')
     main
       div(class='container box-design')
-        form(action='/host', method='post', id='host-form')
+        form(action='/lobby/host', method='post', id='host-form')
           select(name='maxPlayers')
             - for (var val = 3; val <= 6; val++)
               option(value=val) #{val} players
@@ -21,7 +21,7 @@ html
 
         div(class='or') -OR-
 
-        form(action='/join', method='post', id='join-form')
+        form(action='/lobby/join', method='post', id='join-form')
           input(type='text', name='room-id',id='room-id', placeholder='Enter Room ID')
           input(type='submit', value='JOIN', id='join-button')
           

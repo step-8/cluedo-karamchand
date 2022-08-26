@@ -10,7 +10,7 @@ const startGame = (app, cookie) => {
     .then(() => cookie);
 };
 
-describe('POST /join', () => {
+describe('POST /lobby/join', () => {
   let roomId, cookie;
   const app = createApp();
 
@@ -29,7 +29,7 @@ describe('POST /join', () => {
       .send('username=ab')
       .end((err, res) => {
         request(app)
-          .post('/join')
+          .post('/lobby/join')
           .send(`room-id=${roomId}`)
           .set('Cookie', res.headers['set-cookie'])
           .expect('location', `/lobby/${roomId}`)
@@ -43,7 +43,7 @@ describe('POST /join', () => {
       .send('username=ab')
       .end((err, res) => {
         request(app)
-          .post('/join')
+          .post('/lobby/join')
           .send('room-id=12345')
           .set('Cookie', res.headers['set-cookie'])
           .expect('location', '/')
@@ -64,7 +64,7 @@ describe('POST /join', () => {
           .send('username=ab')
           .end((err, res) => {
             request(app)
-              .post('/join')
+              .post('/lobby/join')
               .send(`room-id=${roomId}`)
               .set('Cookie', res.headers['set-cookie'])
               .expect('location', '/')
@@ -88,7 +88,7 @@ describe('POST /join', () => {
               .send('username=ab')
               .end((err, res) => {
                 request(app)
-                  .post('/join')
+                  .post('/lobby/join')
                   .send(`room-id=${roomId}`)
                   .set('Cookie', res.headers['set-cookie'])
                   .expect('location', '/')
@@ -105,7 +105,7 @@ describe('POST /join', () => {
 
   it('Should redirect to login page for invalid user', (done) => {
     request(createApp())
-      .post('/join')
+      .post('/lobby/join')
       .expect(/login/)
       .expect(302, done);
   });
@@ -118,7 +118,7 @@ describe('POST /join', () => {
           joinGame(app, 'ram', roomId)
             .then(({ headers }) => {
               request(app)
-                .post('/join')
+                .post('/lobby/join')
                 .send(`room-id=${roomId}`)
                 .set('Cookie', headers['set-cookie'])
                 .expect('location', `/lobby/${roomId}`)
@@ -145,7 +145,7 @@ describe('POST /join', () => {
           joinGame(app, 'ram', myRoomId)
             .then(({ headers }) => {
               request(app)
-                .post('/join')
+                .post('/lobby/join')
                 .send(`room-id=${roomId}`) //another room id
                 .set('Cookie', headers['set-cookie'])
                 .expect('location', `/lobby/${myRoomId}`)
@@ -155,7 +155,7 @@ describe('POST /join', () => {
     });
 });
 
-describe('POST /host', () => {
+describe('POST /lobby/host', () => {
   it('Should host the game with number of players', (done) => {
     const app = createApp();
     request(app)
@@ -163,7 +163,7 @@ describe('POST /host', () => {
       .send('username=bob')
       .end((err, res) => {
         request(app)
-          .post('/host')
+          .post('/lobby/host')
           .set('Cookie', res.headers['set-cookie'])
           .send('maxPlayers=3')
           .expect('location', /\/lobby\/...../)
@@ -180,7 +180,7 @@ describe('POST /host', () => {
         .send('username=bob')
         .end((err, res) => {
           request(app)
-            .post('/host')
+            .post('/lobby/host')
             .set('Cookie', res.headers['set-cookie'])
             .send('maxPlayers=')
             .expect('location', /\/lobby\/...../)
@@ -196,7 +196,7 @@ describe('POST /host', () => {
 
   it('Should redirect to login page for invalid user', (done) => {
     request(createApp())
-      .post('/host')
+      .post('/lobby/host')
       .expect(/login/)
       .expect(302, done);
   });
@@ -207,7 +207,7 @@ describe('POST /host', () => {
       loginAsHost(app, 'bob')
         .then(({ hostCookie, roomId }) => {
           request(app)
-            .post('/host')
+            .post('/lobby/host')
             .set('Cookie', hostCookie)
             .expect('location', `/lobby/${roomId}`)
             .expect(302, done);
@@ -222,7 +222,7 @@ describe('POST /host', () => {
           joinGame(app, 'ram', roomId)
             .then(({ headers }) => {
               request(app)
-                .post('/host')
+                .post('/lobby/host')
                 .set('Cookie', headers['set-cookie'])
                 .expect('location', `/lobby/${roomId}`)
                 .expect(302, done);

@@ -61,7 +61,7 @@ describe('GET /lobby/:roomId', () => {
         .send('username=james')
         .end((err, res) => {
           request(app)
-            .post('/host')
+            .post('/lobby/host')
             .send('maxPlayers=3')
             .set('Cookie', res.headers['set-cookie'])
             .end((err, res) => {

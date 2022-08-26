@@ -9,15 +9,15 @@ const cards = require('../data/cards.json');
 const gameDetails = require('../data/gameDetails.json');
 
 const { validateUser } = require('./middleware/validateUser.js');
-const { injectLobby, isUserInGame, isUserInLobby } =
+const { isUserInGame, isUserInLobby } =
   require('./middleware/gameMiddleware.js');
 
-const { serveHomePage, serveLobby } = require('./handlers/servePages.js');
-const { hostGame, joinGame } = require('./handlers/hostAndJoinGame.js');
+const { serveHomePage } = require('./handlers/servePages.js');
 
 const { createAuthRouter } = require('./routers/authRouter.js');
 const { createApiRouter } = require('./routers/apiRouter.js');
 const { createGameRouter } = require('./routers/gameRouter.js');
+const { createLobbyRouter } = require('./routers/lobbyRouter.js');
 
 const createApp = () => {
   const games = {};
@@ -41,23 +41,15 @@ const createApp = () => {
   const gameRouter =
     createGameRouter(games, lobbies, cards, gameDetails, boardData);
   const apiRouter = createApiRouter(games, lobbies);
-
-  app.use(authRouter);
-
-  app.use('/game', gameRouter);
-  app.use('/api', apiRouter);
+  const lobbyRouter = createLobbyRouter(games, lobbies, cards);
 
   app.get('/',
     validateUser, isUserInGame(games), isUserInLobby(lobbies), serveHomePage);
 
-  app.post('/host',
-    validateUser, isUserInGame(games),
-    isUserInLobby(lobbies), hostGame(lobbies, cards.characters));
-  app.post('/join',
-    validateUser, isUserInGame(games),
-    isUserInLobby(lobbies), injectLobby(lobbies), joinGame);
-
-  app.get('/lobby/:roomId', validateUser, isUserInGame(games), serveLobby);
+  app.use(authRouter);
+  app.use('/game', gameRouter);
+  app.use('/api', apiRouter);
+  app.use('/lobby', lobbyRouter);
 
   app.use(compression(), express.static('public'));
   return app;

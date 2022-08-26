@@ -44,7 +44,7 @@ describe('GET /game', () => {
       .send('username=bob')
       .end((err, res) => {
         request(app)
-          .post('/host')
+          .post('/lobby/host')
           .set('Cookie', res.headers['set-cookie'])
           .end((err, res) => {
             const id = res.headers.location.split('/').pop();
