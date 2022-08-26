@@ -29,6 +29,11 @@ class Logger {
     this.#logs.push(log);
   }
 
+  logSecretPassage(actor) {
+    const log = { actor, action: 'secret-passage' };
+    this.#logs.push(log);
+  }
+
   accept(visitor) {
     visitor.visitLogger(this);
   }

@@ -6,6 +6,7 @@ html
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css')
     script(src='js/domGenerator.js')
     script(src='js/gameState.js')
+    script(src='js/logger.js')
     script(src='js/options.js')
     script(src='js/poller.js')
     script(src='js/apiLayer.js')
@@ -29,5 +30,8 @@ html
             div(class='die', id='die2')
               include die 
         div(class='logs')
+          h3 Logs
+          div(class='log-container')
+            ul()
       div(class='popup-container')
         include popup

@@ -191,6 +191,9 @@ class Game {
     this.move(room.secretPassage);
     this.#disable('roll-dice');
     this.#possibleMoves = [];
+
+    const currentPlayerCharacter = this.#currentPlayerCharacter.name;
+    this.#logger.logSecretPassage(currentPlayerCharacter);
   }
 
   #isAccusationCorrect(cards) {

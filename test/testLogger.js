@@ -48,4 +48,15 @@ describe('Logger', () => {
 
     assert.deepStrictEqual(logger.logs, expected);
   });
+
+  it('should log secret passage usage action', () => {
+    const logger = new Logger();
+    logger.logSecretPassage('Peacock');
+
+    const expected = [
+      { actor: 'Peacock', action: 'secret-passage' }
+    ];
+
+    assert.deepStrictEqual(logger.logs, expected);
+  });
 });

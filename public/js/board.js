@@ -417,8 +417,10 @@
   };
 
   const suspicionResultMessage = ({ suspicionBreaker }) => {
-    const breaker = suspicionBreaker ? capitalize(suspicionBreaker) : 'No one';
-    return breaker + ' can rule out the suspicion';
+    if (suspicionBreaker) {
+      return `${capitalize(suspicionBreaker)} can rule out the suspicion`;
+    }
+    return 'No one ruled out the suspicion';
   };
 
   const showSuspicionResultPopup = () => {
@@ -615,6 +617,55 @@
     });
   };
 
+  const rollDiceLogMessage = ({ actor, result: [value1, value2] }) =>
+    `${capitalize(actor)} rolled dice, got ${value1 + value2}`;
+
+  const suspectLogMessage = ({ actor, actionData }) => {
+    const { character, weapon, room } = actionData;
+
+    return `${capitalize(actor)} suspected ${character} with ${weapon} in ${room}`;
+  };
+
+  const accuseLogMessage = ({ actor, actionData, result }) => {
+    const { character, weapon, room } = actionData;
+
+    return `${capitalize(actor)} accused ${character} with ${weapon} in ${room} and the accusation was incorrect`;
+  };
+
+  const ruleOutLogMessage = ({ actor }) =>
+    `${capitalize(actor)} ruled out the suspicion`;
+
+  const secretPassageLogMessage = ({ actor }) =>
+    `${capitalize(actor)} moved through secret passage`;
+
+  const logMessageLookup = {
+    'roll-dice': rollDiceLogMessage,
+    'suspect': suspectLogMessage,
+    'accuse': accuseLogMessage,
+    'rule-out': ruleOutLogMessage,
+    'secret-passage': secretPassageLogMessage,
+  };
+
+  const createLogElement = (log) => {
+    const messageFormatter = logMessageLookup[log.action];
+    return generateHTML(['li', { className: 'log' }, messageFormatter(log)]);
+  };
+
+  const showLogs = (logs) => {
+    const logContainerElement = document.querySelector('.log-container');
+    const logListElement = logContainerElement.querySelector('ul');
+
+    const logsElements = logs.map(createLogElement);
+
+    logListElement.append(...logsElements);
+    logContainerElement.scrollTop = logContainerElement.scrollHeight;
+  };
+
+  const updateLogs = (logger) => () => {
+    logger.addNewLogs(gameState.logs);
+    showLogs(logger.getLatestLogs());
+  };
+
   const main = () => {
     setupPopup('suspect', suspect);
     setupPopup('accuse', accuse);
@@ -631,6 +682,7 @@
       API.getGame().then(gameData => gameState.setData(gameData));
 
     const poller = new Poller(getGame, 1000);
+    const logger = new Logger();
 
     const subscribers = [
       enableOptions,
@@ -640,8 +692,10 @@
       updateDice,
       showAccusation(poller),
       highlightTurn,
-      handleSuspicion(poller)
+      handleSuspicion(poller),
+      updateLogs(logger)
     ];
+
     subscribers.forEach(subscriber => gameState.addObserver(subscriber));
 
     poller.startPolling();

@@ -102,6 +102,10 @@ class GameState {
       character.name === this.you.character);
   }
 
+  get logs() {
+    return this.#data.logs;
+  }
+
   getTurnOrder() {
     const currentPlayerIndex = this.players.findIndex(({ character }) =>
       character === this.currentPlayer.character);
