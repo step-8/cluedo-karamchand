@@ -9,7 +9,7 @@ const { injectGame, validatePlayerAction } =
 const { serveGamePage } = require('../handlers/servePages.js');
 const { rollDice, useSecretPassage, moveCharacter,
   handleAccusation, passTurn } = require('../handlers/actionHandler.js');
-const { leaveGame } = require('../handlers/leaveGame.js');
+const { leaveGame } = require('../handlers/leaveHandlers.js');
 
 const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
   const gameRouter = express.Router();

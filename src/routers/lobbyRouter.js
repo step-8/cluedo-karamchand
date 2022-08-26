@@ -5,6 +5,7 @@ const { isUserInGame, isUserInLobby, injectLobby } =
 
 const { hostGame, joinGame } = require('../handlers/hostAndJoinGame.js');
 const { serveLobby } = require('../handlers/servePages');
+const { leaveLobby } = require('../handlers/leaveHandlers.js');
 
 const createLobbyRouter = (games, lobbies, cards) => {
   const lobbyRouter = express.Router();
@@ -12,6 +13,7 @@ const createLobbyRouter = (games, lobbies, cards) => {
   lobbyRouter.use(validateUser);
   lobbyRouter.use(isUserInGame(games));
   lobbyRouter.get('/:roomId', serveLobby);
+  lobbyRouter.post('/leave', leaveLobby(lobbies));
 
   lobbyRouter.use(isUserInLobby(lobbies));
   lobbyRouter.post('/host', hostGame(lobbies, cards.characters));
