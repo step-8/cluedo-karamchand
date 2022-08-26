@@ -10,7 +10,7 @@ html
       h1(class='logo') CL<span class='red-text'>U</span>EDO
       div(class='user-profile')
         div(class='username') Hey #{username} !
-        a(class='logout fas fa-sign-out-alt' href='/logout')
+        a(id='logout', class='fas fa-sign-out-alt', href='/logout')
     main
       div(class='container box-design')
         form(action='/lobby/host', method='post', id='host-form')

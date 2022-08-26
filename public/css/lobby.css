@@ -2,6 +2,16 @@ body {
   background-image: url('/images/mrblack-murderd.png');
 }
 
+#leave-lobby-btn {
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.689);
+  margin-top: 0.3em;
+  padding-left: 0.4em;
+  font-size: 1.2em;
+  background-color: transparent;
+  color: var(--red);
+}
+
 main {
   flex-direction: column;
   gap: 1em;
@@ -22,16 +32,6 @@ main {
   border-radius: 50%;
   border-top: 4px solid transparent;
   animation: spin 1.5s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 article {
@@ -105,4 +105,14 @@ article {
 
 #start-game {
   visibility: hidden;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
