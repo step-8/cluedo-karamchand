@@ -674,7 +674,6 @@
       .then(gameData => {
         generatePlayers(gameData);
         generateCards(gameData.you);
-        setDice(gameData.diceValue);
         includeTokens(gameData.characters);
       });
 
@@ -685,15 +684,14 @@
     const logger = new Logger();
 
     const subscribers = [
-      enableOptions,
-      highlightPossiblePositions,
-      highlightPossiblePositions,
-      showTokens,
       updateDice,
+      enableOptions,
+      showTokens,
       showAccusation(poller),
       highlightTurn,
       handleSuspicion(poller),
-      updateLogs(logger)
+      updateLogs(logger),
+      highlightPossiblePositions
     ];
 
     subscribers.forEach(subscriber => gameState.addObserver(subscriber));

@@ -1,11 +1,11 @@
 #dice {
-padding: 0.5em;
+  height: 80px;
+  padding: 0.5em;
 }
 
 .die {
   width: 60px;
   aspect-ratio: 1;
-  position: relative;
   transform-style: preserve-3d;
   transition: transform 1s;
 }
@@ -29,7 +29,7 @@ padding: 0.5em;
 }
 
 .side:nth-child(1) {
-  transform: rotateX(0deg) rotateY(0deg) translateZ(1.45em);
+  transform: translateZ(1.45em);
 }
 
 .side:nth-child(2) {
@@ -53,27 +53,27 @@ padding: 0.5em;
 }
 
 .face-1 {
-  transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  transform: rotateX(0deg) rotateZ(0deg);
 }
 
 .face-2 {
-  transform: rotateY(90deg) rotateX(360deg) rotateZ(180deg);
+  transform: rotateY(-450deg) rotateZ(-1440deg);
 }
 
 .face-3 {
-  transform: rotateX(180deg) rotateY(90deg) rotateZ(90deg);
+  transform: rotateX(-810deg) rotateZ(-1080deg);
 }
 
 .face-4 {
-  transform: rotateX(90deg) rotateZ(360deg);
+  transform: rotateX(450deg) rotateZ(-720deg);
 }
 
 .face-5 {
-  transform: rotateY(90deg) rotateZ(360deg);
+  transform: rotateY(810deg) rotateZ(720deg);
 }
 
 .face-6 {
-  transform: rotateY(180deg) rotateZ(360deg);
+  transform: rotateX(900deg) rotateZ(-1080deg);
 }
 
 .top-left {
@@ -109,17 +109,4 @@ padding: 0.5em;
 .center {
   top: 38%;
   left: 38%;
-}
-
-#dice .roll {
-  animation: roll-dice 2s ease-out;
-}
-
-@keyframes roll-dice {
-  from{
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-  }
-  to{
-    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-  }
 }
