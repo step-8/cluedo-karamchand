@@ -39,13 +39,28 @@ const updateStatus = ({ players, maxPlayers }) => {
   statusEle.innerText = `Waiting for ${restOfPlayers} ${msg}...`;
 };
 
+const showLeavePopup = () => {
+  document.querySelector('.popup-container').style.visibility = 'visible';
+};
+
+const closeLeavePopup = () => {
+  document.querySelector('.popup-container').style.visibility = 'hidden';
+};
+
 const updateLobby = (poller) => API.getLobby()
   .then(lobbyStats => {
     addPlayers(lobbyStats, poller);
     updateStatus(lobbyStats);
   });
 
+const setupLeavePopup = () => {
+  document.querySelector('#leave-lobby').onclick = showLeavePopup;
+  document.querySelector('#leave-cancel-btn').onclick = closeLeavePopup;
+};
+
 const main = () => {
+  setupLeavePopup();
+
   API.getLobby()
     .then(lobbyStats => generateLobby(lobbyStats));
 

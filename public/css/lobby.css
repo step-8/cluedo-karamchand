@@ -2,16 +2,6 @@ body {
   background-image: url('/images/mrblack-murderd.png');
 }
 
-#leave-lobby-btn {
-  border: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.689);
-  margin-top: 0.3em;
-  padding-left: 0.4em;
-  font-size: 1.2em;
-  background-color: transparent;
-  color: var(--red);
-}
-
 main {
   flex-direction: column;
   gap: 1em;
@@ -34,7 +24,7 @@ main {
   animation: spin 1.5s linear infinite;
 }
 
-article {
+.box-design {
   height: 80%;
   width: 40%;
   padding: 2em;
@@ -45,18 +35,19 @@ article {
   gap: 2em;
 }
 
-.room-id,
-.player-name {
-  font-weight: 600;
-  text-align: center;
-  border-radius: var(--border-radius);
+.box-design>header {
+  width: 100%;
+  padding: 0.4em;
   color: white;
-  background-color: #ed1d25;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--red);
+  border-radius: var(--border-radius);
 }
 
-.room-id {
-  width: 45%;
-  padding: 0.4em;
+#leave-lobby {
+  cursor: pointer;
 }
 
 .players {
@@ -82,6 +73,7 @@ article {
   height: 80%;
   border-radius: var(--border-radius);
   box-shadow: 1px 1px 5px 1px white;
+  overflow: hidden;
 }
 
 .character img {
@@ -91,10 +83,13 @@ article {
 
 .player-name {
   width: 100%;
-  font-weight: 400;
   padding: 0.2em;
+  color: white;
   display: flex;
   justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius);
+  background-color: var(--red);
 }
 
 .name {
@@ -105,6 +100,63 @@ article {
 
 #start-game {
   visibility: hidden;
+}
+
+.popup-container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+#leave-lobby-popup {
+  height: 200px;
+  width: 350px;
+  padding: 1em;
+  border-radius: var(--border-radius);
+  position: fixed;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 1.5em;
+}
+
+#leave-lobby-popup:first-child {
+  text-align: center;
+}
+
+.popup-options {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  column-gap: 1em;
+}
+
+.popup-options .btn {
+  width: 30%;
+  padding: 0.5em;
+  color: white;
+  cursor: pointer;
+  font-size: var(--font-size);
+  border-radius: var(--border-radius);
+  background-color: var(--red);
+}
+
+.popup-options form {
+  width: 30%;
+}
+
+.popup-options #leave-lobby-btn {
+  border: none;
+  width: 100%;
 }
 
 @keyframes spin {

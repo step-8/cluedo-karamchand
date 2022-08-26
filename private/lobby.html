@@ -4,6 +4,7 @@
   <title>Lobby</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/lobby.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
   <script src="/js/poller.js"></script>
   <script src="/js/apiLayer.js"></script>
   <script src="/js/domGenerator.js"></script>
@@ -13,12 +14,7 @@
 <body class="cover-img">
   <header class="header">
     <h1 class="logo">CL<span class="red-text">U</span>EDO</h1>
-    <div class="user-profile">
-      <div class="username"></div>
-      <form action="/lobby/leave" method="post">
-        <button id="leave-lobby-btn">LEAVE</button>
-      </form>
-    </div>
+    <div class="username"></div>
   </header>
   <main>
     <div class="status">
@@ -26,11 +22,26 @@
       <div id="status-msg"></div>
     </div>
     <article class="box-design">
-      <div class="room-id"></div>
+      <header>
+        <div class="room-id"></div>
+        <div id="leave-lobby" class="fas fa-sign-out-alt"></div>
+      </header>
       <div class="players"></div>
     </article>
     <a href="/game"><button id="start-game"></button></a>
   </main>
+  <div class="popup-container">
+    <article id="leave-lobby-popup">
+      <div>Are you sure you want to leave the game?</div>
+      <div class="popup-options">
+        <div class="btn" id="leave-cancel-btn">CANCEL</div>
+        <form action="/lobby/leave" method="post">
+          <button class="btn" id="leave-lobby-btn">LEAVE</button>
+        </form>
+      </div>
+    </article>
+  </div>
+
 </body>
 
 </html>
