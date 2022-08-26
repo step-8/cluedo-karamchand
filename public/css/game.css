@@ -225,17 +225,6 @@ main {
   align-items: center;
 }
 
-.die {
-  width: 40%;
-  aspect-ratio: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: var(--border-radius);
-  background-color: rgba(255, 255, 255, 0.834);
-  color: var(--red);
-}
-
 .logs {
   width: 60%;
   height: 40%;

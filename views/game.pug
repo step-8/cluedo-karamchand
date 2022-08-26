@@ -2,6 +2,7 @@ html
   head
     title CLUEDO
     link(rel='stylesheet', href='css/game.css')
+    link(rel='stylesheet', href='css/dice.css')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css')
     script(src='js/domGenerator.js')
     script(src='js/gameState.js')
@@ -24,7 +25,9 @@ html
           div(class='btn', id='pass') PASS
           div(class='btn', id='dice')
             div(class='die', id='die1')
+              include die
             div(class='die', id='die2')
+              include die 
         div(class='logs')
       div(class='popup-container')
         include popup

@@ -97,14 +97,6 @@
     card.querySelector('img').src = `images/${cardName}.png`;
   };
 
-  const updateDice = () => {
-    const dice = document.querySelectorAll('.die');
-
-    const diceValue = gameState.diceValue;
-    dice[0].innerText = diceValue[0];
-    dice[1].innerText = diceValue[1];
-  };
-
   const createTokenDom = (characterName, position) => {
     const token = ['circle',
       {
@@ -297,10 +289,15 @@
     options.enable();
   };
 
-  const setDice = ([die1, die2]) => {
-    const dice = document.querySelectorAll('.die');
-    dice[0].innerText = die1;
-    dice[1].innerText = die2;
+  const setDice = ([value1, value2]) => {
+    const [die1, die2] = document.querySelectorAll('.die');
+    die1.className = `die face-${value1}`;
+    die2.className = `die face-${value2}`;
+  };
+
+  const updateDice = () => {
+    const values = gameState.diceValue;
+    setDice(values);
   };
 
   const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
@@ -631,14 +628,17 @@
 
     const poller = new Poller(getGame, 1000);
 
-    gameState.addObserver(enableOptions);
-    gameState.addObserver(highlightPossiblePositions);
-    gameState.addObserver(highlightPossiblePositions);
-    gameState.addObserver(showTokens);
-    gameState.addObserver(updateDice);
-    gameState.addObserver(showAccusation(poller));
-    gameState.addObserver(highlightTurn);
-    gameState.addObserver(handleSuspicion(poller));
+    const subscribers = [
+      enableOptions,
+      highlightPossiblePositions,
+      highlightPossiblePositions,
+      showTokens,
+      updateDice,
+      showAccusation(poller),
+      highlightTurn,
+      handleSuspicion(poller)
+    ];
+    subscribers.forEach(subscriber => gameState.addObserver(subscriber));
 
     poller.startPolling();
   };
