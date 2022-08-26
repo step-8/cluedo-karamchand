@@ -57,7 +57,7 @@ const createApp = () => {
     validateUser, isUserInGame(games),
     isUserInLobby(lobbies), injectLobby(lobbies), joinGame);
 
-  app.get('/lobby/:roomId', validateUser, serveLobby);
+  app.get('/lobby/:roomId', validateUser, isUserInGame(games), serveLobby);
 
   app.use(compression(), express.static('public'));
   return app;

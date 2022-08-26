@@ -1,6 +1,13 @@
 const request = require('supertest');
 const { createApp } = require('../src/app.js');
-const { loginAsHost } = require('./testFixture.js');
+const { loginAsHost, loginAllAsJoinees } = require('./testFixture.js');
+
+const startGame = (app, cookie) => {
+  return request(app)
+    .get('/game')
+    .set('Cookie', cookie)
+    .then(() => cookie);
+};
 
 describe('GET /lobby/:roomId', () => {
   it('Should redirect to login if not logged in', (done) => {
@@ -67,4 +74,18 @@ describe('GET /lobby/:roomId', () => {
             });
         });
     });
+
+  it('Should redirect to game if user is part of a game', (done) => {
+    loginAllAsJoinees(app, ['bob', 'ram'], roomId)
+      .then(() => {
+        startGame(app, cookie)
+          .then(() => {
+            request(app)
+              .get(`/lobby/${roomId}`)
+              .set('Cookie', cookie)
+              .expect('location', '/game')
+              .expect(302, done);
+          });
+      });
+  });
 });
