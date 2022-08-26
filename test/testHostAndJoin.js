@@ -1,7 +1,7 @@
 const request = require('supertest');
 const { assert } = require('chai');
 const { createApp } = require('../src/app.js');
-const { loginAllAsJoinees, loginAsHost } = require('./testFixture.js');
+const { loginAllAsJoinees, loginAsHost, joinGame } = require('./testFixture.js');
 
 const startGame = (app, cookie) => {
   return request(app)
@@ -156,4 +156,33 @@ describe('POST /host', () => {
       .expect(/login/)
       .expect(302, done);
   });
+
+  it('Should not allow to host multiple games if host is part of a game',
+    (done) => {
+      const app = createApp();
+      loginAsHost(app, 'bob')
+        .then(({ hostCookie, roomId }) => {
+          request(app)
+            .post('/host')
+            .set('Cookie', hostCookie)
+            .expect('location', `/lobby/${roomId}`)
+            .expect(302, done);
+        });
+    });
+
+  it('Should not allow to host game if joinee is already part of a game',
+    (done) => {
+      const app = createApp();
+      loginAsHost(app, 'bob')
+        .then(({ roomId }) => {
+          joinGame(app, 'ram', roomId)
+            .then(({ headers }) => {
+              request(app)
+                .post('/host')
+                .set('Cookie', headers['set-cookie'])
+                .expect('location', `/lobby/${roomId}`)
+                .expect(302, done);
+            });
+        });
+    });
 });
