@@ -35,6 +35,21 @@ class Lobby {
     return true;
   }
 
+  #rearrangePlayers() {
+    this.#players.forEach((player, index) => {
+      player.character = this.#characters[index];
+    });
+  }
+
+  removePlayer(id) {
+    const playerIndex = this.#players.findIndex((player) => player.id === id);
+    const removedPlayer =
+      playerIndex === -1 ? [] : this.#players.splice(playerIndex, 1);
+
+    this.#rearrangePlayers();
+    return removedPlayer;
+  }
+
   getStats() {
     const players = this.#players.map(({ id, name, character }) => {
       return { id, name, character };

@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const { Lobby } = require('../src/model/lobby.js');
 
 describe('Lobby', () => {
-  const characters = ['scarlett', 'mustard'];
+  const characters = ['scarlett', 'mustard', 'white'];
 
   it('Should equate the instances of Lobby', () => {
     const lobby1 = new Lobby(1, 2, characters);
@@ -23,7 +23,8 @@ describe('Lobby', () => {
   it('Should add player to the lobby', () => {
     const lobby = new Lobby(1, 2, characters);
     const expected = {
-      id: 1, maxPlayers: 2, players: [{ id: 1, name: 'abc', character: 'scarlett' }]
+      id: 1, maxPlayers: 2,
+      players: [{ id: 1, name: 'abc', character: 'scarlett' }]
     };
 
     assert.isOk(lobby.addPlayer(1, 'abc'));
@@ -49,5 +50,36 @@ describe('Lobby', () => {
     lobby.addPlayer(1, 'abc');
 
     assert.notOk(lobby.isFull());
+  });
+
+  it('Should remove player from the lobby', () => {
+    const lobby = new Lobby(1, 2, characters);
+    lobby.addPlayer(1, 'abc');
+
+    const expected = [{ id: 1, name: 'abc', character: 'scarlett' }];
+    const actual = lobby.removePlayer(1);
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('Should not remove player from the lobby for invalid player id', () => {
+    const lobby = new Lobby(1, 2, characters);
+    lobby.addPlayer(1, 'abc');
+
+    const actual = lobby.removePlayer(2);
+    assert.deepStrictEqual(actual, []);
+  });
+
+  it('Should rearrange players order after a player leaves the lobby', () => {
+    const lobby = new Lobby(1, 2, characters);
+    lobby.addPlayer(1, 'abc');
+    lobby.addPlayer(2, 'xyz');
+    lobby.removePlayer(1);
+
+    const expected = {
+      id: 1, maxPlayers: 2,
+      players: [{ id: 2, name: 'xyz', character: 'scarlett' }]
+    };
+
+    assert.deepStrictEqual(lobby.getStats(), expected);
   });
 });
