@@ -18,6 +18,7 @@ const { createAuthRouter } = require('./routers/authRouter.js');
 const { createApiRouter } = require('./routers/apiRouter.js');
 const { createGameRouter } = require('./routers/gameRouter.js');
 const { createLobbyRouter } = require('./routers/lobbyRouter.js');
+const { notFoundHandler } = require('./handlers/notFoundHandler.js');
 
 const createApp = () => {
   const games = {};
@@ -52,6 +53,7 @@ const createApp = () => {
   app.use('/lobby', lobbyRouter);
 
   app.use(compression(), express.static('public'));
+  app.use(notFoundHandler);
   return app;
 };
 

@@ -8,21 +8,21 @@ article(id='accuse-popup')
         each char in cards.characters
           option(value=char) #{char}
       div(class='card')
-        img(src='images/scarlett.png')
+        img(src='/images/scarlett.png')
     
     div(class='suit')
       select(name='rooms' id='rooms')
         each room in cards.rooms
           option(value=room) #{room}
       div(class='card')
-        img(src='images/kitchen.png')
+        img(src='/images/kitchen.png')
     
     div(class='suit')
       select(name='weapons' id='weapons')
         each weapon in cards.weapons
           option(value=weapon) #{weapon}
       div(class='card')
-        img(src='images/revolver.png')
+        img(src='/images/revolver.png')
   
   div(class='popup-options')
     div(class='btn' id='accuse-btn') ACCUSE
@@ -48,18 +48,18 @@ article(id='suspect-popup')
         each char in cards.characters
           option(value=char) #{char}
       div(class='card')
-        img(src='images/scarlett.png')
+        img(src='/images/scarlett.png')
     
     div(class='suit')
       select(name='weapons' id='weapons')
         each weapon in cards.weapons
           option(value=weapon) #{weapon}
       div(class='card')
-        img(src='images/revolver.png')
+        img(src='/images/revolver.png')
 
     div(class='suit' id='selected-room')
       div(class='card')
-        img(src='images/kitchen.png')
+        img(src='/images/kitchen.png')
   
   div(class='popup-options')
     div(class='btn' id='suspect-btn') SUSPECT

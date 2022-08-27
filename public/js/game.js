@@ -35,7 +35,7 @@
       }
       return ['div', { className: 'player', id: `${character}-profile` },
         ['div', { className: 'character' },
-          ['img', { src: `images/${character}.png` }]],
+          ['img', { src: `/images/${character}.png` }]],
         ['div', {}, ...usernameDom]
       ];
     });
@@ -71,7 +71,7 @@
   const cardsTemplate = (cards) => {
     return cards.map(card => {
       return ['div', { className: 'card' },
-        ['img', { src: `images/${card}.png` }]];
+        ['img', { src: `/images/${card}.png` }]];
     });
   };
 
@@ -94,7 +94,7 @@
   const showCard = (event) => {
     const card = event.target.closest('.suit').querySelector('.card');
     const cardName = event.target.value;
-    card.querySelector('img').src = `images/${cardName}.png`;
+    card.querySelector('img').src = `/images/${cardName}.png`;
   };
 
   const createTokenDom = (characterName, position) => {
@@ -241,7 +241,7 @@
     const room = gameState.room.name;
     const container = document.querySelector('#selected-room');
 
-    container.querySelector('img').src = `images/${room}.png`;
+    container.querySelector('img').src = `/images/${room}.png`;
     popup.style.visibility = 'visible';
   };
 
@@ -332,7 +332,7 @@
     const cardsElements = popup.querySelectorAll('.card');
 
     categories.forEach((category, index) => {
-      const imgDom = ['img', { src: `images/${cards[category]}.png` }];
+      const imgDom = ['img', { src: `/images/${cards[category]}.png` }];
       const img = generateHTML(imgDom);
       const cardElement = cardsElements[index];
       cardElement.id = cards[category];
@@ -406,7 +406,7 @@
     const turnOrderEle = document.querySelector('#turn-order');
 
     const turnOrderChildren = playerOrder.map(({ character }) => {
-      const dom = ['div', {}, ['img', { src: `images/${character}.png` }]];
+      const dom = ['div', {}, ['img', { src: `/images/${character}.png` }]];
       const imgContainer = generateHTML(dom);
       if (suspicionBreaker === character) {
         imgContainer.id = 'suspicion-breaker';

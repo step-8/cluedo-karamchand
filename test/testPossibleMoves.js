@@ -11,7 +11,7 @@ describe('findPossibleMoves', () => {
   });
 
   it('Should give possible positions for more than 1 move', () => {
-    const acutal1 = findPossibleMoves(gameDetails, 2, [0, 7]);
+    const actual1 = findPossibleMoves(gameDetails, 2, [0, 7]);
     const actual2 = findPossibleMoves(gameDetails, 3, [0, 7]);
     const actual3 = findPossibleMoves(gameDetails, 2, [6, 8]);
 
@@ -24,7 +24,7 @@ describe('findPossibleMoves', () => {
       [4, 8], [8, 8]
     ];
 
-    assert.deepStrictEqual(acutal1, expected1);
+    assert.deepStrictEqual(actual1, expected1);
     assert.deepStrictEqual(actual2, expected2);
     assert.deepStrictEqual(actual3, expected3);
   });
