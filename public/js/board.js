@@ -194,7 +194,9 @@
       return;
     }
 
-    gameState.possibleMoves.forEach(position => highlightPosition(position));
+    setTimeout(() =>
+      gameState.possibleMoves.forEach(position =>
+        highlightPosition(position)), 1000);
   };
 
   const rollDice = () => {
