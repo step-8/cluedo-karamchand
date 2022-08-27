@@ -194,9 +194,8 @@
       return;
     }
 
-    setTimeout(() =>
-      gameState.possibleMoves.forEach(position =>
-        highlightPosition(position)), 1000);
+    setTimeout(() => gameState.possibleMoves.forEach(position =>
+      highlightPosition(position)), 1000);
   };
 
   const rollDice = () => {
@@ -249,27 +248,35 @@
 
   const disableAllOptions = () => {
     const options = document.querySelectorAll('.options .btn');
-    const secretPassage = document.querySelectorAll('g > .highlight');
+    const secretPassage = document.querySelectorAll('g > .passage');
     disableOptions([...options, ...secretPassage]);
   };
 
   const moveThroughSecretPassage = () => API.useSecretPassage();
 
+  const highlightPassage = (source, destination) => {
+    const sourceElement = document.querySelector(source);
+    const destinationElement = document.querySelector(destination);
+    sourceElement.classList.add('highlight-passage');
+    sourceElement.classList.add('passage');
+    destinationElement.classList.add('highlight-passage-destination');
+    destinationElement.classList.add('passage');
+  };
+
   const allowSecretPassage = options => {
     const { name, secretPassage } = gameState.room;
 
-    const from = `#${name}-group .secret-passage`;
+    const source = `#${name}-group .secret-passage`;
     const destination = `[id='${secretPassage.join('-')}']`;
+    highlightPassage(source, destination);
 
-    options.add('secret-passage', from, true, () => {
+    options.add('secret-passage', source, true, () => {
       moveThroughSecretPassage();
-      disableOption(document.querySelector(from));
+      disableOption(document.querySelector(source));
       disableOption(document.querySelector('#dice'));
       disableOption(document.querySelector(destination));
       removeHighlightedPath();
     });
-
-    options.add('secret-passage', destination, true, x => x);
   };
 
   const enableOptions = () => {
@@ -501,6 +508,8 @@
 
   const removeHighlight = (htmlElement) => {
     htmlElement.classList.remove('highlight-btn');
+    htmlElement.classList.remove('highlight-passage');
+    htmlElement.classList.remove('highlight-passage-destination');
   };
 
   const removeCardsHighlight = () => {
@@ -597,7 +606,7 @@
   };
 
   const getSecretPassageEle = () =>
-    document.querySelectorAll('g > .highlight');
+    document.querySelectorAll('g > .passage');
 
   const suspect = () => {
     disableAllOptions();

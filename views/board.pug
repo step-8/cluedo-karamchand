@@ -5,11 +5,11 @@ svg(width='830', height='830', viewBox='0 0 24 25')
         - var href='/images/rooms/' + room.name + '.png';
         image(height='1', width='1', preserveAspectRatio='none', href=href)
     g(id=room.name + '-group')
-      - var points = '';  
+      - var roomPoints = '';  
       each pos in room.points
-        - points += pos + ' ';
-      polygon(points=points, fill='url(#' + room.name + ')')
-      polygon(id=room.id, class='room', points=points, fill='none')
+        - roomPoints += pos + ' ';
+      polygon(points=roomPoints, fill='url(#' + room.name + ')')
+      polygon(id=room.id, class='room', points=roomPoints, fill='none')
       if room.secretPassage 
         - var passage = room.secretPassage;
         rect(id=passage[0] + '-' + passage[1] , x=passage[0], y=passage[1], class='secret-passage')
