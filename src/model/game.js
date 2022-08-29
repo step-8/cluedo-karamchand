@@ -73,12 +73,16 @@ class Game {
     return { ...this.#envelope };
   }
 
-  #disable(action) {
-    this.#currentPlayer.disable(action);
+  #clearPossibleMoves() {
+    this.#possibleMoves = [];
   }
 
   #enable(action) {
     this.#currentPlayer.enable(action);
+  }
+
+  #disable(action) {
+    this.#currentPlayer.disable(action);
   }
 
   isAllowed(playerId, action) {
@@ -156,8 +160,8 @@ class Game {
   }
 
   passTurn() {
-    this.#possibleMoves = [];
     this.#disableAllPermissions();
+    this.#clearPossibleMoves();
     this.#changePlayer();
     this.#enablePermissions();
     this.#accusation = null;
@@ -209,7 +213,7 @@ class Game {
     this.#disable('move');
     this.#disable('secret-passage');
 
-    this.#possibleMoves = [];
+    this.#clearPossibleMoves();
     return true;
   }
 
@@ -218,7 +222,7 @@ class Game {
     const room = this.#getPlayerRoom(player);
     this.move(room.secretPassage);
     this.#disable('roll-dice');
-    this.#possibleMoves = [];
+    this.#clearPossibleMoves();
 
     const currentPlayerCharacter = this.#currentPlayerCharacter.name;
     this.#logger.logSecretPassage(currentPlayerCharacter);
@@ -291,8 +295,9 @@ class Game {
 
     this.#suspicion = suspicion;
 
-    const actions = ['suspect-make', 'secret-passage', 'roll-dice'];
+    const actions = ['suspect-make', 'secret-passage', 'roll-dice', 'move'];
     this.#disablePermissions(actions);
+    this.#clearPossibleMoves();
     player.blockRoom = roomName;
 
     const currentPlayerCharacter = this.#currentPlayerCharacter.name;

@@ -303,34 +303,23 @@
     options.enable();
   };
 
+  const createDiceFaceDom = dots => ['div', { className: 'face' }, ...dots];
+
+  const centerDot = ['div', { className: 'dot center' }];
+  const topLeftDot = ['div', { className: 'dot top-left' }];
+  const topRightDot = ['div', { className: 'dot top-right' }];
+  const leftCenter = ['div', { className: 'dot left-center' }];
+  const rightCenter = ['div', { className: 'dot right-center' }];
+  const bottomRightDot = ['div', { className: 'dot bottom-right' }];
+  const bottomLeftDot = ['div', { className: 'dot bottom-left' }];
+
   const dieFaces = {
-    '1': ['div', { className: 'face' },
-      ['div', { className: 'dot center' }]],
-    '2': ['div', { className: 'face' },
-      ['div', { className: 'dot top-left' }],
-      ['div', { className: 'dot bottom-right' }]],
-    '3': ['div', { className: 'face' },
-      ['div', { className: 'dot top-left' }],
-      ['div', { className: 'dot center' }],
-      ['div', { className: 'dot bottom-right' }]],
-    '4': ['div', { className: 'face' },
-      ['div', { className: 'dot top-left' }],
-      ['div', { className: 'dot top-right' }],
-      ['div', { className: 'dot bottom-left' }],
-      ['div', { className: 'dot bottom-right' }]],
-    '5': ['div', { className: 'face' },
-      ['div', { className: 'dot top-left' }],
-      ['div', { className: 'dot top-right' }],
-      ['div', { className: 'dot center' }],
-      ['div', { className: 'dot bottom-left' }],
-      ['div', { className: 'dot bottom-right' }]],
-    '6': ['div', { className: 'face' },
-      ['div', { className: 'dot top-left' }],
-      ['div', { className: 'dot top-right' }],
-      ['div', { className: 'dot left-center' }],
-      ['div', { className: 'dot right-center' }],
-      ['div', { className: 'dot bottom-left' }],
-      ['div', { className: 'dot bottom-right' }]],
+    '1': createDiceFaceDom([centerDot]),
+    '2': createDiceFaceDom([topLeftDot, bottomRightDot]),
+    '3': createDiceFaceDom([topLeftDot, centerDot, bottomRightDot]),
+    '4': createDiceFaceDom([topLeftDot, topRightDot, bottomLeftDot, bottomRightDot]),
+    '5': createDiceFaceDom([topLeftDot, topRightDot, centerDot, bottomLeftDot, bottomRightDot]),
+    '6': createDiceFaceDom([topLeftDot, topRightDot, leftCenter, rightCenter, bottomLeftDot, bottomRightDot]),
   };
 
   const setDice = ([value1, value2]) => {
@@ -651,6 +640,7 @@
 
   const suspect = () => {
     disableAllOptions();
+    removeHighlightedPath();
     actOn('suspected', API.suspect);
   };
 
