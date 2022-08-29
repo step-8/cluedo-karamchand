@@ -397,9 +397,12 @@
   };
 
   const showGameOver = () => {
-    const winner = gameState.currentPlayer.character;
+    const { currentPlayer, accusation } = gameState;
+    const winner = currentPlayer.character;
     const winnerMessageEle = document.querySelector('.winner-message');
-    winnerMessageEle.innerText = capitalize(winner) + ' Won!';
+    winnerMessageEle.innerText = capitalize(winner) + ' Solved The Mystery!';
+
+    showResultCards(accusation.accusedCards, '#game-over-popup');
 
     const popupContainer = document.querySelector('.popup-container');
     popupContainer.style.visibility = 'visible';
@@ -532,13 +535,14 @@
 
     rulingOutCards.forEach(rulingOutCard => {
       const cardElement = suspicionPopup.querySelector(`#${rulingOutCard}`);
-      cardElement.classList.add('highlight-btn');
+      cardElement.classList.add('highlight-card');
       cardElement.addEventListener('click', ruleOut, { once: true });
     });
   };
 
   const removeHighlight = (htmlElement) => {
     htmlElement.classList.remove('highlight-btn');
+    htmlElement.classList.remove('highlight-card');
     htmlElement.classList.remove('highlight-passage');
     htmlElement.classList.remove('highlight-passage-destination');
   };

@@ -80,9 +80,10 @@ article(id='suspect-result-popup')
 article(id='game-over-popup')
   header 
     h2 GAME OVER
-  div(class='winner-message') 
+  div(class='winner-message')
+  div(class='cards-combo')
+    - for (var x = 0; x < 3; x++)
+        div(class='card')
   div(class='popup-options')
     form(action='/game/leave' method='post') 
-      button(class='btn' id='play-again-btn') PLAY AGAIN
-    div(class='btn' id='quit-btn') 
-      a(href='/logout') QUIT   
+      button(class='btn' id='quit-btn') QUIT
