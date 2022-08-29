@@ -4,7 +4,7 @@ class Player {
   #characterName;
   #cards;
   #permissions;
-  #hasAccused;
+  #isCompetitive;
   #blockedRoom;
 
   constructor(playerId, playerName, characterName, cards) {
@@ -13,7 +13,7 @@ class Player {
     this.#characterName = characterName;
     this.#cards = cards;
     this.#permissions = new Set();
-    this.#hasAccused = false;
+    this.#isCompetitive = true;
     this.#blockedRoom = null;
   }
 
@@ -25,8 +25,8 @@ class Player {
     return this.#characterName;
   }
 
-  get hasAccused() {
-    return this.#hasAccused;
+  get isCompetitive() {
+    return this.#isCompetitive;
   }
 
   get name() {
@@ -74,7 +74,7 @@ class Player {
   }
 
   accused() {
-    this.#hasAccused = true;
+    this.#isCompetitive = false;
     this.#permissions.clear();
     this.#permissions.add('pass-turn');
   }
@@ -82,7 +82,8 @@ class Player {
   get profile() {
     return {
       name: this.#playerName,
-      character: this.#characterName
+      character: this.#characterName,
+      isCompetitive: this.#isCompetitive
     };
   }
 

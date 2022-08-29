@@ -27,7 +27,9 @@ class CurrentPlayerVisitor {
 
   visitPlayer(player) {
     const playerInfo = {
-      name: player.name, character: player.character
+      name: player.name,
+      character: player.character,
+      isCompetitive: player.isCompetitive
     };
 
     this.#players.push(playerInfo);

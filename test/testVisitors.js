@@ -28,7 +28,8 @@ const mockPlayer = (id, name, characterName, cards) => {
     permissions: [],
     enable: function (action) {
       this.permissions.push(action);
-    }
+    },
+    isCompetitive: true
   };
 };
 
@@ -106,8 +107,8 @@ describe('CurrentPlayerVisitor', () => {
     const expected = {
       characters: [],
       players: [
-        { name: 'James', character: 'Scarlett' },
-        { name: 'John', character: 'Mustard' }
+        { name: 'James', character: 'Scarlett', isCompetitive: true },
+        { name: 'John', character: 'Mustard', isCompetitive: true }
       ]
     };
 

@@ -458,6 +458,10 @@ article {
   animation: pulsar 1.5s ease-out infinite alternate;
 }
 
+.grayscale {
+  filter: grayscale(1);
+}
+
 @keyframes blink-tile {
   from {
     fill: #e1b365

@@ -152,7 +152,7 @@ class Game {
     do {
       index++;
       this.#currentPlayerIndex = index % this.#numberOfPlayers;
-    } while (this.#currentPlayer.hasAccused);
+    } while (!this.#currentPlayer.isCompetitive);
   }
 
   isCurrentPlayer(playerId) {

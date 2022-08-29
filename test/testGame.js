@@ -101,7 +101,7 @@ describe('Game', () => {
     game.passTurn();
 
     const actual = game.getState(2).currentPlayer;
-    const expected = { name: 'buddy', character: 'mustard' };
+    const expected = { name: 'buddy', character: 'mustard', isCompetitive: true };
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -111,7 +111,7 @@ describe('Game', () => {
     game.passTurn();
 
     const actual = game.getState(2).currentPlayer;
-    const expected = { name: 'bob', character: 'scarlett' };
+    const expected = { name: 'bob', character: 'scarlett', isCompetitive: true };
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -147,7 +147,6 @@ describe('Game', () => {
 
     assert.ok(game.isAllowed(1, 'accuse'));
   });
-
 
   it('Should return true if accusation is correct', () => {
     const game = new Game(1, players, characters, envelope, board);

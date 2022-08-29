@@ -58,6 +58,17 @@
     currentPlayerEle.classList.add('highlight-profile');
   };
 
+  const fadeNonCompetitivePlayers = () => {
+    const players = gameState.players;
+    const nonCompetitivePlayers = players.filter(player => !player.isCompetitive);
+
+    nonCompetitivePlayers.forEach(ncp => {
+      const playerEle = document.querySelector(`#${ncp.character}-profile`);
+      playerEle.classList.add('fade');
+      playerEle.querySelector('img').classList.add('grayscale');
+    });
+  };
+
   const pulsate = (character) => {
     const charElement = document.getElementById(character);
     charElement.classList.add('current-player');
@@ -728,6 +739,7 @@
 
     const subscribers = [
       showGameOver,
+      fadeNonCompetitivePlayers,
       updateDice,
       enableOptions,
       showTokens,
