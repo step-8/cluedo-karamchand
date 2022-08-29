@@ -58,7 +58,20 @@ describe('Board', () => {
     const board = new Board(cellPositions, rooms);
 
     const expected = [[1, 1], [1, 3], [0, 2], [2, 2]];
-    const actual = board.findPossiblePositions([0, 2], 2);
+    const actual = board.findPossiblePositions([0, 2], 2, []);
+
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it('Should give only unblocked positions', () => {
+    const cellPositions = [[0, 2], [1, 2], [0, 3], [0, 1]];
+    const rooms = createRooms(roomDetails);
+    const blockedTiles = [[1, 2]];
+
+    const board = new Board(cellPositions, rooms);
+
+    const expected = [[0, 1], [0, 3]];
+    const actual = board.findPossiblePositions([0, 2], 1, blockedTiles);
 
     assert.deepStrictEqual(actual, expected);
   });

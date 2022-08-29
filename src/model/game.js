@@ -168,14 +168,31 @@ class Game {
     this.#suspicion = null;
   }
 
+  #getBlockedTiles() {
+    const currentCharacter = this.#currentPlayerCharacter.name;
+    const blockedTiles = [];
+
+    this.#characters.forEach(({ position, name }) => {
+      const isInsideRoom = this.#board.isInsideRoom(position);
+      const isCurrentPlayer = currentCharacter === name;
+
+      if (!isInsideRoom && !isCurrentPlayer) {
+        blockedTiles.push(position);
+      }
+    });
+
+    return blockedTiles;
+  }
+
   rollDice(diceRoller) {
     this.#diceValue = [diceRoller(), diceRoller()];
 
     const playerPosition = this.#currentPlayerCharacter.position;
     const stepsToMove = this.#diceValue[0] + this.#diceValue[1];
 
+    const blockedTiles = this.#getBlockedTiles();
     this.#possibleMoves = this.#board
-      .findPossiblePositions(playerPosition, stepsToMove);
+      .findPossiblePositions(playerPosition, stepsToMove, blockedTiles);
 
     this.#disable('roll-dice');
     this.#enable('move');
@@ -203,7 +220,8 @@ class Game {
   }
 
   #isMoveAllowed(move) {
-    return this.#possibleMoves.some(([x, y]) => x === move[0] && y === move[1])
+    return this.#possibleMoves.some(([xCoordinate, yCoordinate]) =>
+      xCoordinate === move[0] && yCoordinate === move[1])
       || this.#isPassageDestination(move);
   }
 

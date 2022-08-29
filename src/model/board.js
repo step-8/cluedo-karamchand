@@ -1,4 +1,9 @@
 const { findPossibleMoves } = require('../utils/findPossibleMoves.js');
+const { isEqual } = require('../utils/isEqual.js');
+
+const isCellPresent = (cells, expectedCell) => {
+  return cells.some(cell => isEqual(cell, expectedCell));
+};
 
 class Board {
   #tiles;
@@ -15,9 +20,13 @@ class Board {
     });
   }
 
-  findPossiblePositions(from, steps) {
+  #getAvailableTiles(blockedTiles) {
+    return this.#tiles.filter(tile => !isCellPresent(blockedTiles, tile));
+  }
+
+  findPossiblePositions(from, steps, blockedTiles) {
     const roomDetails = this.#rooms.map(room => room.info);
-    const cellPositions = [...this.#tiles];
+    const cellPositions = this.#getAvailableTiles(blockedTiles);
     return findPossibleMoves({ cellPositions, roomDetails }, steps, from);
   }
 
