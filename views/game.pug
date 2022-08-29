@@ -1,16 +1,15 @@
 html
   head
     title CLUEDO
-    link(rel='stylesheet', href='/css/game.css')
-    link(rel='stylesheet', href='/css/dice.css')
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css')
-    script(src='/js/domGenerator.js')
-    script(src='/js/gameState.js')
-    script(src='/js/logger.js')
-    script(src='/js/options.js')
-    script(src='/js/poller.js')
-    script(src='/js/apiLayer.js')
-    script(src='/js/game.js')
+
+    - var links = ['/css/game.css', '/css/dice.css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css'];
+    each link in links 
+      link(rel='stylesheet', href=link)
+    
+    - var scripts = ['/js/domGenerator.js', '/js/gameState.js', '/js/logger.js', '/js/options.js', '/js/poller.js', '/js/apiLayer.js', '/js/game.js'];
+    each script in scripts 
+      script(src=script)
+        
   body 
     header(class='header')
       h1 CL<span>U</span>EDO
