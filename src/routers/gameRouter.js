@@ -18,8 +18,6 @@ const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
   gameRouter.use(initGame(games, lobbies, gameDetails, cards));
   gameRouter.use(injectGame(games));
 
-  gameRouter.post('/accuse/acknowledge', acknowledgeAccusation);
-
   gameRouter.get('/', serveGamePage(boardData, cards));
   gameRouter.post('/leave', leaveGame);
   gameRouter.use(validatePlayerAction);
@@ -29,7 +27,8 @@ const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
 
   gameRouter.get('/roll-dice', rollDice);
   gameRouter.get('/pass-turn', passTurn);
-  gameRouter.post('/accuse', handleAccusation(games));
+  gameRouter.post('/accuse', handleAccusation);
+  gameRouter.post('/accuse/acknowledge', acknowledgeAccusation);
   gameRouter.post('/move', moveCharacter);
   gameRouter.post('/secret-passage', useSecretPassage);
 

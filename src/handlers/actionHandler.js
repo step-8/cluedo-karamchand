@@ -7,7 +7,7 @@ const rollDice = (req, res) => {
   res.sendStatus(200);
 };
 
-const handleAccusation = (games) => (req, res) => {
+const handleAccusation = (req, res) => {
   const { body, game } = req;
   const { ...accusedCards } = body;
   game.accuse(accusedCards);
@@ -18,12 +18,8 @@ const handleAccusation = (games) => (req, res) => {
 const acknowledgeAccusation = (req, res) => {
   const { game, session } = req;
 
-  const status = game.acknowledgeAccusation(session.userId);
-  if (status) {
-    return res.sendStatus(201);
-  }
-
-  res.sendStatus(403);
+  game.acknowledgeAccusation(session.userId);
+  res.sendStatus(201);
 };
 
 const passTurn = (req, res) => {

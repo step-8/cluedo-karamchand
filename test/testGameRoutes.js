@@ -166,3 +166,21 @@ describe('GET /game/pass-turn', () => {
       });
   });
 });
+
+describe('POST /game/accuse/acknowledge', () => {
+  it('Should forbid acknowledgement if player does not have acknowledge permission.',
+    (done) => {
+      const app = createApp();
+
+      loginAsHost(app, 'ram')
+        .then(({ roomId }) => {
+          return loginAllAsJoinees(app, ['james', 'rathod'], roomId);
+        })
+        .then((res) => {
+          request(app)
+            .get('/game/accuse/acknowledge')
+            .set('Cookie', res[1].headers['set-cookie'])
+            .expect(403, done)
+        });
+    });
+});

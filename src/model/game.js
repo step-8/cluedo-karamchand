@@ -245,6 +245,7 @@ class Game {
 
     if (result) {
       this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
+      this.#enableAcknowledge('accuse-acknowledge')
     }
 
     return result;
@@ -260,8 +261,8 @@ class Game {
     return players.find(player => player.hasAnyOf(cards));
   }
 
-  #enableAcknowledge() {
-    this.#players.forEach(player => player.enable('suspect-acknowledge'));
+  #enableAcknowledge(action) {
+    this.#players.forEach(player => player.enable(action));
   }
 
   suspect(suspectedCards) {
@@ -278,7 +279,7 @@ class Game {
       suspicionBreaker.enable('suspect-rule-out');
       suspicionBreakerCharacter = suspicionBreaker.character;
     } else {
-      this.#enableAcknowledge();
+      this.#enableAcknowledge('suspect-acknowledge');
     }
 
     const suspectedBy = player.character;
@@ -312,7 +313,7 @@ class Game {
     this.#logger.logRuleOut(ruledOutBy);
     this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
     player.disable('suspect-rule-out');
-    this.#enableAcknowledge();
+    this.#enableAcknowledge('suspect-acknowledge');
   }
 
   acknowledgeSuspicion(playerId) {
