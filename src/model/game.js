@@ -241,8 +241,7 @@ class Game {
     const room = this.#getPlayerRoom(player);
     const roomName = room && room.name;
 
-    const { position } = this.#currentPlayerCharacter;
-    this.#moveCharacter(suspectedCards.character, position);
+    this.#summonSuspect(suspectedCards.character);
 
     const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
     suspicionBreaker.enable('suspect-rule-out');
@@ -250,7 +249,7 @@ class Game {
     const suspicionBreakerCharacter =
       suspicionBreaker ? suspicionBreaker.character : null;
 
-    const suspectedBy = player.profile.character;
+    const suspectedBy = player.character;
     const suspicion = new Suspicion(
       suspectedBy,
       suspectedCards,
@@ -268,6 +267,11 @@ class Game {
 
     this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
     this.#enableAcknowledge();
+  }
+
+  #summonSuspect(suspect) {
+    const { position } = this.#currentPlayerCharacter;
+    this.#moveCharacter(suspect, position);
   }
 
   ruleOutSuspicion(playerId, rulingOutCard) {
