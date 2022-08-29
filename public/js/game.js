@@ -302,10 +302,41 @@
     options.enable();
   };
 
+  const dieFaces = {
+    '1': ['div', { className: 'face' },
+      ['div', { className: 'dot center' }]],
+    '2': ['div', { className: 'face' },
+      ['div', { className: 'dot top-left' }],
+      ['div', { className: 'dot bottom-right' }]],
+    '3': ['div', { className: 'face' },
+      ['div', { className: 'dot top-left' }],
+      ['div', { className: 'dot center' }],
+      ['div', { className: 'dot bottom-right' }]],
+    '4': ['div', { className: 'face' },
+      ['div', { className: 'dot top-left' }],
+      ['div', { className: 'dot top-right' }],
+      ['div', { className: 'dot bottom-left' }],
+      ['div', { className: 'dot bottom-right' }]],
+    '5': ['div', { className: 'face' },
+      ['div', { className: 'dot top-left' }],
+      ['div', { className: 'dot top-right' }],
+      ['div', { className: 'dot center' }],
+      ['div', { className: 'dot bottom-left' }],
+      ['div', { className: 'dot bottom-right' }]],
+    '6': ['div', { className: 'face' },
+      ['div', { className: 'dot top-left' }],
+      ['div', { className: 'dot top-right' }],
+      ['div', { className: 'dot left-center' }],
+      ['div', { className: 'dot right-center' }],
+      ['div', { className: 'dot bottom-left' }],
+      ['div', { className: 'dot bottom-right' }]],
+  };
+
   const setDice = ([value1, value2]) => {
     const [die1, die2] = document.querySelectorAll('.die');
-    die1.className = `die face-${value1}`;
-    die2.className = `die face-${value2}`;
+
+    die1.replaceChildren(generateHTML(dieFaces[value1]));
+    die2.replaceChildren(generateHTML(dieFaces[value2]));
   };
 
   const updateDice = () => {

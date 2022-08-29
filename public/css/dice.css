@@ -6,8 +6,7 @@
 .die {
   width: 60px;
   aspect-ratio: 1;
-  transform-style: preserve-3d;
-  transition: transform 1s;
+  position: relative;
 }
 
 .dot {
@@ -18,62 +17,13 @@
   border-radius: 50%;
 }
 
-.side {
+.face {
   width: 100%;
   aspect-ratio: 1;
   position: absolute;
-  text-align: center;
   border-radius: 6px;
   background-color: white;
   box-shadow: inset -1px -1px 2px 0px #aaa;
-}
-
-.side:nth-child(1) {
-  transform: translateZ(1.45em);
-}
-
-.side:nth-child(2) {
-  transform: rotateY(90deg) translateZ(1.45em);
-}
-
-.side:nth-child(3) {
-  transform: rotateX(90deg) translateZ(1.45em);
-}
-
-.side:nth-child(4) {
-  transform: rotateX(-90deg) translateZ(1.45em);
-}
-
-.side:nth-child(5) {
-  transform: rotateY(-90deg) translateZ(1.45em);
-}
-
-.side:nth-child(6) {
-  transform: rotateY(-180deg) translateZ(1.45em);
-}
-
-.face-1 {
-  transform: rotateX(0deg) rotateZ(0deg);
-}
-
-.face-2 {
-  transform: rotateY(-450deg) rotateZ(-1440deg);
-}
-
-.face-3 {
-  transform: rotateX(-810deg) rotateZ(-1080deg);
-}
-
-.face-4 {
-  transform: rotateX(450deg) rotateZ(-720deg);
-}
-
-.face-5 {
-  transform: rotateY(810deg) rotateZ(720deg);
-}
-
-.face-6 {
-  transform: rotateX(900deg) rotateZ(-1080deg);
 }
 
 .top-left {
