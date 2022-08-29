@@ -44,7 +44,7 @@
   const generatePlayers = ({ players, you }) => {
     const playersDom = generatePlayersDom(players, you);
     const playersEle = generateHTML(['div', { className: 'players' }, ...playersDom]);
-    document.querySelector('main').prepend(playersEle);
+    document.querySelector('.players').replaceWith(playersEle);
   };
 
   const highlightTurn = () => {
