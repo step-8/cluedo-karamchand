@@ -10,9 +10,10 @@ const gameReq = (app, cookie) => {
 };
 
 describe('POST /game/accuse', () => {
-  const app = createApp();
 
   it('Should handle accuse', (done) => {
+    const app = createApp();
+
     loginAsHost(app, 'vikram')
       .then(({ hostCookie, roomId }) => {
         return loginAllAsJoinees(app, ['james', 'rathod'], roomId)
@@ -27,6 +28,23 @@ describe('POST /game/accuse', () => {
           .expect(201, done);
       });
   });
+
+  it('Should not allow user to accuse if user is not current player',
+    (done) => {
+      const app = createApp();
+
+      loginAsHost(app, 'vikram')
+        .then(({ roomId }) => {
+          return loginAllAsJoinees(app, ['james', 'rathod'], roomId);
+        })
+        .then((res) => {
+          request(app)
+            .post('/game/accuse')
+            .set('Cookie', res[1].headers['set-cookie'])
+            .send({ character: 'green', weapon: 'rope', room: 'hall' })
+            .expect(403, done);
+        });
+    });
 });
 
 const rollDiceReq = (app, cookie) => {
@@ -37,9 +55,10 @@ const rollDiceReq = (app, cookie) => {
 };
 
 describe('GET /game/roll-dice', () => {
-  const app = createApp();
 
   it('Should roll dice', (done) => {
+    const app = createApp();
+
     loginAsHost(app, 'vikram')
       .then(({ hostCookie, roomId }) => {
         return loginAllAsJoinees(app, ['james', 'rathod'], roomId)
@@ -53,12 +72,29 @@ describe('GET /game/roll-dice', () => {
           .expect(200, done);
       });
   });
+
+  it('Should forbid the request, when user don\'t have permission to roll the dice', (done) => {
+    const app = createApp();
+
+    loginAsHost(app, 'vicky')
+      .then(({ roomId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], roomId);
+      })
+      .then((res) =>
+        request(app)
+          .get('/game/roll-dice')
+          .set('Cookie', res[1].headers['set-cookie'])
+          .expect(403)
+          .then(() => done())
+      );
+  });
 });
 
 describe('POST /game/move', () => {
-  const app = createApp();
 
   it('Should move the character', (done) => {
+    const app = createApp();
+
     loginAsHost(app, 'vikram')
       .then(({ hostCookie, roomId }) => {
         return loginAllAsJoinees(app, ['james', 'rathod'], roomId)
@@ -74,25 +110,23 @@ describe('POST /game/move', () => {
           .expect(201, done);
       });
   });
-});
 
-describe('POST /game/accuse', () => {
-  const app = createApp();
+  it('should forbid player from moving when they don\'t have move permission', (done) => {
+    const app = createApp();
 
-  it('Should not allow user to accuse if user is not current player',
-    (done) => {
-      loginAsHost(app, 'vikram')
-        .then(({ roomId }) => {
-          return loginAllAsJoinees(app, ['james', 'rathod'], roomId);
-        })
-        .then((res) => {
-          request(app)
-            .post('/game/accuse')
-            .set('Cookie', res[1].headers['set-cookie'])
-            .send({ character: 'green', weapon: 'rope', room: 'hall' })
-            .expect(403, done);
-        });
-    });
+    loginAsHost(app, 'vicky')
+      .then(({ roomId }) => {
+        return loginAllAsJoinees(app, ['james', 'rathod'], roomId);
+      })
+      .then((res) =>
+        request(app)
+          .post('/game/move')
+          .set('Cookie', res[1].headers['set-cookie'])
+          .send('position=[5, 10]')
+          .expect(403)
+          .then(() => done())
+      );
+  });
 });
 
 describe('POST /game/leave', () => {

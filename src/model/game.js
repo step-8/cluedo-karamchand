@@ -244,7 +244,7 @@ class Game {
     this.#summonSuspect(suspectedCards.character);
 
     const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
-    suspicionBreaker.enable('suspect-rule-out');
+    suspicionBreaker && suspicionBreaker.enable('suspect-rule-out');
 
     const suspicionBreakerCharacter =
       suspicionBreaker ? suspicionBreaker.character : null;

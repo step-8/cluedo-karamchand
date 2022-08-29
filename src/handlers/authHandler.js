@@ -13,7 +13,6 @@ const createSession = (username) => {
 
 const handleLogin = (req, res) => {
   const { username } = req.body;
-
   if (username === '') {
     res.cookie('error', '30', { maxAge: 3000 });
     res.redirect('/login');
