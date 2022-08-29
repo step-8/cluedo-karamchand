@@ -1,6 +1,7 @@
 const express = require('express');
 const compression = require('compression');
 const morgan = require('morgan');
+const favicon = require('serve-favicon');
 const cookieSession = require('cookie-session');
 require('dotenv').config();
 
@@ -33,6 +34,7 @@ const createApp = () => {
   app.set('view engine', 'pug');
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(favicon('public/favicon.ico'));
   app.use(cookieSession({
     name: process.env.SESSION_NAME,
     keys: [process.env.SESSION_KEYS]
