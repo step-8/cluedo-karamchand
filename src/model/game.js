@@ -237,7 +237,10 @@ class Game {
 
     const currentPlayerCharacter = this.#currentPlayerCharacter.name;
     this.#logger.logAccusation(currentPlayerCharacter, accusedCards, result);
-    this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
+
+    if (result) {
+      this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
+    }
 
     return result;
   }
@@ -328,6 +331,7 @@ class Game {
     if (this.#acknowledgement.hasEveryoneAcknowledged()) {
       this.#accusation = null;
       this.#isRunning = false;
+      this.#disablePermissions();
     }
 
     return true;
