@@ -18,12 +18,13 @@ const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
   gameRouter.use(initGame(games, lobbies, gameDetails, cards));
   gameRouter.use(injectGame(games));
 
-  const suspectRouter = createSuspectRouter();
-  gameRouter.use('/suspect', suspectRouter);
-
   gameRouter.get('/', serveGamePage(boardData, cards));
   gameRouter.post('/leave', leaveGame);
   gameRouter.use(validatePlayerAction);
+
+  const suspectRouter = createSuspectRouter();
+  gameRouter.use('/suspect', suspectRouter);
+
   gameRouter.get('/roll-dice', rollDice(gameDetails));
   gameRouter.get('/pass-turn', passTurn);
   gameRouter.post('/accuse', handleAccusation);

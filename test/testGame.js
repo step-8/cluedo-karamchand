@@ -167,28 +167,11 @@ describe('Game', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('Should return false if current player is not allowed to suspect', () => {
-    const game = new Game(1, players, characters, envelope, board);
-    game.start();
-    const cards = { character: 'plum', weapon: 'rope' };
-
-    assert.notOk(game.suspect(1, cards));
-  });
-
-  it('Should return true if current player is allowed to suspect', () => {
-    const game = new Game(1, players, characters, envelope, board);
-    game.start();
-    game.move([4, 6]);
-    const cards = { character: 'plum', weapon: 'rope', room: 'kitchen' };
-
-    assert.ok(game.suspect(1, cards));
-  });
-
   it('Should provide suspicion info, if current player suspects', () => {
     const game = new Game(1, players, characters, envelope, board);
     game.start();
     game.move([4, 6]);
-    game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
+    game.suspect({ character: 'green', weapon: 'rope', room: 'kitchen' });
 
     const { suspicion } = game.getState(1);
     const expected = {
@@ -207,7 +190,7 @@ describe('Game', () => {
   it('Should not provide suspicion info if the suspcion round is over', () => {
     const game = new Game(1, players, characters, envelope, board);
     game.move([4, 6]);
-    game.suspect(1, { character: 'green', weapon: 'rope', room: 'kitchen' });
+    game.suspect({ character: 'green', weapon: 'rope', room: 'kitchen' });
     game.acknowledgeSuspicion(1);
     game.acknowledgeSuspicion(2);
 

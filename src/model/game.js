@@ -100,10 +100,10 @@ class Game {
     const roomName = room && room.name;
 
     if (this.#isCurrentPlayerInsideRoom() && player.canSuspectHere(roomName)) {
-      return player.enable('suspect');
+      return player.enable('suspect-make');
     }
 
-    player.disable('suspect');
+    player.disable('suspect-make');
   }
 
   #manageSecretPassagePermission() {
@@ -117,13 +117,14 @@ class Game {
   #enablePermissions() {
     const actions = ['roll-dice', 'accuse', 'pass-turn'];
     actions.forEach(action => this.#enable(action));
-    this.#manageSuspectPermission('suspect');
+    this.#manageSuspectPermission();
     this.#manageSecretPassagePermission();
   }
 
   #disablePermissions() {
     const actions = [
-      'roll-dice', 'suspect', 'pass-turn', 'accuse', 'move', 'secret-passage'
+      'roll-dice', 'suspect-make', 'pass-turn',
+      'accuse', 'move', 'secret-passage'
     ];
     actions.forEach(action => this.#disable(action));
   }
@@ -178,7 +179,7 @@ class Game {
 
     this.#currentPlayerCharacter.position = newPosition;
 
-    this.#manageSuspectPermission('suspect');
+    this.#manageSuspectPermission();
     this.#disable('move');
     this.#disable('secret-passage');
 
@@ -231,19 +232,21 @@ class Game {
     return players.find(player => player.hasAnyOf(cards));
   }
 
-  suspect(playerId, suspectedCards) {
+  #enableAcknowledge() {
+    this.#players.forEach(player => player.enable('suspect-acknowledge'));
+  }
+
+  suspect(suspectedCards) {
     const player = this.#currentPlayer;
     const room = this.#getPlayerRoom(player);
     const roomName = room && room.name;
-
-    if (!player.isYourId(playerId) || !player.isAllowed('suspect')) {
-      return false;
-    }
 
     const { position } = this.#currentPlayerCharacter;
     this.#moveCharacter(suspectedCards.character, position);
 
     const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
+    suspicionBreaker.enable('suspect-rule-out');
+
     const suspicionBreakerCharacter =
       suspicionBreaker ? suspicionBreaker.character : null;
 
@@ -255,7 +258,7 @@ class Game {
     );
 
     this.#suspicion = suspicion;
-    player.disable('suspect');
+    player.disable('suspect-make');
     player.disable('secret-passage');
     player.disable('roll-dice');
     player.blockRoom = roomName;
@@ -264,14 +267,16 @@ class Game {
     this.#logger.logSuspicion(currentPlayerCharacter, suspectedCards);
 
     this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
-    return true;
+    this.#enableAcknowledge();
   }
 
   ruleOutSuspicion(playerId, rulingOutCard) {
-    const ruledOutBy = this.#findPlayer(playerId).character;
+    const player = this.#findPlayer(playerId);
+    const ruledOutBy = player.character;
 
     this.#logger.logRuleOut(ruledOutBy);
-    return this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
+    this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
+    player.disable('suspect-rule-out');
   }
 
   acknowledgeSuspicion(playerId) {
@@ -281,6 +286,7 @@ class Game {
 
     const player = this.#findPlayer(playerId);
     this.#acknowledgement.acknowledgeFrom(player);
+    player.disable('suspect-acknowledge');
 
     if (this.#acknowledgement.hasEveryoneAcknowledged()) {
       this.#suspicion = null;

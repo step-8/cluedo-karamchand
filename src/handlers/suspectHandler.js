@@ -6,10 +6,10 @@ const acknowledgeSuspicion = (req, res) => {
 };
 
 const handleSuspect = (req, res) => {
-  const { session, body, game } = req;
+  const { body, game } = req;
   const { ...suspectedCards } = body;
 
-  game.suspect(session.userId, suspectedCards);
+  game.suspect(suspectedCards);
 
   res.sendStatus(201);
 };

@@ -43,6 +43,7 @@ const createApp = () => {
   const authRouter = createAuthRouter();
   const gameRouter =
     createGameRouter(games, lobbies, cards, gameDetails, boardData);
+
   const apiRouter = createApiRouter(games, lobbies);
   const lobbyRouter = createLobbyRouter(games, lobbies, cards);
 

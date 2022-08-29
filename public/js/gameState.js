@@ -34,7 +34,7 @@ class GameState {
   }
 
   canSuspect() {
-    return this.#myPermissions.includes('suspect');
+    return this.#myPermissions.includes('suspect-make');
   }
 
   canUseSecretPassage() {

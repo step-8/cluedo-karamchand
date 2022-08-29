@@ -44,7 +44,8 @@ const isUserInLobby = (lobbies) => (req, res, next) => {
 const validatePlayerAction = (req, res, next) => {
   const { game, session, url } = req;
 
-  const action = url.slice(1);
+  const action = url.slice(1).split('/').join('-');
+
   if (!game.isAllowed(session.userId, action)) {
     return res.sendStatus(403);
   }
