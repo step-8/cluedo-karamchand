@@ -1,5 +1,5 @@
 body {
-  background-image: radial-gradient(circle at center, #272ba1, #050c21);
+  background-image: var(--bg-gradient);
 }
 
 .container {
@@ -34,7 +34,7 @@ a {
   padding: .6em;
   opacity: 0.9;
   background-color: var(--red);
-  border-radius: 5px;
+  border-radius: var(--border-radius);
 }
 
 .home-btn:hover {

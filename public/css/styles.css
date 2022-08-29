@@ -2,6 +2,7 @@
   --border-radius: 0.2em;
   --box-shadow: 3px 3px 10px 1px white;
   --red: #ed1d25;
+  --bg-gradient: radial-gradient(circle at center, #2b30c5, #050c21);
 }
 
 * {
