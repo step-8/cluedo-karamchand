@@ -8,7 +8,7 @@ const { injectGame, validatePlayerAction } =
 
 const { serveGamePage } = require('../handlers/servePages.js');
 const { rollDice, useSecretPassage, moveCharacter,
-  handleAccusation, passTurn } = require('../handlers/actionHandler.js');
+  handleAccusation, passTurn, acknowledgeAccusation } = require('../handlers/actionHandler.js');
 const { leaveGame } = require('../handlers/leaveHandlers.js');
 
 const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
@@ -17,6 +17,8 @@ const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
   gameRouter.use(validateUser);
   gameRouter.use(initGame(games, lobbies, gameDetails, cards));
   gameRouter.use(injectGame(games));
+
+  gameRouter.post('/accuse/acknowledge', acknowledgeAccusation);
 
   gameRouter.get('/', serveGamePage(boardData, cards));
   gameRouter.post('/leave', leaveGame);
@@ -27,7 +29,7 @@ const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
 
   gameRouter.get('/roll-dice', rollDice);
   gameRouter.get('/pass-turn', passTurn);
-  gameRouter.post('/accuse', handleAccusation);
+  gameRouter.post('/accuse', handleAccusation(games));
   gameRouter.post('/move', moveCharacter);
   gameRouter.post('/secret-passage', useSecretPassage);
 

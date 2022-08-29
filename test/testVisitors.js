@@ -9,7 +9,8 @@ const mockGame = (gameId, players, characters, envelope, board) => {
     gameId,
     diceValue: [4, 5],
     accusation: { character: 'Scarlett', weapon: 'Rope', room: 'Hall' },
-    possibleMoves: [1, 2]
+    possibleMoves: [1, 2],
+    isStarted: true
   };
 
   return mockedGame;
@@ -59,7 +60,8 @@ describe('CurrentPlayerVisitor', () => {
       accusation: { character: 'Scarlett', weapon: 'Rope', room: 'Hall' },
       possibleMoves: [1, 2],
       players: [],
-      characters: []
+      characters: [],
+      isRunning: true
     };
 
     const players = [];
@@ -192,7 +194,8 @@ describe('GeneralPlayerVisitor', () => {
       diceValue: [4, 5],
       accusation: { character: 'Scarlett', weapon: 'Rope', room: 'Hall' },
       players: [],
-      characters: []
+      characters: [],
+      isRunning: true
     };
     const players = [];
     const characters = [];

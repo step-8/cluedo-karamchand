@@ -397,12 +397,16 @@
   };
 
   const showGameOver = () => {
-    const { currentPlayer, accusation } = gameState;
+    if (!gameState.isGameOver()) {
+      return;
+    }
+
+    const { currentPlayer, envelope } = gameState;
     const winner = currentPlayer.character;
     const winnerMessageEle = document.querySelector('.winner-message');
     winnerMessageEle.innerText = capitalize(winner) + ' Solved The Mystery!';
 
-    showResultCards(accusation.accusedCards, '#game-over-popup');
+    showResultCards(envelope, '#game-over-popup');
 
     const popupContainer = document.querySelector('.popup-container');
     popupContainer.classList.remove('hidden');
@@ -413,18 +417,20 @@
 
   const accusationResult = (poller) => {
     setTimeout(() => {
+      closePopup();
+
+      poller.startPolling();
+
+      if (gameState.accusation.result) {
+        API.acknowledgeAcusation();
+        return showGameOver();
+      }
+
       if (gameState.isMyTurn()) {
         pass();
         disableAllOptions();
       }
 
-      closePopup();
-
-      if (gameState.accusation.result) {
-        showGameOver();
-      }
-
-      poller.startPolling();
     }, 10000);
 
     showAccusationResult();
@@ -730,6 +736,7 @@
     const logger = new Logger();
 
     const subscribers = [
+      showGameOver,
       updateDice,
       enableOptions,
       showTokens,

@@ -61,6 +61,10 @@ class GameState {
     return this.suspicion.suspectedBy === this.you.character;
   }
 
+  isGameOver() {
+    return !this.#data.isRunning;
+  }
+
   get you() {
     return this.#data.you;
   }
@@ -104,6 +108,10 @@ class GameState {
 
   get logs() {
     return this.#data.logs;
+  }
+
+  get envelope() {
+    return this.#data.envelope;
   }
 
   getTurnOrder() {

@@ -13,7 +13,7 @@ class Game {
   #numberOfPlayers;
   #currentPlayerIndex;
   #diceValue;
-  #isStarted;
+  #isRunning;
   #possibleMoves;
   #accusation;
   #suspicion;
@@ -30,7 +30,7 @@ class Game {
     this.#numberOfPlayers = players.length;
     this.#currentPlayerIndex = 0;
     this.#diceValue = [1, 1];
-    this.#isStarted = false;
+    this.#isRunning = false;
     this.#possibleMoves = [];
     this.#accusation = null;
     this.#suspicion = null;
@@ -50,7 +50,7 @@ class Game {
   }
 
   get isStarted() {
-    return this.#isStarted;
+    return this.#isRunning;
   }
 
   get accusation() {
@@ -67,6 +67,10 @@ class Game {
 
   get possibleMoves() {
     return [...this.#possibleMoves];
+  }
+
+  get envelope() {
+    return { ...this.#envelope };
   }
 
   #disable(action) {
@@ -130,7 +134,7 @@ class Game {
   }
 
   start() {
-    this.#isStarted = true;
+    this.#isRunning = true;
     this.#enablePermissions();
   }
 
@@ -222,9 +226,6 @@ class Game {
 
   accuse(accusedCards) {
     const player = this.#currentPlayer;
-    if (!player.isAllowed('accuse')) {
-      return false;
-    }
 
     const result = this.#isAccusationCorrect(accusedCards);
     this.#accusation = {
@@ -236,8 +237,9 @@ class Game {
 
     const currentPlayerCharacter = this.#currentPlayerCharacter.name;
     this.#logger.logAccusation(currentPlayerCharacter, accusedCards, result);
+    this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
 
-    return true;
+    return result;
   }
 
   #findSuspicionBreaker(suspectedCards) {
@@ -315,6 +317,22 @@ class Game {
     }
   }
 
+  acknowledgeAccusation(playerId) {
+    if (!this.#accusation) {
+      return false;
+    }
+
+    const player = this.#findPlayer(playerId);
+    this.#acknowledgement.acknowledgeFrom(player);
+
+    if (this.#acknowledgement.hasEveryoneAcknowledged()) {
+      this.#accusation = null;
+      this.#isRunning = false;
+    }
+
+    return true;
+  }
+
   #findPlayer(playerId) {
     return this.#players.find(player => player.isYourId(playerId));
   }
@@ -331,6 +349,9 @@ class Game {
     visitor.visitLogger(this.#logger);
 
     this.#suspicion && this.#suspicion.accept(visitor);
+    if (!this.#isRunning) {
+      visitor.visitEnvelope(this);
+    }
   }
 
   getState(playerId) {

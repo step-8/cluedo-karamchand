@@ -14,6 +14,7 @@ class CurrentPlayerVisitor {
     this.data.diceValue = game.diceValue;
     this.data.accusation = game.accusation;
     this.data.possibleMoves = game.possibleMoves;
+    this.data.isRunning = game.isStarted;
   }
 
   visitCharacter(character) {
@@ -69,6 +70,10 @@ class CurrentPlayerVisitor {
     this.data.logs = logger.logs;
   }
 
+  visitEnvelope(game) {
+    this.data.envelope = game.envelope;
+  }
+
   getJSON() {
     this.data.characters = [...this.#characters];
     this.data.players = [...this.#players];
@@ -83,9 +88,8 @@ class GeneralPlayerVisitor extends CurrentPlayerVisitor {
   }
 
   visitGame(game) {
-    this.data.gameId = game.gameId;
-    this.data.diceValue = game.diceValue;
-    this.data.accusation = game.accusation;
+    const { gameId, diceValue, accusation, isStarted: isRunning } = game;
+    this.data = { gameId, diceValue, accusation, isRunning };
   }
 
   visitSuspicion(suspicion) {

@@ -83,6 +83,7 @@ describe('Game', () => {
       characters: charactersInfo,
       players: playersInfo,
       accusation: null,
+      isRunning: true
     };
 
     assert.deepStrictEqual(visitor.getJSON(), expected);
@@ -140,29 +141,45 @@ describe('Game', () => {
     assert.notOk(game.move([4, 0]));
   });
 
-  it('Should allow the current player to accuse', () => {
+  it('Should return true if current player accusation permission', () => {
     const game = new Game(1, players, characters, envelope, board);
     game.start();
 
-    assert.ok(game.accuse({
-      character: 'green', weapon: 'rope', room: 'hall'
-    }));
+    assert.ok(game.isAllowed(1, 'accuse'));
   });
 
-  it('Should provide accusation info, if current player accuses', () => {
+
+  it('Should return true if accusation is correct', () => {
     const game = new Game(1, players, characters, envelope, board);
     game.start();
-    game.accuse({ character: 'green', weapon: 'rope', room: 'hall' });
+    const actual = game.accuse(
+      { character: 'white', weapon: 'pipe', room: 'hall' });
 
-    const { accusation } = game.getState(2);
-    const { result, ...actual } = accusation;
+    assert.isOk(actual);
+  });
 
-    const expected = {
-      accuser: { name: 'bob', character: 'scarlett' },
-      accusedCards: { character: 'green', weapon: 'rope', room: 'hall' },
-    };
+  it('Should return false if accusation is incorrect', () => {
+    const game = new Game(1, players, characters, envelope, board);
+    game.start();
+    const actual = game.accuse(
+      { character: 'white', weapon: 'rope', room: 'hall' });
 
-    assert.deepStrictEqual(actual, expected);
+    assert.notOk(actual);
+  });
+
+  it('Should return true if accusation acknowledgement is allowed', () => {
+    const game = new Game(1, players, characters, envelope, board);
+    game.start();
+    game.accuse({ character: 'white', weapon: 'pipe', room: 'hall' });
+
+    assert.isOk(game.acknowledgeAccusation(1));
+  });
+
+  it('Should return false if accusation acknowledgement is not allowed', () => {
+    const game = new Game(1, players, characters, envelope, board);
+    game.start();
+
+    assert.notOk(game.acknowledgeAccusation(1));
   });
 
   it('Should provide suspicion info, if current player suspects', () => {
@@ -216,7 +233,7 @@ describe('Game', () => {
     const game = new Game(1, players, characters, envelope, board);
     game.start();
 
-    assert.ok(game.isAllowed(1, 'accuse'));
+    assert.ok(game.isAllowed(1, 'pass-turn'));
   });
 
   it('Should return false if current player does not have given permission',

@@ -51,6 +51,14 @@ const API = {
     return fetchRequest(request);
   },
 
+  acknowledgeAcusation: () => {
+    const request = {
+      url: '/game/accuse/acknowledge', options: { method: 'POST' }
+    };
+
+    return fetchRequest(request);
+  },
+
   suspect: (suspectedCards) => {
     const request = {
       url: '/game/suspect/make',

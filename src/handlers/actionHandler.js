@@ -7,12 +7,23 @@ const rollDice = (req, res) => {
   res.sendStatus(200);
 };
 
-const handleAccusation = (req, res) => {
+const handleAccusation = (games) => (req, res) => {
   const { body, game } = req;
   const { ...accusedCards } = body;
   game.accuse(accusedCards);
 
   res.sendStatus(201);
+};
+
+const acknowledgeAccusation = (req, res) => {
+  const { game, session } = req;
+
+  const status = game.acknowledgeAccusation(session.userId);
+  if (status) {
+    return res.sendStatus(201);
+  }
+
+  res.sendStatus(403);
 };
 
 const passTurn = (req, res) => {
@@ -40,5 +51,6 @@ module.exports = {
   handleAccusation,
   passTurn,
   useSecretPassage,
-  moveCharacter
+  moveCharacter,
+  acknowledgeAccusation
 };
