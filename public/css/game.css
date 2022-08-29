@@ -22,7 +22,7 @@ body {
 
 .card {
   border-radius: var(--border-radius);
-  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9);
   overflow: hidden;
 }
 
@@ -108,8 +108,7 @@ main {
   height: 80%;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid white;
-  box-shadow: 3px 3px 13px 0px white;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9);
 }
 
 .players .name,
@@ -269,7 +268,6 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
 }
 
 article {
@@ -283,7 +281,6 @@ article {
   flex-direction: column;
   align-items: center;
   row-gap: 1.5em;
-  visibility: hidden;
 }
 
 .popup-options {
@@ -393,7 +390,6 @@ article {
   color: rgb(228, 228, 228);
   background-image: radial-gradient(circle at center, #2b30c5, #050c21);
   box-shadow: 0px 0px 20px 5px white;
-  visibility: hidden;
 }
 
 #game-over-popup .cards-combo {
@@ -453,7 +449,7 @@ article {
 }
 
 .highlight-passage-destination {
-  fill: rgba(255, 255, 255, 0.6);
+  fill: rgba(235, 208, 71, 0.6);
 }
 
 .current-player {

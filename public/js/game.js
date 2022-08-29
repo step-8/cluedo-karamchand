@@ -83,11 +83,11 @@
 
   const closePopup = () => {
     const popupContainerEle = document.querySelector('.popup-container');
-    popupContainerEle.style.visibility = 'hidden';
+    popupContainerEle.classList.add('hidden');
 
     const popups = popupContainerEle.querySelectorAll('article');
     popups.forEach(popup => {
-      popup.style.visibility = 'hidden';
+      popup.classList.add('hidden');
     });
   };
 
@@ -203,8 +203,8 @@
   };
 
   const showAccusationPopup = () => {
-    document.querySelector('.popup-container').style.visibility = 'visible';
-    document.querySelector('#accuse-popup').style.visibility = 'visible';
+    document.querySelector('.popup-container').classList.remove('hidden');
+    document.querySelector('#accuse-popup').classList.remove('hidden');
   };
 
   const disableOption = (optionElement) => {
@@ -235,13 +235,13 @@
   };
 
   const showSuspectPopup = () => {
-    document.querySelector('.popup-container').style.visibility = 'visible';
+    document.querySelector('.popup-container').classList.remove('hidden');
     const popup = document.querySelector('#suspect-popup');
     const room = gameState.room.name;
     const container = document.querySelector('#selected-room');
 
     container.querySelector('img').src = `/images/${room}.png`;
-    popup.style.visibility = 'visible';
+    popup.classList.remove('hidden');
   };
 
   const disableOptions = (options) => options.forEach(disableOption);
@@ -281,6 +281,7 @@
 
   const enableOptions = () => {
     const options = new Options();
+
     options.add('rollDice', '#dice', gameState.canRollDice(), ({ target }) => {
       rollDice();
       disableOption(target.closest('#dice'));
@@ -351,7 +352,6 @@
     const { character, room, weapon } = accusedCards;
 
     const accuserName = gameState.isMyTurn() ? 'you' : accuser.character;
-
     return `${capitalize(accuserName)} accused ${capitalize(character)}, in the ${capitalize(room)}, with the ${capitalize(weapon)}`;
   };
 
@@ -381,9 +381,9 @@
   const showAccusationResult = () => {
     const { accuser, accusedCards, result } = gameState.accusation;
 
-    document.querySelector('.popup-container').style.visibility = 'visible';
+    document.querySelector('.popup-container').classList.remove('hidden');
     const popup = document.querySelector('#accuse-result-popup');
-    popup.style.visibility = 'visible';
+    popup.classList.remove('hidden');
 
     showResultCards(accusedCards, '#accuse-result-popup');
 
@@ -405,10 +405,10 @@
     showResultCards(accusation.accusedCards, '#game-over-popup');
 
     const popupContainer = document.querySelector('.popup-container');
-    popupContainer.style.visibility = 'visible';
+    popupContainer.classList.remove('hidden');
 
     const gameOverPopup = document.querySelector('#game-over-popup');
-    gameOverPopup.style.visibility = 'visible';
+    gameOverPopup.classList.remove('hidden');
   };
 
   const accusationResult = (poller) => {
@@ -471,10 +471,10 @@
     showSuspicionBreaker();
     showResultCards(suspectedCards, '#suspect-result-popup');
 
-    document.querySelector('.popup-container').style.visibility = 'visible';
+    document.querySelector('.popup-container').classList.remove('hidden');
 
     const popup = document.querySelector('#suspect-result-popup');
-    popup.style.visibility = 'visible';
+    popup.classList.remove('hidden');
 
     const resultMessage = suspicionResultMessage(gameState.suspicion);
     popup.querySelector('h2').innerText = resultMessage;
