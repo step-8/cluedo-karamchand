@@ -25,7 +25,7 @@ const createGameRouter = (games, lobbies, cards, gameDetails, boardData) => {
   const suspectRouter = createSuspectRouter();
   gameRouter.use('/suspect', suspectRouter);
 
-  gameRouter.get('/roll-dice', rollDice(gameDetails));
+  gameRouter.get('/roll-dice', rollDice);
   gameRouter.get('/pass-turn', passTurn);
   gameRouter.post('/accuse', handleAccusation);
   gameRouter.post('/move', moveCharacter);

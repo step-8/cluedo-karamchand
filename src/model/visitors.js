@@ -70,10 +70,10 @@ class CurrentPlayerVisitor {
   }
 
   getJSON() {
-    this.data.characters = this.#characters;
-    this.data.players = this.#players;
+    this.data.characters = [...this.#characters];
+    this.data.players = [...this.#players];
 
-    return this.data;
+    return { ...this.data };
   }
 }
 

@@ -147,3 +147,22 @@ describe('POST /game/leave', () => {
       });
   });
 });
+
+describe('GET /game/pass-turn', () => {
+  const app = createApp();
+
+  it('Should pass the turn', (done) => {
+    loginAsHost(app, 'James')
+      .then(({ hostCookie, roomId }) => {
+        return loginAllAsJoinees(app, ['John', 'Arthur'], roomId)
+          .then(() => hostCookie);
+      })
+      .then(hostCookie => gameReq(app, hostCookie))
+      .then((hostCookie) => {
+        request(app)
+          .get('/game/pass-turn')
+          .set('Cookie', hostCookie)
+          .expect(200, done);
+      });
+  });
+});

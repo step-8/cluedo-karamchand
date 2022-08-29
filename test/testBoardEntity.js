@@ -50,4 +50,16 @@ describe('Board', () => {
     assert.deepStrictEqual(board.getRoom([1, 1]), expected);
     assert.strictEqual(board.getRoom([1, 6]), null);
   });
+
+  it('Should give possible positions on the board from given position', () => {
+    const cellPositions = [[0, 2], [1, 2], [1, 3], [2, 2]];
+    const rooms = createRooms(roomDetails);
+
+    const board = new Board(cellPositions, rooms);
+
+    const expected = [[1, 1], [1, 3], [0, 2], [2, 2]];
+    const actual = board.findPossiblePositions([0, 2], 2);
+
+    assert.deepStrictEqual(actual, expected);
+  });
 });

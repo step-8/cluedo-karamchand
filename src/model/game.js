@@ -157,11 +157,20 @@ class Game {
 
   rollDice(diceRoller) {
     this.#diceValue = [diceRoller(), diceRoller()];
+
+    const playerPosition = this.#currentPlayerCharacter.position;
+    const stepsToMove = this.#diceValue[0] + this.#diceValue[1];
+
+    this.#possibleMoves = this.#board
+      .findPossiblePositions(playerPosition, stepsToMove);
+
     this.#disable('roll-dice');
     this.#enable('move');
 
     const currentPlayerCharacter = this.#currentPlayerCharacter.name;
     this.#logger.logRollDice(currentPlayerCharacter, this.#diceValue);
+
+    return [...this.#diceValue];
   }
 
   #moveCharacter(characterName, position) {
@@ -170,8 +179,16 @@ class Game {
     character.position = position;
   }
 
+  #isMoveAllowed(move) {
+    return this.#possibleMoves.some(([x, y]) => x === move[0] && y === move[1]);
+  }
+
   move(newPosition) {
     const prevPosition = this.#currentPlayerCharacter.position;
+
+    if (!this.#isMoveAllowed(newPosition)) {
+      return false;
+    }
 
     if (!isEqual(prevPosition, newPosition)) {
       this.#currentPlayer.unblock();
@@ -184,6 +201,7 @@ class Game {
     this.#disable('secret-passage');
 
     this.#possibleMoves = [];
+    return true;
   }
 
   useSecretPassage() {
@@ -295,10 +313,6 @@ class Game {
     if (this.#acknowledgement.hasEveryoneAcknowledged()) {
       this.#suspicion = null;
     }
-  }
-
-  injectPossibleMoves(possibleMoves) {
-    this.#possibleMoves = possibleMoves;
   }
 
   #findPlayer(playerId) {

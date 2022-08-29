@@ -25,8 +25,8 @@ describe('Game', () => {
 
     characters = [
       new Character('scarlett', [1, 1]),
-      new Character('mustard', [2, 2]),
-      new Character('green', [3, 3]),
+      new Character('mustard', [4, 6]),
+      new Character('green', [4, 6]),
       new Character('plum', [3, 3])
     ];
     const roomDetails = [{
@@ -41,9 +41,12 @@ describe('Game', () => {
       ]
     }];
 
+    const cellPositions = [
+      [0, 7], [2, 1], [1, 2], [1, 3], [2, 2], [4, 7]];
+
     envelope = { character: 'white', room: 'hall', weapon: 'pipe' };
     const rooms = createRooms(roomDetails);
-    board = new Board([[0, 7]], rooms);
+    board = new Board(cellPositions, rooms);
   });
 
   it('Should equate two instances of game', () => {
@@ -87,9 +90,8 @@ describe('Game', () => {
 
   it('Should roll the dice', () => {
     const game = new Game(1, players, characters, envelope, board);
-    game.rollDice(() => 2);
+    const actual = game.rollDice(() => 2);
 
-    const actual = game.getState(1).diceValue;
     assert.deepStrictEqual(actual, [2, 2]);
   });
 
@@ -125,10 +127,17 @@ describe('Game', () => {
   it('Should move the current player\'s token', () => {
     const game = new Game(1, players, characters, envelope, board);
     game.start();
-    game.move([7, 16]);
+    game.rollDice(() => 1);
 
-    const { position } = game.getState(1).characters[0];
-    assert.deepStrictEqual(position, [7, 16]);
+    assert.ok(game.move([2, 2]));
+  });
+
+  it('Should not move the current player\'s token if move is invalid', () => {
+    const game = new Game(1, players, characters, envelope, board);
+    game.start();
+    game.rollDice(() => 1);
+
+    assert.notOk(game.move([4, 0]));
   });
 
   it('Should allow the current player to accuse', () => {
@@ -156,20 +165,11 @@ describe('Game', () => {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('Should inject the possible moves into game', () => {
-    const game = new Game(1, players, characters, envelope, board);
-    game.start();
-    game.injectPossibleMoves([[1, 2], [2, 2]]);
-
-    const actual = game.getState(1).possibleMoves;
-    const expected = [[1, 2], [2, 2]];
-
-    assert.deepStrictEqual(actual, expected);
-  });
-
   it('Should provide suspicion info, if current player suspects', () => {
+    characters[0].position = [4, 7];
     const game = new Game(1, players, characters, envelope, board);
     game.start();
+    game.rollDice(() => 1);
     game.move([4, 6]);
     game.suspect({ character: 'green', weapon: 'rope', room: 'kitchen' });
 
