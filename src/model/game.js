@@ -249,7 +249,7 @@ class Game {
 
     if (result) {
       this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
-      this.#enableAcknowledge('accuse-acknowledge')
+      this.#enableAcknowledge('accuse-acknowledge');
     }
 
     return result;
@@ -346,7 +346,7 @@ class Game {
     if (this.#acknowledgement.hasEveryoneAcknowledged()) {
       this.#accusation = null;
       this.#isRunning = false;
-      this.#disablePermissions();
+      this.#disableAllPermissions();
     }
 
     return true;

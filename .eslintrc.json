@@ -149,7 +149,8 @@
     },
     {
       "files": [
-        "findPossibleMoves.js"
+        "findPossibleMoves.js",
+        "game.js"
       ],
       "rules": {
         "id-length": "off"

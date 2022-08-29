@@ -670,8 +670,9 @@
 
   const accuseLogMessage = ({ actor, actionData, result }) => {
     const { character, weapon, room } = actionData;
+    const resultMessage = result ? 'correct' : 'incorrect';
 
-    return `${capitalize(actor)} accused ${character} with ${weapon} in ${room} and the accusation was incorrect`;
+    return `${capitalize(actor)} accused ${character} with ${weapon} in ${room} and the accusation was ${resultMessage}`;
   };
 
   const ruleOutLogMessage = ({ actor }) =>
