@@ -338,9 +338,14 @@ article {
 
 .suit select {
   width: 90%;
-  padding: 0.1em;
   font-size: 1em;
   text-transform: capitalize;
+  background-color: #6d6bab;
+  border: none;
+  color: white;
+  border-radius: var(--border-radius);
+  padding: 0.2em;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .popup-container #suspect-result-popup {

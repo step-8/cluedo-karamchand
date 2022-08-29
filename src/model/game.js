@@ -192,8 +192,19 @@ class Game {
     character.position = position;
   }
 
+  #isPassageDestination(destination) {
+    const room = this.#getPlayerRoom(this.#currentPlayer);
+    if (!room) {
+      return false;
+    }
+
+    const { secretPassage } = room;
+    return secretPassage && isEqual(secretPassage, destination);
+  }
+
   #isMoveAllowed(move) {
-    return this.#possibleMoves.some(([x, y]) => x === move[0] && y === move[1]);
+    return this.#possibleMoves.some(([x, y]) => x === move[0] && y === move[1])
+      || this.#isPassageDestination(move);
   }
 
   move(newPosition) {
