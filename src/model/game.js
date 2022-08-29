@@ -125,12 +125,17 @@ class Game {
     this.#manageSecretPassagePermission();
   }
 
-  #disablePermissions() {
+  #disablePermissions(actions) {
+    actions.forEach(action => this.#disable(action));
+  }
+
+  #disableAllPermissions() {
     const actions = [
       'roll-dice', 'suspect-make', 'pass-turn',
       'accuse', 'move', 'secret-passage'
     ];
-    actions.forEach(action => this.#disable(action));
+
+    this.#disablePermissions(actions);
   }
 
   start() {
@@ -152,7 +157,7 @@ class Game {
 
   passTurn() {
     this.#possibleMoves = [];
-    this.#disablePermissions();
+    this.#disableAllPermissions();
     this.#changePlayer();
     this.#enablePermissions();
     this.#accusation = null;
@@ -267,10 +272,14 @@ class Game {
     this.#summonSuspect(suspectedCards.character);
 
     const suspicionBreaker = this.#findSuspicionBreaker(suspectedCards);
-    suspicionBreaker && suspicionBreaker.enable('suspect-rule-out');
 
-    const suspicionBreakerCharacter =
-      suspicionBreaker ? suspicionBreaker.character : null;
+    let suspicionBreakerCharacter = null;
+    if (suspicionBreaker) {
+      suspicionBreaker.enable('suspect-rule-out');
+      suspicionBreakerCharacter = suspicionBreaker.character;
+    } else {
+      this.#enableAcknowledge();
+    }
 
     const suspectedBy = player.character;
     const suspicion = new Suspicion(
@@ -280,16 +289,15 @@ class Game {
     );
 
     this.#suspicion = suspicion;
-    player.disable('suspect-make');
-    player.disable('secret-passage');
-    player.disable('roll-dice');
+
+    const actions = ['suspect-make', 'secret-passage', 'roll-dice'];
+    this.#disablePermissions(actions);
     player.blockRoom = roomName;
 
     const currentPlayerCharacter = this.#currentPlayerCharacter.name;
     this.#logger.logSuspicion(currentPlayerCharacter, suspectedCards);
 
     this.#acknowledgement = new AwaitingAcknowledgement(this.#players);
-    this.#enableAcknowledge();
   }
 
   #summonSuspect(suspect) {
@@ -304,6 +312,7 @@ class Game {
     this.#logger.logRuleOut(ruledOutBy);
     this.#suspicion.ruleOut(ruledOutBy, rulingOutCard);
     player.disable('suspect-rule-out');
+    this.#enableAcknowledge();
   }
 
   acknowledgeSuspicion(playerId) {
