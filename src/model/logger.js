@@ -19,9 +19,15 @@ class Logger {
     this.#logs.push(log);
   }
 
-  logAccusation(actor, actionData, result) {
-    const log = { actor, action: 'accuse', actionData, result };
+  logAccusation(actor, actionData) {
+    const log = { actor, action: 'accuse', actionData };
     this.#logs.push(log);
+  }
+
+  logAccusationResult(actor, result) {
+    const statusLog = { actor, action: 'accusation-status', result };
+    const outcomeLog = { actor, action: 'accusation-outcome', result };
+    this.#logs.push(statusLog, outcomeLog);
   }
 
   logRuleOut(actor) {

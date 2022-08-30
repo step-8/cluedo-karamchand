@@ -268,7 +268,8 @@ class Game {
     player.accused();
 
     const currentPlayerCharacter = this.#currentPlayerCharacter.name;
-    this.#logger.logAccusation(currentPlayerCharacter, accusedCards, result);
+    this.#logger.logAccusation(currentPlayerCharacter, accusedCards);
+    this.#logger.logAccusationResult(currentPlayerCharacter, result);
 
     if (result) {
       this.#acknowledgement = new AwaitingAcknowledgement(this.#players);

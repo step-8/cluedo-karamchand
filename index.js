@@ -7,7 +7,7 @@ const main = () => {
 
   app
     .listen(PORT, () => console.log(`Server is running on ${PORT}`))
-    .on('error', (err) => console.log(err.message));
+    .on('error', (err) => console.error(err.message));
 };
 
 main();

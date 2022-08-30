@@ -692,11 +692,22 @@
     return `${capitalize(actor)} suspected ${character} with ${weapon} in ${room}`;
   };
 
-  const accuseLogMessage = ({ actor, actionData, result }) => {
+  const accuseLogMessage = ({ actor, actionData }) => {
     const { character, weapon, room } = actionData;
-    const resultMessage = result ? 'correct' : 'incorrect';
 
-    return `${capitalize(actor)} accused ${character} with ${weapon} in ${room} and the accusation was ${resultMessage}`;
+    return `${capitalize(actor)} accused ${character} with ${weapon} in ${room}`;
+  };
+
+  const accusationOutcomeMessage = ({ actor, result }) => {
+    if (result) {
+      return `${capitalize(actor)} solved the mystery`;
+    }
+    return `${capitalize(actor)} is eliminated`;
+  };
+
+  const accusationStatusMessage = ({ actor, result }) => {
+    const resultMessage = result ? 'correct' : 'incorrect';
+    return `${capitalize(actor)}'s accusation was ${resultMessage}`;
   };
 
   const ruleOutLogMessage = ({ actor }) =>
@@ -709,6 +720,8 @@
     'roll-dice': rollDiceLogMessage,
     'suspect': suspectLogMessage,
     'accuse': accuseLogMessage,
+    'accusation-status': accusationStatusMessage,
+    'accusation-outcome': accusationOutcomeMessage,
     'rule-out': ruleOutLogMessage,
     'secret-passage': secretPassageLogMessage,
   };

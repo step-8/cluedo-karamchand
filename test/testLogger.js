@@ -28,11 +28,23 @@ describe('Logger', () => {
   it('should log accuse action', () => {
     const logger = new Logger();
     const accusation = { character: 'White', weapon: 'Dagger', room: 'Study' };
-    const result = true;
-    logger.logAccusation('Scarlett', accusation, result);
+    logger.logAccusation('Scarlett', accusation);
 
     const expected = [
-      { actor: 'Scarlett', action: 'accuse', actionData: accusation, result }
+      { actor: 'Scarlett', action: 'accuse', actionData: accusation }
+    ];
+
+    assert.deepStrictEqual(logger.logs, expected);
+  });
+
+  it('should log accusation result', () => {
+    const logger = new Logger();
+    const result = true;
+    logger.logAccusationResult('Scarlett', result);
+
+    const expected = [
+      { actor: 'Scarlett', action: 'accusation-status', result },
+      { actor: 'Scarlett', action: 'accusation-outcome', result }
     ];
 
     assert.deepStrictEqual(logger.logs, expected);
