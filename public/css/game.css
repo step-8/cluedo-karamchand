@@ -464,7 +464,8 @@ div#suspicion-breaker {
   fill: rgba(235, 208, 71, 0.6);
 }
 
-.current-player {
+.current-player,
+.current-player#white {
   stroke: cyan;
   stroke-width: 0.1;
   animation: pulsar 1.5s ease-out infinite alternate;

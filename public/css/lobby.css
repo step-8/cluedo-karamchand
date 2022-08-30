@@ -37,7 +37,8 @@ main {
 
 .box-design>header {
   width: 100%;
-  padding: 0.4em;
+  padding: 0.2em;
+  font-size: 1.15em;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -46,8 +47,14 @@ main {
   border-radius: var(--border-radius);
 }
 
+.room-id {
+  width: 100%;
+  text-align: center;
+}
+
 #leave-lobby {
   cursor: pointer;
+  font-size: 1.2em;
 }
 
 .players {

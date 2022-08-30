@@ -71,7 +71,7 @@ input[type=submit]:hover {
 }
 
 #logout {
-  color: white;
+  color: var(--red);
   font-size: 1.3em;
   padding-left: 0.5em;
   cursor: pointer;
