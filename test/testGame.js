@@ -19,7 +19,7 @@ describe('Game', () => {
 
   beforeEach(() => {
     players = [
-      new Player(1, 'bob', 'scarlett', ['green']),
+      new Player(1, 'bob', 'scarlett', ['green', 'study']),
       new Player(2, 'buddy', 'mustard', ['white', 'rope'])
     ];
 
@@ -72,7 +72,7 @@ describe('Game', () => {
       you: {
         name: 'bob', character: 'scarlett',
         permissions: ['roll-dice', 'accuse', 'pass-turn'],
-        cards: ['green'],
+        cards: ['green', 'study'],
         room: null
       },
       currentPlayer: {
@@ -242,4 +242,30 @@ describe('Game', () => {
 
       assert.notOk(game.isAllowed(1, 'suspect'));
     });
+
+  it('should return false if player not allowed to suspect room', () => {
+    const characters = [
+      new Character('scarlett', [4, 6]),
+      new Character('mustard', [1, 1])
+    ];
+
+    const game = new Game(2, players, characters, envelope, board);
+
+    game.move([4, 6]);
+
+    assert.notOk(game.isAllowedToSuspectRoom({ room: 'hall' }));
+  });
+
+  it('should return true if player is allowed to suspect room', () => {
+    const characters = [
+      new Character('scarlett', [4, 6]),
+      new Character('mustard', [1, 1])
+    ];
+
+    const game = new Game(2, players, characters, envelope, board);
+
+    game.move([4, 6]);
+
+    assert.ok(game.isAllowedToSuspectRoom({ room: 'kitchen' }));
+  });
 });

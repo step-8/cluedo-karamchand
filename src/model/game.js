@@ -93,7 +93,6 @@ class Game {
   #getPlayerRoom(player) {
     const character = this.#characters.find(character =>
       character.info.name === player.character);
-
     return this.#board.getRoom(character.position);
   }
 
@@ -296,6 +295,11 @@ class Game {
 
   #enableAcknowledge(action) {
     this.#players.forEach(player => player.enable(action));
+  }
+
+  isAllowedToSuspectRoom({ room }) {
+    const { name: playerRoom } = this.#getPlayerRoom(this.#currentPlayer);
+    return room === playerRoom;
   }
 
   suspect(suspectedCards) {

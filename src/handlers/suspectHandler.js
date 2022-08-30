@@ -9,8 +9,12 @@ const handleSuspect = (req, res) => {
   const { body, game } = req;
   const { ...suspectedCards } = body;
 
-  game.suspect(suspectedCards);
+  if (!game.isAllowedToSuspectRoom(suspectedCards)) {
+    res.sendStatus(403);
+    return;
+  }
 
+  game.suspect(suspectedCards);
   res.sendStatus(201);
 };
 
