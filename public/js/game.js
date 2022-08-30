@@ -1,4 +1,7 @@
 (function () {
+  const isEqual = (array1, array2) =>
+    array1.every((element, index) => element === array2[index]);
+
   const createAttr = ([attribute, value], element) =>
     element.setAttribute(attribute, value);
 
@@ -316,36 +319,44 @@
     options.enable();
   };
 
-  const createDiceFaceDom = dots => ['div', { className: 'face' }, ...dots];
-
-  const centerDot = ['div', { className: 'dot center' }];
-  const topLeftDot = ['div', { className: 'dot top-left' }];
-  const topRightDot = ['div', { className: 'dot top-right' }];
-  const leftCenter = ['div', { className: 'dot left-center' }];
-  const rightCenter = ['div', { className: 'dot right-center' }];
-  const bottomRightDot = ['div', { className: 'dot bottom-right' }];
-  const bottomLeftDot = ['div', { className: 'dot bottom-left' }];
-
-  const dieFaces = {
-    '1': createDiceFaceDom([centerDot]),
-    '2': createDiceFaceDom([topLeftDot, bottomRightDot]),
-    '3': createDiceFaceDom([topLeftDot, centerDot, bottomRightDot]),
-    '4': createDiceFaceDom([topLeftDot, topRightDot, bottomLeftDot, bottomRightDot]),
-    '5': createDiceFaceDom([topLeftDot, topRightDot, centerDot, bottomLeftDot, bottomRightDot]),
-    '6': createDiceFaceDom([topLeftDot, topRightDot, leftCenter, rightCenter, bottomLeftDot, bottomRightDot]),
-  };
-
-  const setDice = ([value1, value2]) => {
+  const setupDice = () => {
     const die1Element = document.querySelector('#die1');
-    die1Element.className = `die show-${value1}`;
+    die1Element.className = 'die quick';
 
     const die2Element = document.querySelector('#die2');
-    die2Element.className = `die show-${value2}`;
+    die2Element.className = 'die quick';
+  };
+
+  const setDice = () => {
+    const [value1, value2] = gameState.diceValue;
+    const die1Element = document.querySelector('#die1');
+    die1Element.classList.remove('quick');
+    die1Element.classList.add(`show-${value1}`);
+
+    const die2Element = document.querySelector('#die2');
+    die2Element.classList.remove('quick');
+    die2Element.classList.add(`show-${value2}`);
+  };
+
+  const setDiceImmediately = ([value1, value2]) => {
+    const die1Element = document.querySelector('#die1');
+    die1Element.className = `die show-${value1} quick`;
+
+    const die2Element = document.querySelector('#die2');
+    die2Element.className = `die show-${value2} quick`;
   };
 
   const updateDice = () => {
-    const values = gameState.diceValue;
-    setDice(values);
+    const oldValue = JSON.parse(localStorage.getItem('diceValue'));
+    const newValue = gameState.diceValue;
+
+    if (isEqual(newValue, oldValue)) {
+      setDiceImmediately(newValue);
+      return;
+    }
+    setupDice();
+    saveDiceValue(newValue);
+    setTimeout(setDice, 100);
   };
 
   const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
@@ -745,6 +756,14 @@
     showLogs(logger.getLatestLogs());
   };
 
+  const saveOnLocale = (key, value) => {
+    localStorage[key] = value;
+  };
+
+  const saveDiceValue = (diceValue) => {
+    saveOnLocale('diceValue', JSON.stringify(diceValue));
+  };
+
   const main = () => {
     setupPopup('suspect', suspect);
     setupPopup('accuse', accuse);
@@ -754,6 +773,7 @@
         generatePlayers(gameData);
         generateCards(gameData.you);
         includeTokens(gameData.characters);
+        saveDiceValue(gameData.diceValue);
       });
 
     const getGame = () =>
