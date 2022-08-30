@@ -33,7 +33,7 @@ const API = {
       options: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: newPosition
+        body: JSON.stringify(newPosition)
       }
     };
     return fetchRequest(request);
@@ -45,7 +45,7 @@ const API = {
       options: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: accusedCards
+        body: JSON.stringify(accusedCards)
       }
     };
 
@@ -66,7 +66,7 @@ const API = {
       options: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: suspectedCards
+        body: JSON.stringify(suspectedCards)
       }
     };
 
@@ -79,7 +79,7 @@ const API = {
       options: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: rulingOutCard
+        body: JSON.stringify(rulingOutCard)
       }
     };
 

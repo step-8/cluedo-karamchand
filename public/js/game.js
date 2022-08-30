@@ -182,9 +182,7 @@
       disableOptions(secretPassage);
     }
 
-    const newPosition = JSON.stringify({ position });
-
-    API.moveCharacter(newPosition)
+    API.moveCharacter({ position })
       .then(() => {
         disableAllOptions();
         removeHighlightedPath();
@@ -539,7 +537,7 @@
     const rulingOutCard = rulingOutCardEle.id;
     markRuledOutCard(rulingOutCardEle);
 
-    API.ruleOut(JSON.stringify({ rulingOutCard }))
+    API.ruleOut({ rulingOutCard })
       .then(disallowRuleOut);
   };
 
@@ -654,7 +652,7 @@
     const room = action === 'suspected' ?
       gameState.room.name : formData.get('rooms');
 
-    const cards = JSON.stringify({ character, room, weapon });
+    const cards = { character, room, weapon };
     cb(cards)
       .then(closePopup);
   };
