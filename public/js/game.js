@@ -99,6 +99,7 @@
     const popups = popupContainerEle.querySelectorAll('article');
     popups.forEach(popup => {
       popup.classList.add('hidden');
+      popup.classList.remove('zoom');
     });
   };
 
@@ -253,6 +254,7 @@
 
     container.querySelector('img').src = `/images/${room}.png`;
     popup.classList.remove('hidden');
+    popup.classList.add('zoom');
   };
 
   const disableOptions = (options) => options.forEach(disableOption);
@@ -413,6 +415,7 @@
 
     const gameOverPopup = document.querySelector('#game-over-popup');
     gameOverPopup.classList.remove('hidden');
+    gameOverPopup.classList.add('zoom');
   };
 
   const accusationResult = (poller) => {
@@ -466,9 +469,14 @@
   };
 
   const suspicionResultMessage = ({ suspicionBreaker }) => {
+    if (gameState.amISuspicionBreaker()) {
+      return 'Select a card to rule out the suspicion';
+    }
+
     if (suspicionBreaker) {
       return `${capitalize(suspicionBreaker)} can rule out the suspicion`;
     }
+
     return 'No one ruled out the suspicion';
   };
 

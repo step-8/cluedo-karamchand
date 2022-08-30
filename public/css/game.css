@@ -92,21 +92,21 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1em;
+  gap: 1.8em;
 }
 
 .players .player {
   width: 80%;
-  height: 15%;
-  padding: 0.4em;
+  height: 13%;
+  padding: 0.4em 0.8em;
   display: flex;
   align-items: center;
   gap: 1em;
 }
 
 .players .character {
-  width: 91px;
-  height: 80%;
+  width: 86px;
+  aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9);
@@ -286,6 +286,10 @@ article {
   row-gap: 1.5em;
 }
 
+.zoom {
+  animation: animateZoom 0.5s ease-in;
+}
+
 .popup-options {
   width: 50%;
   display: flex;
@@ -367,15 +371,15 @@ article {
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 3px 3px 5px gray;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9);
 }
 
 #turn-order img {
   width: 100%;
 }
 
-#suspicion-breaker {
-  border: 3px solid red;
+div#suspicion-breaker {
+  box-shadow: 0px 0px 10px 6px var(--red);
 }
 
 #suspect-result-popup .card {
@@ -422,18 +426,15 @@ article {
 }
 
 /* highlight */
-.highlight-profile {
+.highlight-profile, 
+.highlight-card {
   border: 1px solid var(--red);
   border-radius: var(--border-radius);
-  box-shadow: 0px 0px 15px 2px var(--red);
+  box-shadow: 0px 0px 15px 4px var(--red);
 }
 
 .highlight-btn {
   opacity: 1;
-}
-
-.highlight-card {
-  box-shadow: 0px 0px 8px 1px var(--red);
 }
 
 .highlight-card,
@@ -475,7 +476,7 @@ article {
   from {
     fill: #e1b365
   }
-
+  
   to {
     fill: #f6dfb8;
   }
@@ -491,7 +492,7 @@ article {
   from {
     opacity: 0;
   }
-
+  
   to {
     opacity: 0.8;
   }
@@ -501,8 +502,20 @@ article {
   from {
     r: 0.28;
   }
-
+  
   to {
     r: 0.45;
+  }
+}
+ 
+@keyframes animateZoom {
+  from {
+    transform:scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform:scale(1);
+    opacity: 1;
   }
 }
