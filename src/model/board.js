@@ -1,9 +1,5 @@
-const { findPossibleMoves } = require('../utils/findPossibleMoves.js');
-const { isEqual } = require('../utils/isEqual.js');
-
-const isCellPresent = (cells, expectedCell) => {
-  return cells.some(cell => isEqual(cell, expectedCell));
-};
+const { findPossibleMoves, isCellPresent } =
+  require('../utils/findPossibleMoves.js');
 
 class Board {
   #tiles;

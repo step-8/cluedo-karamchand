@@ -64,4 +64,4 @@ const findPossibleMoves = (cells, moves, currentPos, possibleRooms = []) => {
   return removeDuplicates([...possibleMoves, ...possibleRooms]);
 };
 
-module.exports = { findPossibleMoves };
+module.exports = { findPossibleMoves, isCellPresent };
