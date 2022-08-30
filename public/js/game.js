@@ -712,7 +712,7 @@
     if (result) {
       return `${capitalize(actor)} solved the mystery`;
     }
-    return `${capitalize(actor)} is eliminated`;
+    return `${capitalize(actor)} got eliminated`;
   };
 
   const accusationStatusMessage = ({ actor, result }) => {
