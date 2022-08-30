@@ -287,7 +287,7 @@ article {
 }
 
 .zoom {
-  animation: animateZoom 0.5s ease-in;
+  animation: animate-zoom 0.6s ease-in;
 }
 
 .popup-options {
@@ -425,6 +425,10 @@ div#suspicion-breaker {
   line-height: 1em;
 }
 
+.game-over-bg {
+  backdrop-filter: grayscale(1) blur(2px);
+}
+
 /* highlight */
 .highlight-profile, 
 .highlight-card {
@@ -508,12 +512,12 @@ div#suspicion-breaker {
   }
 }
  
-@keyframes animateZoom {
+@keyframes animate-zoom {
   from {
     transform:scale(0);
     opacity: 0;
   }
-
+  
   to {
     transform:scale(1);
     opacity: 1;

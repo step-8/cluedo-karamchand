@@ -216,7 +216,9 @@
 
   const showAccusationPopup = () => {
     document.querySelector('.popup-container').classList.remove('hidden');
-    document.querySelector('#accuse-popup').classList.remove('hidden');
+    const accusePopup = document.querySelector('#accuse-popup');
+    accusePopup.classList.remove('hidden');
+    accusePopup.classList.add('zoom');
   };
 
   const disableOption = (optionElement) => {
@@ -386,6 +388,7 @@
     document.querySelector('.popup-container').classList.remove('hidden');
     const popup = document.querySelector('#accuse-result-popup');
     popup.classList.remove('hidden');
+    popup.classList.add('zoom');
 
     showResultCards(accusedCards, '#accuse-result-popup');
 
@@ -412,6 +415,7 @@
 
     const popupContainer = document.querySelector('.popup-container');
     popupContainer.classList.remove('hidden');
+    popupContainer.classList.add('game-over-bg');
 
     const gameOverPopup = document.querySelector('#game-over-popup');
     gameOverPopup.classList.remove('hidden');
@@ -489,6 +493,7 @@
 
     const popup = document.querySelector('#suspect-result-popup');
     popup.classList.remove('hidden');
+    popup.classList.add('zoom');
 
     const resultMessage = suspicionResultMessage(gameState.suspicion);
     popup.querySelector('h2').innerText = resultMessage;
