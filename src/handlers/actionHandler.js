@@ -7,11 +7,20 @@ const rollDice = (req, res) => {
   res.sendStatus(200);
 };
 
+const areCardsPresent = ({ character, weapon, room }) => {
+  return character && weapon && room;
+};
+
 const handleAccusation = (req, res) => {
   const { body, game } = req;
   const { ...accusedCards } = body;
-  game.accuse(accusedCards);
 
+  if (!areCardsPresent(accusedCards)) {
+    res.sendStatus(403);
+    return;
+  }
+
+  game.accuse(accusedCards);
   res.sendStatus(201);
 };
 
