@@ -163,9 +163,13 @@ main {
 
 /* Character tokens */
 .token {
-  r: 0.35;
-  stroke: white;
-  stroke-width: 0.1%;
+  r: 0.37;
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 0.2%;
+}
+
+.token#white {
+  stroke: rgba(0, 0, 0, 0.5);
 }
 
 #scarlett {
@@ -228,15 +232,16 @@ main {
   width: 55%;
   margin-top: 1em;
   padding-top: 0.5em;
-  border: 1px solid white;
   border-radius: var(--border-radius);
+  box-shadow: 0px 0px 10px rgb(255 255 255 / 90%);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .log-container {
-  height: 80%;
-  padding: 0em 3em;
-  margin: 1em;
-  overflow: scroll;
+  height: 83%;
+  padding: 0em 2.5em;
+  margin-top: 1em;
+  overflow-y: scroll;
 }
 
 .log-container::-webkit-scrollbar {
@@ -245,16 +250,9 @@ main {
 
 .logs>h3 {
   text-align: center;
-  color: white
-}
-
-.logs>ul {
-  height: 80%;
-  border: 1px solid white;
 }
 
 .log {
-  color: white;
   margin: 0.5em 0em;
 }
 
