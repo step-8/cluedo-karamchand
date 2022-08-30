@@ -47,14 +47,7 @@ describe('POST /game/accuse', () => {
     });
 });
 
-const rollDiceReq = (app, cookie) => {
-  return request(app)
-    .get('/game/roll-dice')
-    .set('Cookie', cookie)
-    .then(() => cookie);
-};
-
-describe('GET /game/roll-dice', () => {
+describe('POST /game/roll-dice', () => {
 
   it('Should roll dice', (done) => {
     const app = createApp();
@@ -67,7 +60,7 @@ describe('GET /game/roll-dice', () => {
       .then(hostCookie => gameReq(app, hostCookie))
       .then((hostCookie) => {
         request(app)
-          .get('/game/roll-dice')
+          .post('/game/roll-dice')
           .set('Cookie', hostCookie)
           .expect(200, done);
       });
@@ -82,7 +75,7 @@ describe('GET /game/roll-dice', () => {
       })
       .then((res) =>
         request(app)
-          .get('/game/roll-dice')
+          .post('/game/roll-dice')
           .set('Cookie', res[1].headers['set-cookie'])
           .expect(403)
           .then(() => done())
@@ -128,7 +121,7 @@ describe('POST /game/leave', () => {
   });
 });
 
-describe('GET /game/pass-turn', () => {
+describe('POST /game/pass-turn', () => {
   const app = createApp();
 
   it('Should pass the turn', (done) => {
@@ -140,7 +133,7 @@ describe('GET /game/pass-turn', () => {
       .then(hostCookie => gameReq(app, hostCookie))
       .then((hostCookie) => {
         request(app)
-          .get('/game/pass-turn')
+          .post('/game/pass-turn')
           .set('Cookie', hostCookie)
           .expect(200, done);
       });

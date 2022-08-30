@@ -18,12 +18,12 @@ const API = {
   },
 
   rollDice: () => {
-    const request = { url: '/game/roll-dice', options: { method: 'GET' } };
+    const request = { url: '/game/roll-dice', options: { method: 'POST' } };
     return fetchRequest(request);
   },
 
   passTurn: () => {
-    const request = { url: '/game/pass-turn', options: { method: 'GET' } };
+    const request = { url: '/game/pass-turn', options: { method: 'POST' } };
     return fetchRequest(request);
   },
 
