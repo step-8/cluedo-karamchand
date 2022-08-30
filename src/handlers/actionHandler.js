@@ -38,7 +38,13 @@ const useSecretPassage = (req, res) => {
 const moveCharacter = (req, res) => {
   const { game } = req;
   const { position } = req.body;
-  game.move(JSON.parse(position));
+
+  if (!game.isMoveAllowed(position)) {
+    res.sendStatus(403);
+    return;
+  }
+
+  game.move(position);
   res.sendStatus(201);
 };
 

@@ -125,12 +125,18 @@ describe('Game', () => {
       assert.ok(game.isStarted);
     });
 
-  it('Should move the current player\'s token', () => {
+  it('Should return true if move is allowed on give position', () => {
     const game = new Game(1, players, characters, envelope, board);
     game.start();
     game.rollDice(() => 1);
+    assert.ok(game.isMoveAllowed([2, 2]));
+  });
 
-    assert.ok(game.move([2, 2]));
+  it('Should return false if move is not allowed on give position', () => {
+    const game = new Game(1, players, characters, envelope, board);
+    game.start();
+    game.rollDice(() => 1);
+    assert.notOk(game.isMoveAllowed([1, 2]));
   });
 
   it('Should not move the current player\'s token if move is invalid', () => {

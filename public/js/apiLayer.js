@@ -32,6 +32,7 @@ const API = {
       url: '/game/move',
       options: {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: newPosition
       }
     };

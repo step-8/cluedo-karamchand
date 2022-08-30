@@ -218,7 +218,7 @@ class Game {
     return secretPassage && isEqual(secretPassage, destination);
   }
 
-  #isMoveAllowed(move) {
+  isMoveAllowed(move) {
     return this.#possibleMoves.some(([xCoordinate, yCoordinate]) =>
       xCoordinate === move[0] && yCoordinate === move[1])
       || this.#isPassageDestination(move);
@@ -226,10 +226,6 @@ class Game {
 
   move(newPosition) {
     const prevPosition = this.#currentPlayerCharacter.position;
-
-    if (!this.#isMoveAllowed(newPosition)) {
-      return false;
-    }
 
     if (!isEqual(prevPosition, newPosition)) {
       this.#currentPlayer.unblock();
@@ -242,7 +238,6 @@ class Game {
     this.#disable('secret-passage');
 
     this.#clearPossibleMoves();
-    return true;
   }
 
   useSecretPassage() {

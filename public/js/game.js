@@ -182,7 +182,7 @@
       disableOptions(secretPassage);
     }
 
-    const newPosition = new URLSearchParams(`position=[${position}]`);
+    const newPosition = JSON.stringify({ position });
 
     API.moveCharacter(newPosition)
       .then(() => {

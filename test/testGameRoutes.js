@@ -91,26 +91,6 @@ describe('GET /game/roll-dice', () => {
 });
 
 describe('POST /game/move', () => {
-
-  it('Should move the character', (done) => {
-    const app = createApp();
-
-    loginAsHost(app, 'vikram')
-      .then(({ hostCookie, roomId }) => {
-        return loginAllAsJoinees(app, ['james', 'rathod'], roomId)
-          .then(() => hostCookie);
-      })
-      .then(hostCookie => gameReq(app, hostCookie))
-      .then(hostCookie => rollDiceReq(app, hostCookie))
-      .then((hostCookie) => {
-        request(app)
-          .post('/game/move')
-          .set('Cookie', hostCookie)
-          .send('position=[7, 24]')
-          .expect(201, done);
-      });
-  });
-
   it('should forbid player from moving when they don\'t have move permission', (done) => {
     const app = createApp();
 
@@ -180,7 +160,7 @@ describe('POST /game/accuse/acknowledge', () => {
           request(app)
             .get('/game/accuse/acknowledge')
             .set('Cookie', res[1].headers['set-cookie'])
-            .expect(403, done)
+            .expect(403, done);
         });
     });
 });
