@@ -75,4 +75,17 @@ describe('Board', () => {
 
     assert.deepStrictEqual(actual, expected);
   });
+
+  it('Should not give any position if given position is inside blocked room', () => {
+    const cellPositions = [[0, 2], [1, 2], [0, 3], [0, 1]];
+    const rooms = createRooms(roomDetails);
+    const blockedTiles = [[1, 2]];
+
+    const board = new Board(cellPositions, rooms);
+
+    const expected = [];
+    const actual = board.findPossiblePositions([1, 1], 1, blockedTiles);
+
+    assert.deepStrictEqual(actual, expected);
+  });
 });

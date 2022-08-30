@@ -24,7 +24,18 @@ class Board {
     return this.#tiles.filter(tile => !isCellPresent(blockedTiles, tile));
   }
 
+  #isStuckInRoom(tile, blockedTiles) {
+    if (!this.isInsideRoom(tile)) {
+      return false;
+    }
+    const room = this.getRoom(tile);
+    return isCellPresent(blockedTiles, room.entryPoint);
+  }
+
   findPossiblePositions(from, steps, blockedTiles) {
+    if (this.#isStuckInRoom(from, blockedTiles)) {
+      return [];
+    }
     const roomDetails = this.#rooms.map(room => room.info);
     const cellPositions = this.#getAvailableTiles(blockedTiles);
     return findPossibleMoves({ cellPositions, roomDetails }, steps, from);
