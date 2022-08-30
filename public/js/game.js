@@ -336,10 +336,11 @@
   };
 
   const setDice = ([value1, value2]) => {
-    const [die1, die2] = document.querySelectorAll('.die');
+    const die1Element = document.querySelector('#die1');
+    die1Element.className = `die show-${value1}`;
 
-    die1.replaceChildren(generateHTML(dieFaces[value1]));
-    die2.replaceChildren(generateHTML(dieFaces[value2]));
+    const die2Element = document.querySelector('#die2');
+    die2Element.className = `die show-${value2}`;
   };
 
   const updateDice = () => {
